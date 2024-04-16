@@ -21,6 +21,13 @@ public:
 	bool isValidLba(int lba) {
 		return (lba >= 0 && lba < 100);
 	}
+
+	bool isValidValue(string value) {
+		if (value == "a") {
+			return false;
+		}
+		return true;
+	}
 private:
 	NAND* nand_;
 };

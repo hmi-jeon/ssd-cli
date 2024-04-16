@@ -35,3 +35,17 @@ TEST(SsdTest, TestInValidLba) {
 
 	EXPECT_FALSE(ssd.isValidLba(101));
 }
+
+TEST(SsdTest, TestValidValue) {
+	NAND nand;
+	SSD ssd(&nand);
+
+	EXPECT_TRUE(ssd.isValidValue("0x14329589"));
+}
+
+TEST(SsdTest, TestInValidValue) {
+	NAND nand;
+	SSD ssd(&nand);
+
+	EXPECT_FALSE(ssd.isValidValue("a"));
+}
