@@ -20,7 +20,12 @@ public :
 	}
 
 	void read(int lba) {
+		FILE* nandFile, *resultFile;
+		fopen_s(&nandFile, "nand.txt", "r");
+		fopen_s(&resultFile, "result.txt", "w");
 
+		fclose(nandFile);
+		fclose(resultFile);
 	}
 
 	void write(int lba, string value) {
