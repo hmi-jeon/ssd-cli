@@ -1,6 +1,25 @@
-#include "pch.h"
+#include "gtest/gtest.h"
+#include "gmock/gmock.h"
+#include "../ssd-cli/nand.cpp"
+#include <fstream>
+#include <windows.h>
 
-TEST(TestCaseName, TestName) {
-  EXPECT_EQ(1, 1);
-  EXPECT_TRUE(true);
+using namespace testing;
+
+class NandTest : public Test {
+	void SetUp() override {
+		NAND nand;
+	}
+
+	void TearDown() override {
+
+	}
+};
+
+TEST_F(NandTest, CheckFileExist) {
+	Sleep(1000);
+
+	FILE* file;
+	fopen_s(&file, "nand.txt", "r");
+	EXPECT_THAT(file, Ne(nullptr));
 }
