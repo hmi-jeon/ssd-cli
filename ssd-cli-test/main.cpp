@@ -9,7 +9,7 @@ int main(int argc, char **argv, char **envp) {
 		cout << "> ";
 		cin >> line;
 		if (!line.compare("exit")) {
-			cout << "shell을 종료합니다.";
+			cout << "shell exit";
 			break;
 		}
 
