@@ -30,7 +30,8 @@ TEST_F(NandTest, ReadZerotoCheckResultFile)
 	nand.read(0);
 	FILE* file;
 	fopen_s(&file, "result.txt", "r");
-	
+
 	EXPECT_NE(file, nullptr);
 	if (file != nullptr) fclose(file);
 }
+

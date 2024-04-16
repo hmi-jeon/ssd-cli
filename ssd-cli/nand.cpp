@@ -24,6 +24,16 @@ public :
 		fopen_s(&nandFile, "nand.txt", "r");
 		fopen_s(&resultFile, "result.txt", "w");
 
+		char readData[100][9];
+
+		for (int i = 0; i < 100; i++)
+		{
+			fread(readData[i], 1, 8, nandFile);
+			readData[i][8] = '\0';
+		}
+
+		fwrite(readData[lba], 1, 8, resultFile);
+
 		fclose(nandFile);
 		fclose(resultFile);
 	}
