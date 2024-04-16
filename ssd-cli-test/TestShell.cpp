@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <windows.h>
+#include <process.h>
 
 #define MAX_SIZE 100
 
@@ -17,7 +18,8 @@ public:
 
 
 	void write(int lba, string data) {
-
+		string command = "ssd.exe W" + lba + ' ' + data;
+		system(command.c_str());
 	};
 
 	string read(int lba) {
@@ -40,6 +42,13 @@ public:
 			read(lba);
 		}
 	};
+
 	void exit() {
 	};
+
+	void help() {
+		cout << "--help--" << endl;
+		cout << "--[write]--" << endl;
+		cout << "--format: write [LBA] [DATA]--" << endl;
+	}
 };
