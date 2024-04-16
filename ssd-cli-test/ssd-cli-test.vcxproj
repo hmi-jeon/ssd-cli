@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="TestShell.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
