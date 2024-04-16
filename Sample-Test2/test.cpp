@@ -15,16 +15,12 @@ public:
 };
 
 TEST_F(TestFixture, TestRead) {
-	MockShell shell;
-
 	EXPECT_CALL(shell, read).Times(1);
 
 	shell.read(1);
 }
 
 TEST_F(TestFixture, ExitRead) {
-	MockShell shell;
-
 	EXPECT_CALL(shell, exit).Times(1);
 
 	shell.exit();
