@@ -12,54 +12,67 @@ public:
 class NAND : public lNAND{
 public :
 	NAND() {
-		FILE* file;
-		fopen_s(&file, "nand.txt", "r");
-		if (file == nullptr) {
-			fopen_s(&file, "nand.txt", "w");
+		_initNand();
+	}
 
-			char resetData[9] = "00000000";
-			for (int i = 0; i < 100; ++i) {
-				fwrite(resetData, 1, 8, file);
+	void read(int lba) {
+		char buffer[LBA_SIZE + 1] = {};
+		_readFile(NAND_FILE_NAME, buffer, lba);
+		_writeFile(RESULT_FILE_NAME, buffer, LBA_SIZE);
+	}
+
+	void write(int lba, string value) {
+		char buffer[NAND_SIZE + 1] = {};
+		_readFileAll(NAND_FILE_NAME, buffer);
+		_replaceData(&buffer[lba * LBA_SIZE], value.c_str(), LBA_SIZE);
+		_writeFile(NAND_FILE_NAME, buffer, NAND_SIZE);
+	}
+
+private:
+	static constexpr int LBA_SIZE = 8;
+	static constexpr int MAX_LBA = 100;
+	static constexpr int NAND_SIZE = LBA_SIZE * MAX_LBA;
+	const char NAND_FILE_NAME[12] = "nand.txt";
+	const char RESULT_FILE_NAME[12] = "result.txt";
+	const char FORMAT_DATA[LBA_SIZE + 1] = "00000000";
+
+	void _initNand() {
+		FILE* file;
+		fopen_s(&file, NAND_FILE_NAME, "r");
+		if (file == nullptr) {
+			fopen_s(&file, NAND_FILE_NAME, "w");
+			for (int cnt = 0; cnt < MAX_LBA; ++cnt) {
+				fwrite(FORMAT_DATA, 1, LBA_SIZE, file);
 			}
 		}
 		fclose(file);
 	}
 
-	void read(int lba) {
-		FILE* nandFile, *resultFile;
-		fopen_s(&nandFile, "nand.txt", "r");
-		fopen_s(&resultFile, "result.txt", "w");
-
-		char readData[100][9];
-
-		for (int i = 0; i < 100; i++)
-		{
-			fread(readData[i], 1, 8, nandFile);
-			readData[i][8] = '\0';
-		}
-
-		fwrite(readData[lba], 1, 8, resultFile);
-
-		fclose(nandFile);
-		fclose(resultFile);
-	}
-
-	void write(int lba, string value) {
+	void _readFile(const string fileName, char buffer[], int lba) {
 		fstream fs;
-		fs.open("nand.txt", ios_base::in);
-		char str[100 * 8];
-		fs.read(str, 100 * 8);
+		fs.open(fileName.c_str(), ios_base::in);
+		fs.seekg(lba * LBA_SIZE, ios_base::beg);
+		fs.read(buffer, LBA_SIZE);
 		fs.close();
-
-		for (int i = 0; i < 8; ++i) {
-			str[lba * 8 + i] = value.at(i);
-		}
-
-		FILE* file;
-		fopen_s(&file, "nand.txt", "w");
-		
-		fwrite(str, 8, 100, file);
-		fclose(file);
 	}
-private:
+
+	void _readFileAll(const string fileName, char buffer[]) {
+		fstream fs;
+		fs.open(fileName.c_str(), ios_base::in);
+		fs.read(buffer, NAND_SIZE);
+		fs.close();
+	}
+
+	void _writeFile(const string fileName, const char buffer[], int size) {
+		fstream fs;
+		fs.open(fileName.c_str(), ios_base::out);
+		fs.write(buffer, size);
+		fs.close();
+	}
+
+	void _replaceData(char dst[], const char src[], int size) {
+		for (int idx = 0; idx < size; ++idx) {
+			dst[idx] = src[idx];
+		}
+	}
 };
