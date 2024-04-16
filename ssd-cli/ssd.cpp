@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "nand.cpp"
+#include "inand.h"
 
 using namespace std;
 
