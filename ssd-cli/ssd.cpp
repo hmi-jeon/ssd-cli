@@ -22,9 +22,17 @@ public:
 		return (lba >= 0 && lba < 100);
 	}
 
-	bool isValidValue(string value) {
-		if (value == "a") {
+	bool isValidValue(const string value) {
+		if (value.size() != 10)
 			return false;
+
+		if (value.substr(0, 2) != "0x")
+			return false;
+
+		for (const char& c : value.substr(2)) {
+			if (!isdigit(c)) {
+				return false;
+			}
 		}
 		return true;
 	}
