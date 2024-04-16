@@ -1,20 +1,45 @@
 #pragma once
+#define _CRT_SECURE_NO_WARNINGS
 #include <string>
+#include <iostream>
+#include <fstream>
+#include <windows.h>
+
+#define MAX_SIZE 100
 
 using namespace std;
 
 class TestShell {
 public:
-	int cnt{ 0 };
+	bool status{ true };
 	string line{};
+	int adr[100] = { 0 , };
 
-	virtual void write(int LBA, string data) {
+
+	void write(int lba, string data) {
 
 	};
 
-	virtual void read(int pos) {
+	string read(int lba) {
+		// ssd.exe call
+		//system(ssd.exe read lba);
+
+		// result.txt open
+		ifstream resultFile;
+		string data = "";
+		resultFile.open("result.txt");
+		if (resultFile.is_open()) {
+			resultFile >> data;
+			cout << data << endl;
+		}
+		return data;
 	};
 
-	virtual void exit() {
+	void fullread() {
+		for (int lba = 0; lba < MAX_SIZE; lba++) {
+			read(lba);
+		}
+	};
+	void exit() {
 	};
 };
