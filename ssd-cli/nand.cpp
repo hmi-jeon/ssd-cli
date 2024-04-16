@@ -39,7 +39,21 @@ public :
 	}
 
 	void write(int lba, string value) {
+		fstream fs;
+		fs.open("nand.txt", ios_base::in);
+		char str[100 * 8];
+		fs.read(str, 100 * 8);
+		fs.close();
 
+		for (int i = 0; i < 8; ++i) {
+			str[lba * 8 + i] = value.at(i);
+		}
+
+		FILE* file;
+		fopen_s(&file, "nand.txt", "w");
+		
+		fwrite(str, 8, 100, file);
+		fclose(file);
 	}
 private:
 };
