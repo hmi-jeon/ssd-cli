@@ -1,9 +1,16 @@
+#include <string>
+
+using namespace std;
+
 class TestShell {
 public:
-	virtual void read(int pos) {
+	void write(int LBA, string data ) {
+		
+	}
+  
+  virtual void read(int pos) {
 	};
 
 	virtual void exit() {
 	};
-
-};
+}
