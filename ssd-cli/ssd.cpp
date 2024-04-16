@@ -27,7 +27,7 @@ public:
 	}
 
 	void read(int lba) {
-		if (!isValidLba(lba)) {
+		if (!_isValidLba(lba)) {
 			std::cout << "Invalid Parameter" << std::endl;
 			return;
 		}
@@ -36,7 +36,7 @@ public:
 	}
 
 	void write(int lba, string value) {
-		if (!isValidLba(lba) || !isValidValue(value)) {
+		if (!_isValidLba(lba) || !_isValidValue(value)) {
 			std::cout << "Invalid Parameter" << std::endl;
 			return;
 		}
@@ -44,11 +44,12 @@ public:
 		nand_->write(lba, value.substr(2));
 	}
 
-	bool isValidLba(int lba) {
+private:
+	bool _isValidLba(int lba) {
 		return (lba >= 0 && lba < 100);
 	}
 
-	bool isValidValue(const string value) {
+	bool _isValidValue(const string value) {
 		if (value.size() != 10)
 			return false;
 
@@ -62,6 +63,6 @@ public:
 		}
 		return true;
 	}
-private:
+
 	lNAND* nand_;
 };
