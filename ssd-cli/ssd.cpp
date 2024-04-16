@@ -19,10 +19,7 @@ public:
 	}
 
 	bool isValidLba(int lba) {
-		if (lba == 101) {
-			return false;
-		}
-		return true;
+		return (lba >= 0 && lba < 100);
 	}
 private:
 	NAND* nand_;
