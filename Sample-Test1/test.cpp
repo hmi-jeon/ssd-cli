@@ -17,8 +17,6 @@ class NandTest : public Test {
 };
 
 TEST_F(NandTest, CheckFileExist) {
-	Sleep(1000);
-
 	FILE* file;
 	fopen_s(&file, "nand.txt", "r");
 	EXPECT_THAT(file, Ne(nullptr));

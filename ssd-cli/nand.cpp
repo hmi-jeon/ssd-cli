@@ -16,6 +16,7 @@ public :
 				fwrite(resetData, 1, 8, file);
 			}
 		}
+		fclose(file);
 	}
 
 	void read(int lba) {
