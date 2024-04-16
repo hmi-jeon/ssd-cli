@@ -18,6 +18,12 @@ public:
 		nand_->write(lba, value);
 	}
 
+	bool isValidLba(int lba) {
+		if (lba == 101) {
+			return false;
+		}
+		return true;
+	}
 private:
 	NAND* nand_;
 };
