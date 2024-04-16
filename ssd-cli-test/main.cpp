@@ -1,19 +1,21 @@
-﻿#include <string>
+#include <string>
 #include <iostream>
+#include "TestShell.cpp"
 
 using namespace std;
 
 int main(int argc, char **argv, char **envp) {
-	string line;
+	TestShell ssdTestShell;
+
+	// Sample Main Code
 	while (1) {
-		cout << "> ";
-		cin >> line;
-		if (!line.compare("exit")) {
+		cout << "[" << ssdTestShell.cnt++ << "]" << "> ";
+		cin >> ssdTestShell.line;
+		if (!ssdTestShell.line.compare("exit")) {
 			cout << "shell exit";
 			break;
 		}
-
-		cout << line << endl;
+		cout << ssdTestShell.line << endl;
 	}
 
 	return 0;

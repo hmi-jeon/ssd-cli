@@ -6,9 +6,15 @@ class MockShell : public TestShell {
 public:
 	MOCK_METHOD(void, read, (int pos), (override));
 	MOCK_METHOD(void, exit, (), (override));
+	MOCK_METHOD(void, write, (int LBA, string data), (override));
 };
 
-TEST(TestCaseName, TestRead) {
+class TestFixture : public testing::Test {
+public:
+	MockShell shell;
+};
+
+TEST_F(TestFixture, TestRead) {
 	MockShell shell;
 
 	EXPECT_CALL(shell, read).Times(1);
@@ -16,7 +22,7 @@ TEST(TestCaseName, TestRead) {
 	shell.read(1);
 }
 
-TEST(TestCaseName, ExitRead) {
+TEST_F(TestFixture, ExitRead) {
 	MockShell shell;
 
 	EXPECT_CALL(shell, exit).Times(1);
