@@ -14,12 +14,12 @@ public:
 	void command(int argc, char* argv[])
 	{
 		std::vector<std::string> cmdString(argv, argv + argc);
-
-		if (cmdString[1]._Equal("W")) {
+		
+		if (argc == 4 && cmdString[1]._Equal("W")) {
 			write(std::stoi(cmdString[2]), cmdString[3]);
 			return;
 		}
-		if (cmdString[1]._Equal("R")) {
+		if (argc == 3 && cmdString[1]._Equal("R")) {
 			read(std::stoi(cmdString[2]));
 			return;
 		}
