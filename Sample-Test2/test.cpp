@@ -8,6 +8,7 @@ public:
 	MOCK_METHOD(void, exit, (), ());
 	MOCK_METHOD(void, write, (int lba, string data), ());
 	MOCK_METHOD(void, help, (), ());
+	MOCK_METHOD(void, fullwrite, (string data), ());
 };
 
 class TestFixture : public testing::Test {
@@ -38,3 +39,10 @@ TEST_F(TestFixture, TestHelp) {
 
 	shell.help();
 }
+
+TEST_F(TestFixture, TestFullwrite) {
+	EXPECT_CALL(shell, fullwrite("0xAAAABBBB")).Times(1);
+
+	shell.fullwrite("0xAAAABBBB");
+}
+

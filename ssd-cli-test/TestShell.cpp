@@ -26,4 +26,10 @@ public:
 		cout << "--[write]--" << endl;
 		cout << "--format: write [LBA] [DATA]--" << endl;
 	}
+
+	void fullwrite(string data) {
+		for (int i = 0; i < 100; i++) {
+			write(i, data);
+		}
+	}
 };
