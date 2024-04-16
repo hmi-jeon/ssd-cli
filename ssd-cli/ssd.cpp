@@ -1,3 +1,4 @@
+#include <iostream>
 #include <string>
 #include "nand.cpp"
 
@@ -11,11 +12,21 @@ public:
 	}
 
 	void read(int lba) {
+		if (!isValidLba(lba)) {
+			std::cout << "Invalid Parameter" << std::endl;
+			return;
+		}
+			
 		nand_->read(lba);
 	}
 
 	void write(int lba, string value) {
-		nand_->write(lba, value);
+		if (!isValidLba(lba) || !isValidValue(value)) {
+			std::cout << "Invalid Parameter" << std::endl;
+			return;
+		}
+
+		nand_->write(lba, value.substr(2));
 	}
 
 	bool isValidLba(int lba) {
