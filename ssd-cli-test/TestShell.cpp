@@ -18,13 +18,16 @@ public:
 
 
 	void write(int lba, string data) {
-		string command = "ssd.exe W" + ' ' + lba + ' ' + data;
+		string command = "C:\\Users\\User\\Desktop\\ssd-cli\\Sample-Test2\\ssd-cli.exe";
+		command = command + " " + "W" + " " + to_string(lba) + " " + data;
 		system(command.c_str());
 	};
 
 	string read(int lba) {
 		// ssd.exe call
-		//system(ssd.exe read lba);
+		string command = "C:\\Users\\User\\Desktop\\ssd-cli\\Sample-Test2\\ssd-cli.exe";
+		command = command + " " + "R" + " " + to_string(lba);
+		system(command.c_str());
 
 		// result.txt open
 		ifstream resultFile;
@@ -32,6 +35,7 @@ public:
 		resultFile.open("result.txt");
 		if (resultFile.is_open()) {
 			resultFile >> data;
+
 			cout << data << endl;
 		}
 		return data;

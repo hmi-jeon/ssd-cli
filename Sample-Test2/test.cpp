@@ -18,14 +18,11 @@ public:
 	MockShell shell;
 };
 
-TEST_F(TestFixture, TestRead) {
-	EXPECT_CALL(shell, read(1)).Times(1);
-	shell.read(1);
-}
-
 TEST_F(TestFixture, TestRealClassRead) {
 	TestShell tShell;
-	EXPECT_EQ(tShell.read(1), "0xAAAABBBB");
+
+	tShell.write(10, "0xAAAABBBF");
+	EXPECT_EQ(tShell.read(10), "0xAAAABBBF");
 }
 
 TEST_F(TestFixture, TestExit) {
@@ -37,6 +34,7 @@ TEST_F(TestFixture, TestFullRead) {
 	EXPECT_CALL(shell, fullread).Times(1);
 
 	shell.fullread();
+}
 
 TEST_F(TestFixture, TestWrite) {
 	EXPECT_CALL(shell, write(10, "0xAAAABBBB")).Times(1);
