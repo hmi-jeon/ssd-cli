@@ -2,17 +2,24 @@
 #include "gtest/gtest.h"
 #include "../ssd-cli-test/TestShell.cpp"
 
-class MockTestShell : public TestShell {
+class MockShell : public TestShell {
 public:
-	MOCK_METHOD(void, write, (int, string), ());
+	MOCK_METHOD(void, read, (int pos), (override));
+	MOCK_METHOD(void, exit, (), (override));
 };
 
-TEST(TestCaseName, TestWrite) {
-	MockTestShell testShell;
-	EXPECT_CALL(testShell, write(10, "0xABDCDDDD"))
-		.Times(1);
-	
-	testShell.write(10, "0xABDCDDDD");
+TEST(TestCaseName, TestRead) {
+	MockShell shell;
+
+	EXPECT_CALL(shell, read).Times(1);
+
+	shell.read(1);
 }
 
+TEST(TestCaseName, ExitRead) {
+	MockShell shell;
 
+	EXPECT_CALL(shell, exit).Times(1);
+
+	shell.exit();
+}

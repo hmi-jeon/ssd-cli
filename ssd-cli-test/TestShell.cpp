@@ -7,6 +7,10 @@ public:
 	void write(int LBA, string data ) {
 		
 	}
+  
+  virtual void read(int pos) {
+	};
 
-private:
-};
+	virtual void exit() {
+	};
+}
