@@ -1,4 +1,4 @@
-#include <string>
+ï»¿#include <string>
 #include <iostream>
 
 using namespace std;
@@ -9,7 +9,7 @@ int main(int argc, char **argv, char **envp) {
 		cout << "> ";
 		cin >> line;
 		if (!line.compare("exit")) {
-			cout << "shellÀ» Á¾·áÇÕ´Ï´Ù.";
+			cout << "shellì„ ì¢…ë£Œí•©ë‹ˆë‹¤.";
 			break;
 		}
 
