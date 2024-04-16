@@ -10,7 +10,13 @@ public:
 		: nand_(nand) {
 
 	}
-
+	void command(int argc, char* argv[])
+	{
+		if (argc == 4)
+			write(0,"0x12341234");
+		if (argc == 3)
+			read(0);
+	}
 	void read(int lba) {
 		if (!isValidLba(lba)) {
 			std::cout << "Invalid Parameter" << std::endl;
