@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include "nand.cpp"
 
 using namespace std;
@@ -9,6 +10,20 @@ public:
 	SSD(lNAND* nand)
 		: nand_(nand) {
 
+	}
+	void command(int argc, char* argv[])
+	{
+		std::vector<std::string> cmdString(argv, argv + argc);
+		
+		if (argc == 4 && cmdString[1]._Equal("W")) {
+			write(std::stoi(cmdString[2]), cmdString[3]);
+			return;
+		}
+		if (argc == 3 && cmdString[1]._Equal("R")) {
+			read(std::stoi(cmdString[2]));
+			return;
+		}
+		cout << "INVALID COMMAND" << endl;
 	}
 
 	void read(int lba) {
