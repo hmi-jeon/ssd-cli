@@ -88,6 +88,19 @@ TEST_F(NandTest, ReadZerotoCheckResultFile)
 	if (file != nullptr) fclose(file);
 }
 
+TEST_F(NandTest, WriteAndReadOneAddr)
+{
+	string testString = "11223344";
+	nand.write(10, testString.c_str());
+	nand.read(10);
+	FILE* file;
+	fopen_s(&file, "result.txt", "r");
+	char readData[9];
+	fread(readData, 1, 8, file);
+	readData[8] = '\0';
+	EXPECT_EQ(readData, testString);
+}
+
 TEST(MockTest, TestMockRead) {
 	MockNand mockNand;
 	SSD ssd(&mockNand);
