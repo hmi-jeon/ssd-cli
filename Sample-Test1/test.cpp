@@ -4,11 +4,13 @@
 #include <fstream>
 #include <windows.h>
 
+
 using namespace testing;
 
 class NandTest : public Test {
 public:
 	void SetUp() override {
+
 	}
 
 	void TearDown() override {
@@ -35,4 +37,15 @@ TEST_F(NandTest, CheckWriteTest) {
 	string s = buffer;
 	EXPECT_EQ(s, string("12345678"));
 	fclose(file);
+}
+
+TEST_F(NandTest, ReadZerotoCheckResultFile)
+{
+	//NAND nand;
+	nand.read(0);
+	FILE* file;
+	fopen_s(&file, "result.txt", "r");
+
+	EXPECT_NE(file, nullptr);
+	if (file != nullptr) fclose(file);
 }
