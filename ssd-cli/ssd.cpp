@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <vector>
 #include "nand.cpp"
 
 using namespace std;
@@ -12,11 +13,19 @@ public:
 	}
 	void command(int argc, char* argv[])
 	{
-		if (argc == 4)
-			write(0,"0x12341234");
-		if (argc == 3)
-			read(0);
+		std::vector<std::string> cmdString(argv, argv + argc);
+
+		if (cmdString[1]._Equal("W")) {
+			write(std::stoi(cmdString[2]), cmdString[3]);
+			return;
+		}
+		if (cmdString[1]._Equal("R")) {
+			read(std::stoi(cmdString[2]));
+			return;
+		}
+		cout << "INVALID COMMAND" << endl;
 	}
+
 	void read(int lba) {
 		if (!isValidLba(lba)) {
 			std::cout << "Invalid Parameter" << std::endl;
