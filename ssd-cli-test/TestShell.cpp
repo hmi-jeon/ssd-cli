@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <process.h>
+#include <iostream>
 
 using namespace std;
 
@@ -19,4 +20,10 @@ public:
 
 	void exit() {
 	};
+
+	void help() {
+		cout << "--help--" << endl;
+		cout << "--[write]--" << endl;
+		cout << "--format: write [LBA] [DATA]--" << endl;
+	}
 };
