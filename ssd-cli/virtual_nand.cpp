@@ -11,9 +11,9 @@ public :
 	}
 
 	void read(int lba) {
-		char buffer[LBA_SIZE + 1] = {};
-		_readFile(NAND_FILE_NAME, buffer, lba);
-		_writeFile(RESULT_FILE_NAME, buffer, LBA_SIZE);
+		char buffer[LBA_SIZE + 3] = {'0', 'x'};
+		_readFile(NAND_FILE_NAME, &buffer[2], lba);
+		_writeFile(RESULT_FILE_NAME, buffer, LBA_SIZE + 2);
 	}
 
 	void write(int lba, string value) {

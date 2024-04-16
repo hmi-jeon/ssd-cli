@@ -51,13 +51,13 @@ TEST_F(NandTest, ReadZerotoCheckResultFile)
 
 TEST_F(NandTest, WriteAndReadOneAddr)
 {
-	string testString = "11223344";
-	nand.write(10, testString.c_str());
+	string testString = "0x11223344";
+	nand.write(10, testString.c_str()+2);
 	nand.read(10);
 	FILE* file;
 	fopen_s(&file, "result.txt", "r");
-	char readData[9];
-	fread(readData, 1, 8, file);
-	readData[8] = '\0';
+	char readData[11];
+	fread(readData, 1, 10, file);
+	readData[10] = '\0';
 	EXPECT_EQ(readData, testString);
 }
