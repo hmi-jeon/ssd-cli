@@ -4,8 +4,18 @@
 #include <fstream>
 #include <windows.h>
 
-
 using namespace testing;
+
+class MockNand : public lNAND {
+public:
+	MockNand() {
+
+	}
+
+	MOCK_METHOD(void, read, (int), (override));
+	MOCK_METHOD(void, write, (int, string), (override));
+};
+
 
 class NandTest : public Test {
 public:
@@ -89,4 +99,24 @@ TEST_F(NandTest, WriteAndReadOneAddr)
 	fread(readData, 1, 8, file);
 	readData[8] = '\0';
 	EXPECT_EQ(readData, testString);
+}
+
+TEST(MockTest, TestMockRead) {
+	MockNand mockNand;
+	SSD ssd(&mockNand);
+
+	EXPECT_CALL(mockNand, read(5))
+		.Times(1);
+
+	ssd.read(5);
+}
+
+TEST(MockTest, TestMockWrite) {
+	MockNand mockNand;
+	SSD ssd(&mockNand);
+
+	EXPECT_CALL(mockNand, write(5, "12345667"))
+		.Times(1);
+
+	ssd.write(5, "0x12345667");
 }

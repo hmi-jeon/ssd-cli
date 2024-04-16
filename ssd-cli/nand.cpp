@@ -3,7 +3,13 @@
 
 using namespace std;
 
-class NAND {
+class lNAND {
+public:
+	virtual void read(int lba) = 0;
+	virtual void write(int lba, string value) = 0;
+};
+
+class NAND : public lNAND{
 public :
 	NAND() {
 		FILE* file;
