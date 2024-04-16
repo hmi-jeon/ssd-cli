@@ -4,9 +4,9 @@
 
 class MockShell : public TestShell {
 public:
-	MOCK_METHOD(void, read, (int pos), (override));
-	MOCK_METHOD(void, exit, (), (override));
-	MOCK_METHOD(void, write, (int LBA, string data), (override));
+	MOCK_METHOD(void, read, (int lba), ());
+	MOCK_METHOD(void, exit, (), ());
+	MOCK_METHOD(void, write, (int lba, string data), ());
 };
 
 class TestFixture : public testing::Test {
@@ -24,4 +24,10 @@ TEST_F(TestFixture, ExitRead) {
 	EXPECT_CALL(shell, exit).Times(1);
 
 	shell.exit();
+}
+
+TEST_F(TestFixture, TestWrite) {
+	EXPECT_CALL(shell, write(10, "0xAAAABBBB")).Times(1);
+
+	shell.write(10, "0xAAAABBBB");
 }

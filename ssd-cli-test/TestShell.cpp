@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <process.h>
 
 using namespace std;
 
@@ -8,13 +9,14 @@ public:
 	int cnt{ 0 };
 	string line{};
 
-	virtual void write(int LBA, string data) {
-
+	void write(int lba, string data) {
+		string command = "ssd.exe W" + lba + ' ' + data;
+		system(command.c_str());
 	};
 
-	virtual void read(int pos) {
+	void read(int lba) {
 	};
 
-	virtual void exit() {
+	void exit() {
 	};
 };
