@@ -11,7 +11,7 @@ public:
 	string line{};
 
 	void write(int lba, string data) {
-		string command = "ssd.exe W " + lba + ' ' + data;
+		string command = "ssd.exe W" + ' ' + lba + ' ' + data;
 		system(command.c_str());
 	};
 
