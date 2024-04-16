@@ -22,6 +22,10 @@
       <Filter>소스 파일</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc">
+    <ClCompile Include="ssd.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="nand.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
