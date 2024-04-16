@@ -4,6 +4,7 @@
 #include <fstream>
 #include <windows.h>
 
+
 using namespace testing;
 
 class NandTest : public Test {
@@ -34,4 +35,3 @@ TEST_F(NandTest, ReadZerotoCheckResultFile)
 	EXPECT_NE(file, nullptr);
 	if (file != nullptr) fclose(file);
 }
-
