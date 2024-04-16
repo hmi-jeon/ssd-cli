@@ -58,11 +58,25 @@ TEST(SsdTest, TestValidValue) {
 	EXPECT_TRUE(ssd.isValidValue("0x14329589"));
 }
 
-TEST(SsdTest, TestInValidValue) {
+TEST(SsdTest, TestInValidValueSize) {
 	NAND nand;
 	SSD ssd(&nand);
 
 	EXPECT_FALSE(ssd.isValidValue("a"));
+}
+
+TEST(SsdTest, TestInValidValue0x) {
+	NAND nand;
+	SSD ssd(&nand);
+
+	EXPECT_FALSE(ssd.isValidValue("0b123410af"));
+}
+
+TEST(SsdTest, TestInValidValueHex) {
+	NAND nand;
+	SSD ssd(&nand);
+
+	EXPECT_FALSE(ssd.isValidValue("0x0012341Z"));
 }
 
 TEST_F(NandTest, CheckWriteTest) {
@@ -102,6 +116,16 @@ TEST_F(NandTest, WriteAndReadOneAddr)
 	EXPECT_EQ(readData, testString);
 }
 
+TEST(MockTest, TestMockReadInvalid) {
+	MockNand mockNand;
+	SSD ssd(&mockNand);
+
+	EXPECT_CALL(mockNand, read(101))
+		.Times(0);
+
+	ssd.read(101);
+}
+
 TEST(MockTest, TestMockRead) {
 	MockNand mockNand;
 	SSD ssd(&mockNand);
@@ -110,6 +134,16 @@ TEST(MockTest, TestMockRead) {
 		.Times(1);
 
 	ssd.read(5);
+}
+
+TEST(MockTest, TestMockWriteInvlaid) {
+	MockNand mockNand;
+	SSD ssd(&mockNand);
+
+	EXPECT_CALL(mockNand, write(101, "12345667"))
+		.Times(0);
+
+	ssd.write(101, "0x12345667");
 }
 
 TEST(MockTest, TestMockWrite) {
