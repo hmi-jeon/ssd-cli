@@ -41,7 +41,7 @@ public:
 			return false;
 
 		for (const char& c : value.substr(2)) {
-			if (!isdigit(c)) {
+			if (!isxdigit(c)) {
 				return false;
 			}
 		}
