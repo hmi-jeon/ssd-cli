@@ -18,7 +18,7 @@ public:
 
 
 	void write(int lba, string data) {
-		string command = "ssd.exe W" + lba + ' ' + data;
+		string command = "ssd.exe W" + ' ' + lba + ' ' + data;
 		system(command.c_str());
 	};
 
@@ -50,5 +50,11 @@ public:
 		cout << "--help--" << endl;
 		cout << "--[write]--" << endl;
 		cout << "--format: write [LBA] [DATA]--" << endl;
+	}
+
+	void fullwrite(string data) {
+		for (int i = 0; i < 100; i++) {
+			write(i, data);
+		}
 	}
 };

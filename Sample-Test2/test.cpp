@@ -6,9 +6,10 @@ class MockShell : public TestShell {
 public:
 	MOCK_METHOD(string, read, (int lba), ());
 	MOCK_METHOD(void, write, (int lba, string data), ());
-	MOCK_METHOD(void, fullread, (), ());
 	MOCK_METHOD(void, exit, (), ());
 	MOCK_METHOD(void, help, (), ());
+ 	MOCK_METHOD(void, fullread, (), ());
+	MOCK_METHOD(void, fullwrite, (string data), ());
 
 };
 
@@ -48,3 +49,10 @@ TEST_F(TestFixture, TestHelp) {
 
 	shell.help();
 }
+
+TEST_F(TestFixture, TestFullwrite) {
+	EXPECT_CALL(shell, fullwrite("0xAAAABBBB")).Times(1);
+
+	shell.fullwrite("0xAAAABBBB");
+}
+
