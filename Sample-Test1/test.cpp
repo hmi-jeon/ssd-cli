@@ -25,6 +25,7 @@ public:
 
 	void TearDown() override {
 	}
+
 protected:
 	NAND nand;
 };
