@@ -17,10 +17,11 @@ public :
 		_initNand();
 	}
 
-	void read(const int lba) {
+	string read(const int lba) {
 		char buffer[LBA_SIZE + 3] = {'0', 'x'};
 		_readFile(NAND_FILE_NAME, &buffer[2], lba);
 		_writeFile(RESULT_FILE_NAME, buffer, LBA_SIZE + 2);
+		return string();
 	}
 
 	void write(const int lba, const string value) {
