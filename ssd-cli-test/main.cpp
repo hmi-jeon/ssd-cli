@@ -5,7 +5,8 @@
 
 using namespace std;
 
-int main(int argc, char **argv, char **envp) {
+int main(int argc, char** argv, char** envp) {
+	/*
 	TestShell ssdTestShell;
 	int a = 0;
 	// Sample Main Code
@@ -18,6 +19,6 @@ int main(int argc, char **argv, char **envp) {
 
 		cout << ssdTestShell.line << endl;
 	}
-
+	*/
 	return 0;
 }
