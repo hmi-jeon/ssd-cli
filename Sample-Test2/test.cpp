@@ -60,7 +60,7 @@ TEST_F(TestShellFixture, InvalidLBA_OverRange) {
 	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
 }
 
-TEST_F(TestShellFixture, DISABLED_InvalidNumberOfData1) {
+TEST_F(TestShellFixture, InvalidNumberOfData1) {
 	TestShell testShell(&shell);
 
 	testShell.inputCommand("write 2 0x00");
@@ -68,7 +68,7 @@ TEST_F(TestShellFixture, DISABLED_InvalidNumberOfData1) {
 	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
 }
 
-TEST_F(TestShellFixture, DISABLED_InvalidNumberOfData2) {
+TEST_F(TestShellFixture, InvalidNumberOfData2) {
 	TestShell testShell(&shell);
 
 	testShell.inputCommand("write 2 0x123456789");

@@ -135,6 +135,10 @@ public:
 		if (args.size() == 3) data = args[2];
 
 		if (command == "WRITE") {
+			if (data.size() != 10) {
+				_printInvalidCommand();
+				return;
+			}
 			ssdAPI->write(lba, data);
 		}
 
