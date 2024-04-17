@@ -74,7 +74,6 @@ public:
 		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE", "TESTAPP1", "TESTAPP2"};
 
 		if (find(commandList.begin(), commandList.end(), command) == commandList.end()) {
-			_printInvalidCommand();
 			return false;
 		}
 
@@ -158,10 +157,10 @@ public:
 	void inputCommand(const string userInput) {
 		args = parsingInput(userInput);
 		isValid = checkInputValidation();
-		if (isValid == false){
-      _printInvalidCommand();
-      return;
-    }
+		if (isValid == false) {
+			_printInvalidCommand();
+			return;
+		}
 		executeCommand();
 	}
 
@@ -233,14 +232,15 @@ public:
 		return true;
 	}
 
+	bool getIsValid() {
+		return isValid;
+	}
+
 protected:
 	void _printInvalidCommand() {
 		std::cout << "INVALID COMMAND" << std::endl;
 	}
 
-	bool getIsValid() {
-		return isValid;
-	}
 	ISSD* ssdAPI;
 	bool status = true;
 	bool isValid = false;
