@@ -71,7 +71,7 @@ public:
 	}
 
 	bool checkExistcommand(string command) {
-		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE", "APPTEST1", "APPTEST2"};
+		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE", "APPTEST1", "APPTEST2" };
 
 		if (find(commandList.begin(), commandList.end(), command) == commandList.end()) {
 			cout << "INVALID COMMAND" << endl;
@@ -145,8 +145,16 @@ public:
 		if (command == "FULLWRITE") {
 			fullwrite(data);
 		}
-  }
-  
+
+		if (command == "APPTEST1") {
+			testApp1();
+		}
+
+		if (command == "APPTEST2") {
+			testApp2();
+		}
+	}
+
 	void inputCommand(const string userInput) {
 		args = parsingInput(userInput);
 		isValid = checkInputValidation();
