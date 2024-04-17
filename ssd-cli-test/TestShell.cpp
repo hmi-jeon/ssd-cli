@@ -80,7 +80,7 @@ public:
 		return true;
 	}
 
-	bool checkNumberOfArguments(const vector<string> args) {
+	bool checkValidArguments(const vector<string> args) {
 		if (args.size() < 1)  return false;
 
 		string command = args[0];
@@ -89,12 +89,20 @@ public:
 			if (args.size() != 1) return false;
 		}
 
-		if (command == "READ" || command == "FULLWRITE") {
+		if (command == "READ") {
 			if (args.size() != 2) return false;
+			if (!_isValidLba(args[1])) return false;
+		}
+
+		if (command == "FULLWRITE") {
+			if (args.size() != 2) return false;
+			if (!_isValidValue(args[1])) return false;
+
 		}
 
 		if (command == "WRITE") {
 			if (args.size() != 3) return false;
+			if (!(_isValidLba(args[1]) && _isValidValue(args[2]))) return false;
 		}
 
 		return true;
@@ -102,13 +110,13 @@ public:
 
 	bool checkInputValidation() {
 
-		if (checkNumberOfArguments(args) == false) {
-			return false;
-		};
-
 		if (checkExistcommand(args[0]) == false) {
 			return false;
 		}
+
+		if (checkValidArguments(args) == false) {
+			return false;
+		};
 
 		return true;
 	}
@@ -116,46 +124,16 @@ public:
 	void executeCommand() {
 		string command = args[0];
 		int lba = -1;
-		if (args.size() >= 2) {
-			try {
-				lba = stoi(args[1]);
-			}
-			catch (exception& e) {
-				_printInvalidCommand();
-				return;
-			}
-
-			if (lba < 0 || lba >= 100) {
-				_printInvalidCommand();
-				return;
-			}
-		}
-
 		string data;
-		if (args.size() == 3) data = args[2];
 
 		if (command == "WRITE") {
-			if (data.size() != 10) {
-				_printInvalidCommand();
-				return;
-			}
-
-			if (data.substr(0, 2) != "0x") {
-				_printInvalidCommand();
-				return;
-			}
-
-			for (const char& c : data.substr(2)) {
-				if (!isxdigit(c)) {
-					_printInvalidCommand();
-					return;
-				}
-			}
-
+			lba = stoi(args[1]);
+			data = args[2];
 			ssdAPI->write(lba, data);
 		}
 
 		if (command == "READ") {
+			lba = stoi(args[1]);
 			ssdAPI->read(lba);
 		}
 
@@ -172,6 +150,7 @@ public:
 		}
 
 		if (command == "FULLWRITE") {
+			data = args[1];
 			fullwrite(data);
 		}
 
@@ -267,6 +246,31 @@ public:
 	}
 
 protected:
+	bool _isValidLba(const string lba) {
+		for (char c : lba) {
+			if (!std::isdigit(c)) {
+				return false;
+			}
+		}
+		int lbaDigit = stoi(lba);
+		return (lbaDigit >= 0 && lbaDigit < 100);
+	}
+
+	bool _isValidValue(const string value) {
+		if (value.size() != 10)
+			return false;
+
+		if (value.substr(0, 2) != "0x")
+			return false;
+
+		for (const char& c : value.substr(2)) {
+			if (!isxdigit(c)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	void _printInvalidCommand() {
 		std::cout << "INVALID COMMAND" << std::endl;
 	}
