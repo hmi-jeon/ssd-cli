@@ -42,8 +42,8 @@ TEST_F(VirtualNandTest, CheckWriteTest) {
 
 TEST_F(VirtualNandTest, WriteAndReadOneAddr)
 {
-	string TEST_DATA = "0x11223344";
+	string TEST_DATA = "11223344";
 	int lba = 10;
-	nand.write(lba, TEST_DATA.c_str()+2);
-	EXPECT_EQ(nand.read(lba), TEST_DATA.substr(2));
+	nand.write(lba, TEST_DATA);
+	EXPECT_EQ(nand.read(lba), TEST_DATA);
 }
