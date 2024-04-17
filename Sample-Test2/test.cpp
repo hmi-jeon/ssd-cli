@@ -1,8 +1,10 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 #include "../ssd-cli-test/TestShell.cpp"
+#include <iostream>
 
 using namespace testing;
+using namespace std;
 
 class MockShell : public ISSD {
 public:
@@ -12,11 +14,29 @@ public:
 
 class TestShellFixture : public testing::Test {
 public:
+	void SetUp() override {
+		old = cout.rdbuf(ss.rdbuf());
+	}
+
+	void TearDown() override {
+		cout.rdbuf(old);
+	}
+
+protected:
 	MockShell shell;
+	stringstream ss;
+	streambuf* old;
 };
 
-TEST_F(TestShellFixture, read_count_once) {
+TEST_F(TestShellFixture, InvalidCommand) {
+	TestShell testShell(&shell);
 
+	testShell.inputCommand("dump");
+
+	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
+}
+
+TEST_F(TestShellFixture, read_count_once) {
 	TestShell testShell(&shell);
 
 	EXPECT_CALL(shell, read).Times(1);
