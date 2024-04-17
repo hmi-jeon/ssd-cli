@@ -36,7 +36,7 @@ TEST_F(TestShellFixture, InvalidCommand) {
 	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
 }
 
-TEST_F(TestShellFixture, DISABLED_InvalidArgumentCount) {
+TEST_F(TestShellFixture, InvalidArgumentCount) {
 	TestShell testShell(&shell);
 
 	testShell.inputCommand("write 1");
@@ -44,7 +44,7 @@ TEST_F(TestShellFixture, DISABLED_InvalidArgumentCount) {
 	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
 }
 
-TEST_F(TestShellFixture, DISABLED_InvalidLBA_NotInteger) {
+TEST_F(TestShellFixture, InvalidLBA_NotInteger) {
 	TestShell testShell(&shell);
 
 	testShell.inputCommand("read z");
@@ -52,7 +52,7 @@ TEST_F(TestShellFixture, DISABLED_InvalidLBA_NotInteger) {
 	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
 }
 
-TEST_F(TestShellFixture, DISABLED_InvalidLBA_OverRange) {
+TEST_F(TestShellFixture, InvalidLBA_OverRange) {
 	TestShell testShell(&shell);
 
 	testShell.inputCommand("read 101");
@@ -60,7 +60,7 @@ TEST_F(TestShellFixture, DISABLED_InvalidLBA_OverRange) {
 	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
 }
 
-TEST_F(TestShellFixture, DISABLED_InvalidNumberOfData1) {
+TEST_F(TestShellFixture, InvalidNumberOfData1) {
 	TestShell testShell(&shell);
 
 	testShell.inputCommand("write 2 0x00");
@@ -68,7 +68,7 @@ TEST_F(TestShellFixture, DISABLED_InvalidNumberOfData1) {
 	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
 }
 
-TEST_F(TestShellFixture, DISABLED_InvalidNumberOfData2) {
+TEST_F(TestShellFixture, InvalidNumberOfData2) {
 	TestShell testShell(&shell);
 
 	testShell.inputCommand("write 2 0x123456789");
@@ -76,7 +76,7 @@ TEST_F(TestShellFixture, DISABLED_InvalidNumberOfData2) {
 	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
 }
 
-TEST_F(TestShellFixture, DISABLED_InvalidData_NotInteger) {
+TEST_F(TestShellFixture, InvalidData_NotInteger) {
 	TestShell testShell(&shell);
 
 	testShell.inputCommand("write 2 0x1234567Z");

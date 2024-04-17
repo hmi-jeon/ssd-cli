@@ -116,12 +116,42 @@ public:
 	void executeCommand() {
 		string command = args[0];
 		int lba = -1;
-		if (args.size() >= 2) lba = stoi(args[1]);
+		if (args.size() >= 2) {
+			try {
+				lba = stoi(args[1]);
+			}
+			catch (exception& e) {
+				_printInvalidCommand();
+				return;
+			}
+
+			if (lba < 0 || lba >= 100) {
+				_printInvalidCommand();
+				return;
+			}
+		}
 
 		string data;
 		if (args.size() == 3) data = args[2];
 
 		if (command == "WRITE") {
+			if (data.size() != 10) {
+				_printInvalidCommand();
+				return;
+			}
+
+			if (data.substr(0, 2) != "0x") {
+				_printInvalidCommand();
+				return;
+			}
+
+			for (const char& c : data.substr(2)) {
+				if (!isxdigit(c)) {
+					_printInvalidCommand();
+					return;
+				}
+			}
+
 			ssdAPI->write(lba, data);
 		}
 
