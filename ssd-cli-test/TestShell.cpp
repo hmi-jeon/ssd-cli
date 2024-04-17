@@ -51,46 +51,67 @@ public:
 		this->ssdAPI = ssdAPI;
 	}
 
-	void inputCommand(string userInput) {
-		stringstream ss(userInput);
-		vector<string> args;
-		string word;
+	vector<string> parsingInput(string inputString) {
+		stringstream ss(inputString);
+		vector<string> argList;
+		string arg;
 
-		while (getline(ss, word, ' ')) {
-			args.push_back(word);
+		while (getline(ss, arg, ' ')) {
+			argList.push_back(arg);
 		}
 
-		vector<string> commnadList = { "write", "read", "exit" , "help", "fullread", "fullwrite"};
+		return argList;
+	}
+
+	void checkInputValidation(vector<string> args) {
+
+		vector<string> commnadList = { "write", "read", "exit" , "help", "fullread", "fullwrite" };
 
 		if (find(commnadList.begin(), commnadList.end(), args[0]) == commnadList.end()) {
 			cout << "INVALID COMMAND" << endl;
 			throw invalid_argument("");
 		}
+	}
 
-		if (args[0] == "write") {
-			ssdAPI->write(stoi(args[1]), args[2]);
+	void executeCommand(vector<string> args) {
+
+		string commnad = args[0];
+		
+		int lba;
+		if (args.size() >= 2) lba = stoi(args[1]);
+
+		string data;
+		if (args.size() == 3) data = args[2];
+
+		if (commnad == "write") {
+			ssdAPI->write(lba, data);
 		}
 
-		if (args[0] == "read") {
-			ssdAPI->read(stoi(args[1]));
+		if (commnad == "read") {
+			ssdAPI->read(lba);
 		}
 
-		if (args[0] == "exit") {
+		if (commnad == "exit") {
 			exit();
 		}
 
-		if (args[0] == "help") {
+		if (commnad == "help") {
 			help();
 		}
 
-		if (args[0] == "fullread") {
+		if (commnad == "fullread") {
 			fullread();
 		}
 
-		if (args[0] == "fullwrite") {
-			fullwrite(args[2]);
+		if (commnad == "fullwrite") {
+			fullwrite(data);
 		}
+	}
 
+	void inputCommand(string userInput) {
+		vector<string> args = parsingInput(userInput);
+		checkInputValidation(args);
+		executeCommand(args);
 	}
 
 	string read(int lba) {
