@@ -27,6 +27,27 @@ protected:
 	VirtualNAND vnand;
 };
 
+TEST_F(SsdMockTest, TestMockWriteCommand) {
+	MockNand nand;
+	SSD ssd(&nand);
+	char* cmd[4] = { "appname", "W","20","0x12345678" };
+
+	EXPECT_CALL(nand, write(_, _))
+		.Times(1);
+	ssd.command(4, cmd);
+}
+
+TEST_F(SsdMockTest, TestMockReadCommand) {
+	MockNand nand;
+	SSD ssd(&nand);
+	char* cmd[3] = { "appname", "R","20" };
+
+	EXPECT_CALL(nand, read(_))
+		.Times(1);
+	ssd.command(3, cmd);
+}
+
+
 TEST_F(SsdMockTest, TestMockReadInvalidLBA) {
 	SSD ssd(&mockNand);
 
