@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 #include "inand.h"
 
 using namespace std;
@@ -33,7 +34,8 @@ public:
 			return;
 		}
 			
-		nand_->read(lba);
+		string readData = nand_->read(lba);
+		_writeResult(readData);
 	}
 
 	void write(const int lba, const string value) {
@@ -67,6 +69,14 @@ private:
 
 	void _printInvalidCommand() {
 		std::cout << "INVALID COMMAND" << std::endl;
+	}
+	
+	void _writeResult(string readData) {
+		const string fileName = "result.txt";
+		fstream fs;
+		fs.open(fileName.c_str(), ios_base::out);
+		fs.write(("0x" + readData).c_str(), readData.size() + 2);
+		fs.close();
 	}
 
 	INAND* nand_;
