@@ -65,10 +65,9 @@ TEST_F(SsdMockTest, TestMockRead) {
 
 	ssd.read(5);
 
-	const string fileName = "result.txt";
 	char readData[VirtualNAND::LBA_SIZE + 3] = {};
 	fstream fs;
-	fs.open(fileName.c_str(), ios_base::in);
+	fs.open(ssd.getResultFileName(), ios_base::in);
 	fs.read(readData, VirtualNAND::LBA_SIZE + 3);
 	readData[VirtualNAND::LBA_SIZE + 2] = '\0';
 	fs.close();
@@ -127,10 +126,9 @@ TEST_F(SsdTest, TestWriteAndRead) {
 	ssd.write(0, testString);
 	ssd.read(0);
 
-	const string fileName = "result.txt";
 	char readData[VirtualNAND::LBA_SIZE + 3] = {};
 	fstream fs;
-	fs.open(fileName.c_str(), ios_base::in);
+	fs.open(ssd.getResultFileName(), ios_base::in);
 	fs.read(readData, VirtualNAND::LBA_SIZE + 3);
 	readData[VirtualNAND::LBA_SIZE + 2] = '\0';
 	fs.close();

@@ -47,7 +47,12 @@ public:
 		nand_->write(lba, value.substr(2));
 	}
 
+	string getResultFileName() const {
+		return RESULT_FILE_NAME;
+	}
+
 private:
+	static constexpr char RESULT_FILE_NAME[] = "result.txt";
 	bool _isValidLba(const int lba) {
 		return (lba >= 0 && lba < 100);
 	}
@@ -72,9 +77,8 @@ private:
 	}
 	
 	void _writeResult(string readData) {
-		const string fileName = "result.txt";
 		fstream fs;
-		fs.open(fileName.c_str(), ios_base::out);
+		fs.open(RESULT_FILE_NAME, ios_base::out);
 		fs.write(("0x" + readData).c_str(), readData.size() + 2);
 		fs.close();
 	}
