@@ -24,12 +24,12 @@ public:
 			read(std::stoi(cmdString[2]));
 			return;
 		}
-		cout << "INVALID COMMAND" << endl;
+		_printInvalidCommand();
 	}
 
 	void read(const int lba) {
 		if (!_isValidLba(lba)) {
-			std::cout << "Invalid Parameter" << std::endl;
+			_printInvalidCommand();
 			return;
 		}
 			
@@ -38,7 +38,7 @@ public:
 
 	void write(const int lba, const string value) {
 		if (!_isValidLba(lba) || !_isValidValue(value)) {
-			std::cout << "Invalid Parameter" << std::endl;
+			_printInvalidCommand();
 			return;
 		}
 
@@ -63,6 +63,10 @@ private:
 			}
 		}
 		return true;
+	}
+
+	void _printInvalidCommand() {
+		std::cout << "INVALID COMMAND" << std::endl;
 	}
 
 	INAND* nand_;
