@@ -251,8 +251,8 @@ protected:
 				return false;
 			}
 		}
-		int lbaDisit = stoi(lba);
-		return (lbaDisit >= 0 && lbaDisit < 100);
+		int lbaDigit = stoi(lba);
+		return (lbaDigit >= 0 && lbaDigit < 100);
 	}
 
 	bool _isValidValue(const string value) {
