@@ -9,19 +9,18 @@
 #include <vector>
 #include <stdexcept>
 
-#define interface struct
 #define MAX_SIZE 100
 
 using namespace std;
 
 interface ISSD {
-	virtual string read(int lba) = 0;
-	virtual void write(int lba, string data) = 0;
+	virtual string read(const int lba) = 0;
+	virtual void write(const int lba, const string data) = 0;
 };
 
 class ssdAPI : public ISSD {
 public:
-	string read(int lba) override {
+	string read(const int lba) override {
 		// ssd.exe call
 		string fileName = "ssd-cli.exe";
 		string command = fileName + " " + "R" + " " + to_string(lba);
@@ -37,7 +36,7 @@ public:
 		return data;
 	};
 
-  void write(int lba, string data) override {
+  void write(const int lba, const string data) override {
 		string fileName = "ssd-cli.exe";
 		string command = fileName + " " + "W" + " " + to_string(lba) + " " + data;
 		system(command.c_str());
@@ -46,19 +45,6 @@ public:
 
 class TestShell {
 public:
-	ISSD* ssdAPI;
-	int adr[100] = { 0 , };
-	vector<vector<string>> helps = {
-		{ "READ","Outputs data written to the LBA address value of the device. (ex. READ 3)" },
-		{ "WRITE","Records input data into the designated LBA of the device. (ex. WRITE 1 0x1234ABCD)" },
-		{ "EXIT","Exit SHELL. (ex. EXIT)" },
-		{ "HELP", "Prints SHELL's command list and help. (ex. HELP)" },
-		{ "FULLREAD", "Reads the entire LBA of the device and outputs all data. (ex. FULLREAD)" },
-		{ "FULLWRITE", "The input data is recorded in the entire LBA of the device. (ex. FULLWRITE 0x1234ABCD)" },
-		{ "TESTAPP1","Test the read and write functions of the entire LBA of the device. (ex. TESTAPP1)" },
-		{ "TESTAPP2","Test your device's ability to overwrite data. (ex. TESTAPP2)" }
-	};
-
 	TestShell() {
 		this->ssdAPI = nullptr;
 	}
@@ -67,7 +53,7 @@ public:
 		this->ssdAPI = ssdAPI;
 	}
 
-	vector<string> parsingInput(string inputString) {
+	vector<string> parsingInput(const string inputString) {
 		stringstream ss(inputString);
 		vector<string> argList;
 		string arg;
@@ -79,7 +65,7 @@ public:
 		return argList;
 	}
 
-	bool checkExistcommand(string command) {
+	bool checkExistcommand(const string command) {
 		vector<string> commandList = { "write", "read", "exit" , "help", "fullread", "fullwrite" };
 
 		if (find(commandList.begin(), commandList.end(), command) == commandList.end()) {
@@ -90,7 +76,7 @@ public:
 		return true;
 	}
 
-	bool checkNumberOfArguments(vector<string> args) {
+	bool checkNumberOfArguments(const vector<string> args) {
 		if (args.size() < 1)  return false;
 
 		string command = args[0];
@@ -158,17 +144,17 @@ public:
 		}
 	}
 
-	void inputCommand(string userInput) {
+	void inputCommand(const string userInput) {
 		args = parsingInput(userInput);
 		if(checkInputValidation() == false) return;
 		executeCommand();
 	}
 
-	string read(int lba) {
+	string read(const int lba) {
 		return ssdAPI->read(lba);;
 	}
 
-	void write(int lba, string data) {
+	void write(const int lba, const string data) {
 		ssdAPI->write(lba, data);
 	}
 
@@ -190,7 +176,7 @@ public:
 		return res;
 	};
 
-	void fullwrite(string data) {
+	void fullwrite(const string data) {
 		for (int lba = 0; lba < 100; lba++) {
 			write(lba, data);
 		}
@@ -200,13 +186,13 @@ public:
 		return status;
 	}
 
-  bool testApp1() {
+	bool testApp1() {
 		vector<string> res;
 		string testData = "0x12345678";
 		fullwrite(testData);
 		res = fullread();
 
-		for (string data : res) {
+		for (const string& data : res) {
 			if (data != testData)
 				return false;
 		}
@@ -233,8 +219,18 @@ public:
 	}
 
 private:
+	ISSD* ssdAPI;
 	bool status = true;
 	vector<string> args;
-
+	vector<vector<string>> helps = {
+		{ "READ","Outputs data written to the LBA address value of the device. (ex. READ 3)" },
+		{ "WRITE","Records input data into the designated LBA of the device. (ex. WRITE 1 0x1234ABCD)" },
+		{ "EXIT","Exit SHELL. (ex. EXIT)" },
+		{ "HELP", "Prints SHELL's command list and help. (ex. HELP)" },
+		{ "FULLREAD", "Reads the entire LBA of the device and outputs all data. (ex. FULLREAD)" },
+		{ "FULLWRITE", "The input data is recorded in the entire LBA of the device. (ex. FULLWRITE 0x1234ABCD)" },
+		{ "TESTAPP1","Test the read and write functions of the entire LBA of the device. (ex. TESTAPP1)" },
+		{ "TESTAPP2","Test your device's ability to overwrite data. (ex. TESTAPP2)" }
+	};
 };
 
