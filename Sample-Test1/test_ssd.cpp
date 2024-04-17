@@ -78,6 +78,21 @@ TEST_F(SsdMockNandTest, TestMockReadCommand) {
 	ssd.command(3, cmd);
 }
 
+TEST_F(SsdMockNandTest, TestMockWriteInvalidCommand) {
+	char* cmd[3] = { "appname", "W","20"};
+
+	EXPECT_CALL(nand, write(_, _))
+		.Times(0);
+	ssd.command(3, cmd);
+}
+
+TEST_F(SsdMockNandTest, TestMockReadInvalidCommand) {
+	char* cmd[3] = { "appname", "R", "fdas"};
+
+	EXPECT_CALL(nand, read(_))
+		.Times(0);
+	ssd.command(3, cmd);
+}
 
 TEST_F(SsdMockNandTest, TestMockReadInvalidLBA) {
 	EXPECT_CALL(nand, read(101))
