@@ -15,20 +15,51 @@ public:
 	MOCK_METHOD(void, write, (const int, const string), (override));
 };
 
-class SsdMockTest : public Test {
+class SsdTest : public Test {
 public:
+	SsdTest(INAND* nand)
+		:ssd(nand)
+	{
+	}
+
+	void SetUp() override {
+
+	}
+
+	void TearDown() override {
+		if (fs_.is_open()) {
+			fs_.close();
+		}
+	}
+
+protected:
+	SSD ssd;
+	fstream fs_;
+};
+
+class SsdMockNandTest : public SsdTest {
+public:
+	explicit SsdMockNandTest()
+		: SsdTest(&mockNand)
+	{
+	}
+
 protected:
 	MockNand mockNand;
 };
 
-class SsdTest : public Test {
+class SsdVirtualNandTest : public SsdTest {
 public:
+	explicit SsdVirtualNandTest()
+		: SsdTest(&vnand)
+	{
+	}
+
 protected:
 	VirtualNAND vnand;
 };
 
-TEST_F(SsdMockTest, TestMockWriteCommand) {
-	SSD ssd(&mockNand);
+TEST_F(SsdMockNandTest, TestMockWriteCommand) {
 	char* cmd[4] = { "appname", "W","20","0x12345678" };
 
 	EXPECT_CALL(mockNand, write(_, _))
@@ -36,8 +67,7 @@ TEST_F(SsdMockTest, TestMockWriteCommand) {
 	ssd.command(4, cmd);
 }
 
-TEST_F(SsdMockTest, TestMockReadCommand) {
-	SSD ssd(&mockNand);
+TEST_F(SsdMockNandTest, TestMockReadCommand) {
 	char* cmd[3] = { "appname", "R","20" };
 
 	EXPECT_CALL(mockNand, read(_))
@@ -46,17 +76,14 @@ TEST_F(SsdMockTest, TestMockReadCommand) {
 }
 
 
-TEST_F(SsdMockTest, TestMockReadInvalidLBA) {
-	SSD ssd(&mockNand);
-
+TEST_F(SsdMockNandTest, TestMockReadInvalidLBA) {
 	EXPECT_CALL(mockNand, read(101))
 		.Times(0);
 
 	ssd.read(101);
 }
 
-TEST_F(SsdMockTest, TestMockRead) {
-	SSD ssd(&mockNand);
+TEST_F(SsdMockNandTest, TestMockRead) {
 	string testString = "0x11223344";
 
 	EXPECT_CALL(mockNand, read(5))
@@ -66,72 +93,57 @@ TEST_F(SsdMockTest, TestMockRead) {
 	ssd.read(5);
 
 	char readData[VirtualNAND::LBA_SIZE + 3] = {};
-	fstream fs;
-	fs.open(ssd.getResultFileName(), ios_base::in);
-	fs.read(readData, VirtualNAND::LBA_SIZE + 3);
+	fs_.open(ssd.getResultFileName(), ios_base::in);
+	fs_.read(readData, VirtualNAND::LBA_SIZE + 3);
 	readData[VirtualNAND::LBA_SIZE + 2] = '\0';
-	fs.close();
 
 	EXPECT_EQ(string(readData), testString);
 }
 
-TEST_F(SsdMockTest, TestMockWriteInvalidLBA) {
-	SSD ssd(&mockNand);
-
+TEST_F(SsdMockNandTest, TestMockWriteInvalidLBA) {
 	EXPECT_CALL(mockNand, write(101, "12345667"))
 		.Times(0);
 
 	ssd.write(101, "0x12345667");
 }
 
-TEST_F(SsdMockTest, TestMockWriteInvalidValueSize) {
-	SSD ssd(&mockNand);
-
+TEST_F(SsdMockNandTest, TestMockWriteInvalidValueSize) {
 	EXPECT_CALL(mockNand, write(5, "12"))
 		.Times(0);
 
 	ssd.write(5, "0x12");
 }
 
-TEST_F(SsdMockTest, TestMockWriteInvalidValueHex) {
-	SSD ssd(&mockNand);
-
+TEST_F(SsdMockNandTest, TestMockWriteInvalidValueHex) {
 	EXPECT_CALL(mockNand, write(5, "1234566Z"))
 		.Times(0);
 
 	ssd.write(5, "0x1234566Z");
 }
 
-TEST_F(SsdMockTest, TestMockWriteInvalidValuePrefix) {
-	SSD ssd(&mockNand);
-
+TEST_F(SsdMockNandTest, TestMockWriteInvalidValuePrefix) {
 	EXPECT_CALL(mockNand, write(5, "12345667"))
 		.Times(0);
 
 	ssd.write(5, "0b12345667");
 }
 
-TEST_F(SsdMockTest, TestMockWrite) {
-	SSD ssd(&mockNand);
-
+TEST_F(SsdMockNandTest, TestMockWrite) {
 	EXPECT_CALL(mockNand, write(5, "12345667"))
 		.Times(1);
 
 	ssd.write(5, "0x12345667");
 }
 
-TEST_F(SsdTest, TestWriteAndRead) {
-	SSD ssd(&vnand);
+TEST_F(SsdVirtualNandTest, TestWriteAndRead) {
 	string testString = "0x11223354";
 	ssd.write(0, testString);
 	ssd.read(0);
 
 	char readData[VirtualNAND::LBA_SIZE + 3] = {};
-	fstream fs;
-	fs.open(ssd.getResultFileName(), ios_base::in);
-	fs.read(readData, VirtualNAND::LBA_SIZE + 3);
+	fs_.open(ssd.getResultFileName(), ios_base::in);
+	fs_.read(readData, VirtualNAND::LBA_SIZE + 3);
 	readData[VirtualNAND::LBA_SIZE + 2] = '\0';
-	fs.close();
 
 	EXPECT_EQ(string(readData), testString);
 }
