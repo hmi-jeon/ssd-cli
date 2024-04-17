@@ -3,8 +3,8 @@
 
 
 int main(int argc, char* argv[]) {
-	VirtualNAND vnand;
-	SSD ssd(&vnand);
+	VirtualNAND nand;
+	SSD ssd(&nand);
 	ssd.command(argc, argv);
 
 	return 0;
