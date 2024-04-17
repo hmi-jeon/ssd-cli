@@ -58,8 +58,8 @@ TEST_F(TestFixture, TestInputCommnad) {
 
 	testShell.inputCommand("read 10");
 	testShell.inputCommand("write 10 0xAAAABBBB");
-	testShell.inputCommand("fullread 10");
-	testShell.inputCommand("fullwrite 10 0xAAAABBBB");
+	testShell.inputCommand("fullread");
+	testShell.inputCommand("fullwrite 0xAAAABBBB");
 }
 
 TEST_F(TestFixture, TestInputCommnadInvalid) {

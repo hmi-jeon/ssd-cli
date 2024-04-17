@@ -63,14 +63,34 @@ public:
 		return argList;
 	}
 
-	void checkInputValidation(vector<string> args) {
-
+	void checkExistCommnad(string command) {
 		vector<string> commnadList = { "write", "read", "exit" , "help", "fullread", "fullwrite" };
 
-		if (find(commnadList.begin(), commnadList.end(), args[0]) == commnadList.end()) {
+		if (find(commnadList.begin(), commnadList.end(), command) == commnadList.end()) {
 			cout << "INVALID COMMAND" << endl;
 			throw invalid_argument("");
 		}
+	}
+
+	void checkNumberOfArguments(vector<string> args) {
+		string command = args[0];
+
+		if (command == "exit" || command == "help" || command == "fullread") {
+			if (args.size() != 1) throw invalid_argument("");
+		}
+
+		if (command == "read" || command == "fullwrite") {
+			if (args.size() != 2) throw invalid_argument("");
+		}
+
+		if (command == "write") {
+			if (args.size() != 3) throw invalid_argument("");
+		}
+	}
+
+	void checkInputValidation(vector<string> args) {
+		checkExistCommnad(args[0]);
+		checkNumberOfArguments(args);
 	}
 
 	void executeCommand(vector<string> args) {
