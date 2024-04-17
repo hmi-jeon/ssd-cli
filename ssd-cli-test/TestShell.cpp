@@ -164,10 +164,9 @@ public:
 	}
 
 	void inputCommand(string userInput) {
-
-
 		args = parsingInput(userInput);
-		if (checkInputValidation() == false) return;
+		isValid = checkInputValidation();
+		if (isValid == false) return;
 		executeCommand();
 	}
 
@@ -239,9 +238,13 @@ public:
 		return true;
 	}
 
+	bool getIsValid() {
+		return isValid;
+	}
+
 private:
 	bool status = true;
+	bool isValid = false;
 	vector<string> args;
-
 };
 

@@ -90,3 +90,39 @@ TEST_F(TestShellFixture, testApp2_read_write_count) {
 	EXPECT_CALL(shell, read).Times(1);
 	testShell.testApp2();
 }
+
+TEST_F(TestShellFixture, Test_OneArgumentCommand) {
+
+	TestShell testShell(&shell);
+
+	testShell.inputCommand("exit 1");
+
+	EXPECT_EQ(false, testShell.getIsValid());
+}
+
+TEST_F(TestShellFixture, Test_TwoArgumentCommand) {
+
+	TestShell testShell(&shell);
+
+	testShell.inputCommand("read");
+
+	EXPECT_EQ(false, testShell.getIsValid());
+}
+
+TEST_F(TestShellFixture, Test_ThreeArgumentCommand) {
+
+	TestShell testShell(&shell);
+
+	testShell.inputCommand("write 10");
+
+	EXPECT_EQ(false, testShell.getIsValid());
+}
+
+TEST_F(TestShellFixture, TestInvalidCommnad) {
+
+	TestShell testShell(&shell);
+
+	testShell.inputCommand("woite 10");
+
+	EXPECT_EQ(false, testShell.getIsValid());
+}
