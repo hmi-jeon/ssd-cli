@@ -6,13 +6,6 @@ using namespace std;
 
 class VirtualNAND : public INAND{
 public :
-	static constexpr int LBA_SIZE = 8;
-	static constexpr int MAX_LBA = 100;
-	static constexpr int NAND_SIZE = LBA_SIZE * MAX_LBA;
-	const char NAND_FILE_NAME[12] = "nand.txt";
-	const char RESULT_FILE_NAME[12] = "result.txt";
-	const char FORMAT_DATA[LBA_SIZE + 1] = "00000000";
-
 	VirtualNAND() {
 		_initNand();
 	}
@@ -30,7 +23,29 @@ public :
 		_writeFile(NAND_FILE_NAME, buffer, NAND_SIZE);
 	}
 
+	int getLBASize() const {
+		return LBA_SIZE;
+	}
+
+	int getMaxLBA() const {
+		return MAX_LBA;
+	}
+
+	int getNandSize() const {
+		return NAND_SIZE;
+	}
+
+	string getNandFileName() const {
+		return NAND_FILE_NAME;
+	}
+
 private:
+	static constexpr int LBA_SIZE = 8;
+	static constexpr int MAX_LBA = 100;
+	static constexpr int NAND_SIZE = LBA_SIZE * MAX_LBA;
+	static constexpr char NAND_FILE_NAME[12] = "nand.txt";
+	static constexpr char FORMAT_DATA[LBA_SIZE + 1] = "00000000";
+
 	void _initNand() {
 		fs_.open(NAND_FILE_NAME, ios_base::in);
 		if (fs_.is_open() == false) {
