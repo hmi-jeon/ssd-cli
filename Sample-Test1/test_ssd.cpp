@@ -16,35 +16,10 @@ public:
 class SsdTest : public Test {
 public:
 protected:
-	VirtualNAND vnand;
+	MockNand mockNand;
 };
 
-TEST_F(SsdTest, TestValidLba) {
-	EXPECT_TRUE(SSD(&vnand).isValidLba(5));
-}
-
-TEST_F(SsdTest, TestInValidLba) {
-	EXPECT_FALSE(SSD(&vnand).isValidLba(101));
-}
-
-TEST_F(SsdTest, TestValidValue) {
-	EXPECT_TRUE(SSD(&vnand).isValidValue("0x14329589"));
-}
-
-TEST_F(SsdTest, TestInValidValueSize) {
-	EXPECT_FALSE(SSD(&vnand).isValidValue("a"));
-}
-
-TEST_F(SsdTest, TestInValidValue0x) {
-	EXPECT_FALSE(SSD(&vnand).isValidValue("0b123410af"));
-}
-
-TEST_F(SsdTest, TestInValidValueHex) {
-	EXPECT_FALSE(SSD(&vnand).isValidValue("0x0012341Z"));
-}
-
-TEST(MockTest, TestMockReadInvalid) {
-	MockNand mockNand;
+TEST_F(SsdTest, TestMockReadInvalidLBA) {
 	SSD ssd(&mockNand);
 
 	EXPECT_CALL(mockNand, read(101))
@@ -53,8 +28,7 @@ TEST(MockTest, TestMockReadInvalid) {
 	ssd.read(101);
 }
 
-TEST(MockTest, TestMockRead) {
-	MockNand mockNand;
+TEST_F(SsdTest, TestMockRead) {
 	SSD ssd(&mockNand);
 
 	EXPECT_CALL(mockNand, read(5))
@@ -63,8 +37,7 @@ TEST(MockTest, TestMockRead) {
 	ssd.read(5);
 }
 
-TEST(MockTest, TestMockWriteInvlaid) {
-	MockNand mockNand;
+TEST_F(SsdTest, TestMockWriteInvalidLBA) {
 	SSD ssd(&mockNand);
 
 	EXPECT_CALL(mockNand, write(101, "12345667"))
@@ -73,8 +46,34 @@ TEST(MockTest, TestMockWriteInvlaid) {
 	ssd.write(101, "0x12345667");
 }
 
-TEST(MockTest, TestMockWrite) {
-	MockNand mockNand;
+TEST_F(SsdTest, TestMockWriteInvalidValueSize) {
+	SSD ssd(&mockNand);
+
+	EXPECT_CALL(mockNand, write(5, "12"))
+		.Times(0);
+
+	ssd.write(5, "0x12");
+}
+
+TEST_F(SsdTest, TestMockWriteInvalidValueHex) {
+	SSD ssd(&mockNand);
+
+	EXPECT_CALL(mockNand, write(5, "1234566Z"))
+		.Times(0);
+
+	ssd.write(5, "0x1234566Z");
+}
+
+TEST_F(SsdTest, TestMockWriteInvalidValuePrefix) {
+	SSD ssd(&mockNand);
+
+	EXPECT_CALL(mockNand, write(5, "12345667"))
+		.Times(0);
+
+	ssd.write(5, "0b12345667");
+}
+
+TEST_F(SsdTest, TestMockWrite) {
 	SSD ssd(&mockNand);
 
 	EXPECT_CALL(mockNand, write(5, "12345667"))
