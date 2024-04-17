@@ -11,6 +11,7 @@ public:
 		: nand_(nand) {
 
 	}
+
 	void command(int argc, char* argv[])
 	{
 		std::vector<std::string> cmdString(argv, argv + argc);
@@ -26,7 +27,7 @@ public:
 		cout << "INVALID COMMAND" << endl;
 	}
 
-	void read(int lba) {
+	void read(const int lba) {
 		if (!_isValidLba(lba)) {
 			std::cout << "Invalid Parameter" << std::endl;
 			return;
@@ -35,7 +36,7 @@ public:
 		nand_->read(lba);
 	}
 
-	void write(int lba, string value) {
+	void write(const int lba, const string value) {
 		if (!_isValidLba(lba) || !_isValidValue(value)) {
 			std::cout << "Invalid Parameter" << std::endl;
 			return;
@@ -45,7 +46,7 @@ public:
 	}
 
 private:
-	bool _isValidLba(int lba) {
+	bool _isValidLba(const int lba) {
 		return (lba >= 0 && lba < 100);
 	}
 

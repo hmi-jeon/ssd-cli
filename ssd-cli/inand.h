@@ -5,8 +5,8 @@ using namespace std;
 
 class lNAND {
 public:
-	virtual void read(int lba) = 0;
-	virtual void write(int lba, string value) = 0;
+	virtual void read(const int lba) = 0;
+	virtual void write(const int lba, const string value) = 0;
 
 protected:
 	static constexpr int LBA_SIZE = 8;
