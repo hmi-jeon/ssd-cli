@@ -116,7 +116,15 @@ public:
 	void executeCommand() {
 		string command = args[0];
 		int lba = -1;
-		if (args.size() >= 2) lba = stoi(args[1]);
+		if (args.size() >= 2) {
+			try {
+				lba = stoi(args[1]);
+			}
+			catch (exception& e) {
+				_printInvalidCommand();
+				return;
+			}
+		}
 
 		string data;
 		if (args.size() == 3) data = args[2];

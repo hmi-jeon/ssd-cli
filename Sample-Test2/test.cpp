@@ -44,7 +44,7 @@ TEST_F(TestShellFixture, InvalidArgumentCount) {
 	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
 }
 
-TEST_F(TestShellFixture, DISABLED_InvalidLBA_NotInteger) {
+TEST_F(TestShellFixture, InvalidLBA_NotInteger) {
 	TestShell testShell(&shell);
 
 	testShell.inputCommand("read z");
