@@ -13,13 +13,19 @@ public:
 	MOCK_METHOD(void, write, (int, string), (override));
 };
 
-class SsdTest : public Test {
+class SsdMockTest : public Test {
 public:
 protected:
 	MockNand mockNand;
 };
 
-TEST_F(SsdTest, TestMockReadInvalidLBA) {
+class SsdTest : public Test {
+public:
+protected:
+	VirtualNAND vnand;
+};
+
+TEST_F(SsdMockTest, TestMockReadInvalidLBA) {
 	SSD ssd(&mockNand);
 
 	EXPECT_CALL(mockNand, read(101))
@@ -28,7 +34,7 @@ TEST_F(SsdTest, TestMockReadInvalidLBA) {
 	ssd.read(101);
 }
 
-TEST_F(SsdTest, TestMockRead) {
+TEST_F(SsdMockTest, TestMockRead) {
 	SSD ssd(&mockNand);
 
 	EXPECT_CALL(mockNand, read(5))
@@ -37,7 +43,7 @@ TEST_F(SsdTest, TestMockRead) {
 	ssd.read(5);
 }
 
-TEST_F(SsdTest, TestMockWriteInvalidLBA) {
+TEST_F(SsdMockTest, TestMockWriteInvalidLBA) {
 	SSD ssd(&mockNand);
 
 	EXPECT_CALL(mockNand, write(101, "12345667"))
@@ -46,7 +52,7 @@ TEST_F(SsdTest, TestMockWriteInvalidLBA) {
 	ssd.write(101, "0x12345667");
 }
 
-TEST_F(SsdTest, TestMockWriteInvalidValueSize) {
+TEST_F(SsdMockTest, TestMockWriteInvalidValueSize) {
 	SSD ssd(&mockNand);
 
 	EXPECT_CALL(mockNand, write(5, "12"))
@@ -55,7 +61,7 @@ TEST_F(SsdTest, TestMockWriteInvalidValueSize) {
 	ssd.write(5, "0x12");
 }
 
-TEST_F(SsdTest, TestMockWriteInvalidValueHex) {
+TEST_F(SsdMockTest, TestMockWriteInvalidValueHex) {
 	SSD ssd(&mockNand);
 
 	EXPECT_CALL(mockNand, write(5, "1234566Z"))
@@ -64,7 +70,7 @@ TEST_F(SsdTest, TestMockWriteInvalidValueHex) {
 	ssd.write(5, "0x1234566Z");
 }
 
-TEST_F(SsdTest, TestMockWriteInvalidValuePrefix) {
+TEST_F(SsdMockTest, TestMockWriteInvalidValuePrefix) {
 	SSD ssd(&mockNand);
 
 	EXPECT_CALL(mockNand, write(5, "12345667"))
@@ -73,11 +79,24 @@ TEST_F(SsdTest, TestMockWriteInvalidValuePrefix) {
 	ssd.write(5, "0b12345667");
 }
 
-TEST_F(SsdTest, TestMockWrite) {
+TEST_F(SsdMockTest, TestMockWrite) {
 	SSD ssd(&mockNand);
 
 	EXPECT_CALL(mockNand, write(5, "12345667"))
 		.Times(1);
 
 	ssd.write(5, "0x12345667");
+}
+TEST_F(SsdTest, TestWriteAndRead) {
+	SSD ssd(&vnand);
+	string testString = "0x11223344";
+	ssd.write(0, testString);
+	ssd.read(0);
+
+	FILE* file;
+	fopen_s(&file, "result.txt", "r");
+	char readData[11];
+	fread(readData, 1, 10, file);
+	readData[10] = '\0';
+	EXPECT_EQ(readData, testString);
 }
