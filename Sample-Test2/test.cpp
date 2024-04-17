@@ -75,7 +75,7 @@ TEST_F(TestFixture, TestInputCommnadExit) {
 
 	testShell.exit();
 
-	EXPECT_EQ(true, testShell.getExit());
+	EXPECT_EQ(true, testShell.getStatus());
 }
 
 TEST_F(TestFixture, DistabledTestInputCommnadInvalid) {

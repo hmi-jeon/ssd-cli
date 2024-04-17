@@ -45,8 +45,6 @@ public:
 class TestShell {
 public:
 	ISSD* ssdAPI;
-	
-	string line{};
 	int adr[100] = { 0 , };
 
 	TestShell(ISSD* ssdAPI) {

@@ -8,14 +8,14 @@ using namespace std;
 int main(int argc, char **argv, char **envp) {
 	ssdAPI ssdApi;
 	TestShell ssdTestShell(&ssdApi);
-	int a = 0;
+	
+	string userInput;
 
 	// Sample Main Code
 	while (ssdTestShell.getStatus()) {
-		ssdTestShell.read(a++);
-		cout << "> ";
-		cin >> ssdTestShell.line;
-		cout << ssdTestShell.line << endl;
+		cin >> userInput;
+		ssdTestShell.inputCommand(userInput);
+		cout << userInput << endl;
 	}
 
 	return 0;
