@@ -7,7 +7,7 @@ using namespace std;
 
 class SSD {
 public:
-	SSD(lNAND* nand)
+	SSD(INAND* nand)
 		: nand_(nand) {
 
 	}
@@ -65,5 +65,5 @@ private:
 		return true;
 	}
 
-	lNAND* nand_;
+	INAND* nand_;
 };

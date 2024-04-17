@@ -4,7 +4,7 @@
 
 using namespace std;
 
-class VirtualNAND : public lNAND{
+class VirtualNAND : public INAND{
 public :
 	VirtualNAND() {
 		_initNand();

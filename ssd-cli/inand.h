@@ -3,7 +3,7 @@
 
 using namespace std;
 
-class lNAND {
+class INAND {
 public:
 	virtual void read(const int lba) = 0;
 	virtual void write(const int lba, const string value) = 0;

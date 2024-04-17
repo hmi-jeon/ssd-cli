@@ -7,7 +7,7 @@
 
 using namespace testing;
 
-class MockNand : public lNAND {
+class MockNand : public INAND {
 public:
 	MOCK_METHOD(void, read, (const int), (override));
 	MOCK_METHOD(void, write, (const int, const string), (override));
