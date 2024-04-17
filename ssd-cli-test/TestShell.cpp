@@ -7,6 +7,7 @@
 #include <process.h>
 #include <sstream>
 #include <vector>
+#include <stdexcept>
 
 #define interface struct
 #define MAX_SIZE 100
@@ -51,34 +52,42 @@ public:
 
 	void inputCommand(string userInput) {
 		stringstream ss(userInput);
-		vector<string> words;
+		vector<string> args;
 		string word;
 
 		while (getline(ss, word, ' ')) {
-			words.push_back(word);
+			args.push_back(word);
 		}
 
-		if (words[0] == "write") {
-			ssdAPI->write(10, "0xAAAABBBB");
+		vector<string> commnadList = { "write", "read", "exit" , "help", "fullread", "fullwrite"};
+
+		if (find(commnadList.begin(), commnadList.end(), args[0]) == commnadList.end()) {
+			cout << "INVALID COMMAND" << endl;
+			throw invalid_argument("");
 		}
 
-		if (words[0] == "read") {
-			ssdAPI->read(10);
+		if (args[0] == "write") {
+			ssdAPI->write(stoi(args[1]), args[2]);
 		}
 
-		if (words[0] == "exit") {
+		if (args[0] == "read") {
+			ssdAPI->read(stoi(args[1]));
 		}
 
-		if (words[0] == "help") {
+		if (args[0] == "exit") {
 		}
 
-		if (words[0] == "fullread") {
+		if (args[0] == "help") {
+		}
+
+		if (args[0] == "fullread") {
 			fullread();
 		}
 
-		if (words[0] == "fullwrite") {
-			fullwrite("0xAAAABBBB");
+		if (args[0] == "fullwrite") {
+			fullwrite(args[2]);
 		}
+
 	}
 
 	TestShell(ISSD* ssdAPI) {

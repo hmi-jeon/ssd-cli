@@ -62,3 +62,9 @@ TEST_F(TestFixture, TestInputCommnad) {
 	testShell.inputCommand("fullwrite 10 0xAAAABBBB");
 }
 
+TEST_F(TestFixture, TestInputCommnadInvalid) {
+
+	TestShell testShell(&shell);
+
+	EXPECT_THROW(testShell.inputCommand("roead 10"); , invalid_argument);
+}
