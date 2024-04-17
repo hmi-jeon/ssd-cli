@@ -71,7 +71,7 @@ public:
 	}
 
 	bool checkExistcommand(string command) {
-		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE", "APPTEST1", "APPTEST2" };
+		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE", "TESTAPP1", "TESTAPP2" };
 
 		if (find(commandList.begin(), commandList.end(), command) == commandList.end()) {
 			_printInvalidCommand();
@@ -86,7 +86,7 @@ public:
 
 		string command = args[0];
 
-		if (command == "EXIT" || command == "HELP" || command == "FULLREAD" || command == "APPTEST1" || command == "APPTEST2") {
+		if (command == "EXIT" || command == "HELP" || command == "FULLREAD" || command == "TESTAPP1" || command == "TESTAPP2") {
 			if (args.size() != 1) return false;
 		}
 
@@ -146,11 +146,11 @@ public:
 			fullwrite(data);
 		}
 
-		if (command == "APPTEST1") {
+		if (command == "TESTAPP1") {
 			testApp1();
 		}
 
-		if (command == "APPTEST2") {
+		if (command == "TESTAPP2") {
 			testApp2();
 		}
 	}
