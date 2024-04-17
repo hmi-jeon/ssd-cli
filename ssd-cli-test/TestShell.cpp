@@ -71,7 +71,7 @@ public:
 	}
 
 	bool checkExistcommand(string command) {
-		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE", "APPTEST1", "APPTEST2"};
+		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE", "APPTEST1", "APPTEST2" };
 
 		if (find(commandList.begin(), commandList.end(), command) == commandList.end()) {
 			cout << "INVALID COMMAND" << endl;
@@ -157,7 +157,8 @@ public:
 
 	void inputCommand(const string userInput) {
 		args = parsingInput(userInput);
-		if (checkInputValidation() == false) return;
+		isValid = checkInputValidation();
+		if (isValid == false) return;
 		executeCommand();
 	}
 
@@ -229,9 +230,14 @@ public:
 		return true;
 	}
 
+	bool getIsValid() {
+		return isValid;
+	}
+
 private:
 	ISSD* ssdAPI;
 	bool status = true;
+	bool isValid = false;
 	vector<string> args;
 	vector<vector<string>> helps = {
 		{ "READ","Outputs data written to the LBA address value of the device. (ex. READ 3)" },
