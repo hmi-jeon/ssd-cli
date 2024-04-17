@@ -12,7 +12,6 @@
 #define interface struct
 #define MAX_SIZE 100
 
-
 using namespace std;
 
 interface ISSD {
@@ -106,7 +105,7 @@ public:
 	}
 
 	void exit() {
-		isExit = true;
+		status = true;
 	};
 
 	void help() {
@@ -127,11 +126,11 @@ public:
 		}
 	}
 
-	bool getExit() {
-		return isExit;
+	bool getStatus() {
+		return status;
 	}
 
 private:
-	bool isExit = false;
+	bool status = false;
 };
 

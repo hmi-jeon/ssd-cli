@@ -9,8 +9,9 @@ int main(int argc, char **argv, char **envp) {
 	ssdAPI ssdApi;
 	TestShell ssdTestShell(&ssdApi);
 	int a = 0;
+
 	// Sample Main Code
-	while (ssdTestShell.getExit()) {
+	while (ssdTestShell.getStatus()) {
 		ssdTestShell.read(a++);
 		cout << "> ";
 		cin >> ssdTestShell.line;
