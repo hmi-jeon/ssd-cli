@@ -9,13 +9,14 @@ int main(int argc, char **argv, char **envp) {
 	ssdAPI ssdApi;
 	TestShell ssdTestShell(&ssdApi);
 	
-	string userInput;
+	//string userInput;
+	char userInput[100];
 
 	// Sample Main Code
 	while (ssdTestShell.getStatus()) {
-		cin >> userInput;
+		cout << "> ";
+		cin.getline(userInput, 100);
 		ssdTestShell.inputCommand(userInput);
-		cout << userInput << endl;
 	}
 	
 	return 0;
