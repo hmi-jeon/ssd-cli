@@ -4,8 +4,8 @@
 
 class MockShell : public ISSD {
 public:
-	MOCK_METHOD(string, read, (int lba), ());
-	MOCK_METHOD(void, write, (int lba, string data), ());
+	MOCK_METHOD(string, read, (int lba), (override));
+	MOCK_METHOD(void, write, (int lba, string data), (override));
 };
 
 class TestFixture : public testing::Test {
