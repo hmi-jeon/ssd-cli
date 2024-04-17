@@ -36,7 +36,7 @@ TEST_F(TestShellFixture, InvalidCommand) {
 	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
 }
 
-TEST_F(TestShellFixture, DISABLED_InvalidArgumentCount) {
+TEST_F(TestShellFixture, InvalidArgumentCount) {
 	TestShell testShell(&shell);
 
 	testShell.inputCommand("write 1");
