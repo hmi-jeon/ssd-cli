@@ -40,22 +40,10 @@ TEST_F(VirtualNandTest, CheckWriteTest) {
 	EXPECT_EQ(string(buffer), TEST_DATA);
 }
 
-TEST_F(VirtualNandTest, ReadZerotoCheckResultFile)
-{
-	nand.read(0);
-	fs.open(nand.NAND_FILE_NAME, ios_base::in);
-	EXPECT_EQ(fs.is_open(), true);
-}
-
 TEST_F(VirtualNandTest, WriteAndReadOneAddr)
 {
-	string TEST_DATA = "0x11223344";
+	string TEST_DATA = "11223344";
 	int lba = 10;
-	nand.write(lba, TEST_DATA.c_str()+2);
-	nand.read(lba);
-	fs.open(nand.RESULT_FILE_NAME, ios_base::in);
-	char readData[VirtualNAND::LBA_SIZE + 3] = {};
-	fs.read(readData, VirtualNAND::LBA_SIZE + 3);
-	readData[VirtualNAND::LBA_SIZE + 2] = '\0';
-	EXPECT_EQ(string(readData), TEST_DATA);
+	nand.write(lba, TEST_DATA);
+	EXPECT_EQ(nand.read(lba), TEST_DATA);
 }
