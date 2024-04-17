@@ -19,9 +19,9 @@ interface ISSD {
 	virtual void write(int lba, string data) = 0;
 };
 
-class ssdAPI {
+class ssdAPI : public ISSD{
 public:
-	string read(int lba) {
+	string read(int lba) override{
 		// ssd.exe call
 	    //system(ssd.exe read lba);
 
@@ -36,7 +36,7 @@ public:
 		return data;
 	};
 
-	void write(int lba, string data) {
+	void write(int lba, string data) override {
 		string command = "ssd.exe W " + to_string(lba) + " " + data;
 		system(command.c_str());
 	};
