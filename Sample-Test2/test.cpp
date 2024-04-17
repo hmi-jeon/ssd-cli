@@ -52,7 +52,7 @@ TEST_F(TestShellFixture, InvalidLBA_NotInteger) {
 	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
 }
 
-TEST_F(TestShellFixture, DISABLED_InvalidLBA_OverRange) {
+TEST_F(TestShellFixture, InvalidLBA_OverRange) {
 	TestShell testShell(&shell);
 
 	testShell.inputCommand("read 101");

@@ -124,6 +124,11 @@ public:
 				_printInvalidCommand();
 				return;
 			}
+
+			if (lba < 0 || lba >= 100) {
+				_printInvalidCommand();
+				return;
+			}
 		}
 
 		string data;
