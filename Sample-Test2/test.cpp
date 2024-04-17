@@ -2,15 +2,10 @@
 #include "gtest/gtest.h"
 #include "../ssd-cli-test/TestShell.cpp"
 
-class MockShell : public TestShell {
+class MockShell : public ISSD {
 public:
-	MOCK_METHOD(string, read, (int lba), ());
-	MOCK_METHOD(void, write, (int lba, string data), ());
-	MOCK_METHOD(void, exit, (), ());
-	MOCK_METHOD(void, help, (), ());
- 	MOCK_METHOD(void, fullread, (), ());
-	MOCK_METHOD(void, fullwrite, (string data), ());
-
+	MOCK_METHOD(string, read, (int lba), (override));
+	MOCK_METHOD(void, write, (int lba, string data), (override));
 };
 
 class TestFixture : public testing::Test {
@@ -19,40 +14,38 @@ public:
 };
 
 TEST_F(TestFixture, TestRead) {
-	EXPECT_CALL(shell, read(1)).Times(1);
-	shell.read(1);
+
+	TestShell testShell(&shell);
+
+	EXPECT_CALL(shell, read).Times(1);
+
+	testShell.read(10);
 }
 
-TEST_F(TestFixture, TestRealClassRead) {
-	TestShell tShell;
-	EXPECT_EQ(tShell.read(1), "0xAAAABBBB");
-}
+TEST_F(TestFixture, TestWrite) {
 
-TEST_F(TestFixture, TestExit) {
-	EXPECT_CALL(shell, exit).Times(1);
-	shell.exit();
+	TestShell testShell(&shell);
+
+	EXPECT_CALL(shell, write).Times(1);
+
+	testShell.write(10, "0xAAAABBBB");
 }
 
 TEST_F(TestFixture, TestFullRead) {
-	EXPECT_CALL(shell, fullread).Times(1);
 
-	shell.fullread();
+	TestShell testShell(&shell);
 
-TEST_F(TestFixture, TestWrite) {
-	EXPECT_CALL(shell, write(10, "0xAAAABBBB")).Times(1);
+	EXPECT_CALL(shell, read).Times(100);
 
-	shell.write(10, "0xAAAABBBB");
+	testShell.fullread();
 }
 
-TEST_F(TestFixture, TestHelp) {
-	EXPECT_CALL(shell, help).Times(1);
+TEST_F(TestFixture, TestFullWrite) {
+	
+	TestShell testShell(&shell);
 
-	shell.help();
-}
+	EXPECT_CALL(shell, write).Times(100);
 
-TEST_F(TestFixture, TestFullwrite) {
-	EXPECT_CALL(shell, fullwrite("0xAAAABBBB")).Times(1);
-
-	shell.fullwrite("0xAAAABBBB");
+	testShell.fullwrite("0xAAAABBBB");
 }
 
