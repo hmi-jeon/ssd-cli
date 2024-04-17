@@ -53,10 +53,12 @@ TEST_F(TestFixture, TestInputCommnad) {
 
 	TestShell testShell(&shell);
 
-	EXPECT_CALL(shell, read).Times(1);
-	EXPECT_CALL(shell, write).Times(1);
+	EXPECT_CALL(shell, read).Times(101);
+	EXPECT_CALL(shell, write).Times(101);
 
 	testShell.inputCommand("read 10");
 	testShell.inputCommand("write 10 0xAAAABBBB");
+	testShell.inputCommand("fullread 10");
+	testShell.inputCommand("fullwrite 10 0xAAAABBBB");
 }
 

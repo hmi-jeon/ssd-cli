@@ -73,11 +73,11 @@ public:
 		}
 
 		if (words[0] == "fullread") {
-
+			fullread();
 		}
 
 		if (words[0] == "fullwrite") {
-
+			fullwrite("0xAAAABBBB");
 		}
 	}
 
