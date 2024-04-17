@@ -19,6 +19,12 @@ protected:
 	VirtualNAND vnand;
 };
 
+class SsdMockTest : public Test {
+public:
+protected:
+	MockNand mockNand;
+};
+
 TEST_F(SsdTest, TestValidLba) {
 	EXPECT_TRUE(SSD(&vnand).isValidLba(5));
 }
@@ -43,42 +49,30 @@ TEST_F(SsdTest, TestInValidValueHex) {
 	EXPECT_FALSE(SSD(&vnand).isValidValue("0x0012341Z"));
 }
 
-TEST(MockTest, TestMockReadInvalid) {
-	MockNand mockNand;
-	SSD ssd(&mockNand);
-
+TEST_F(SsdMockTest, TestMockReadInvalid) {
 	EXPECT_CALL(mockNand, read(101))
 		.Times(0);
 
-	ssd.read(101);
+	SSD(&mockNand).read(101);
 }
 
-TEST(MockTest, TestMockRead) {
-	MockNand mockNand;
-	SSD ssd(&mockNand);
-
+TEST_F(SsdMockTest, TestMockRead) {
 	EXPECT_CALL(mockNand, read(5))
 		.Times(1);
 
-	ssd.read(5);
+	SSD(&mockNand).read(5);
 }
 
-TEST(MockTest, TestMockWriteInvlaid) {
-	MockNand mockNand;
-	SSD ssd(&mockNand);
-
+TEST_F(SsdMockTest, TestMockWriteInvlaid) {
 	EXPECT_CALL(mockNand, write(101, "12345667"))
 		.Times(0);
 
-	ssd.write(101, "0x12345667");
+	SSD(&mockNand).write(101, "0x12345667");
 }
 
-TEST(MockTest, TestMockWrite) {
-	MockNand mockNand;
-	SSD ssd(&mockNand);
-
+TEST_F(SsdMockTest, TestMockWrite) {
 	EXPECT_CALL(mockNand, write(5, "12345667"))
 		.Times(1);
 
-	ssd.write(5, "0x12345667");
+	SSD(&mockNand).write(5, "0x12345667");
 }
