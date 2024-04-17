@@ -63,10 +63,10 @@ public:
 		return argList;
 	}
 
-	void checkExistCommnad(string command) {
-		vector<string> commnadList = { "write", "read", "exit" , "help", "fullread", "fullwrite" };
+	void checkExistcommand(string command) {
+		vector<string> commandList = { "write", "read", "exit" , "help", "fullread", "fullwrite" };
 
-		if (find(commnadList.begin(), commnadList.end(), command) == commnadList.end()) {
+		if (find(commandList.begin(), commandList.end(), command) == commandList.end()) {
 			cout << "INVALID COMMAND" << endl;
 			throw invalid_argument("");
 		}
@@ -92,12 +92,12 @@ public:
 
 	void checkInputValidation() {
 		checkNumberOfArguments(args);
-		checkExistCommnad(args[0]);
+		checkExistcommand(args[0]);
 	}
 
 	void executeCommand() {
 
-		string commnad = args[0];
+		string command = args[0];
 		
 		int lba;
 		if (args.size() >= 2) lba = stoi(args[1]);
@@ -105,27 +105,27 @@ public:
 		string data;
 		if (args.size() == 3) data = args[2];
 
-		if (commnad == "write") {
+		if (command == "write") {
 			ssdAPI->write(lba, data);
 		}
 
-		if (commnad == "read") {
+		if (command == "read") {
 			ssdAPI->read(lba);
 		}
 
-		if (commnad == "exit") {
+		if (command == "exit") {
 			exit();
 		}
 
-		if (commnad == "help") {
+		if (command == "help") {
 			help();
 		}
 
-		if (commnad == "fullread") {
+		if (command == "fullread") {
 			fullread();
 		}
 
-		if (commnad == "fullwrite") {
+		if (command == "fullwrite") {
 			fullwrite(data);
 		}
 	}
