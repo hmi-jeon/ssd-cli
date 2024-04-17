@@ -68,5 +68,3 @@ TEST_F(TestFixture, testApp2_read_write_count) {
 	EXPECT_CALL(shell, read).Times(1);
 	testShell.testApp2();
 }
-
-

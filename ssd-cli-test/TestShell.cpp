@@ -18,15 +18,15 @@ interface ISSD {
 	virtual void write(int lba, string data) = 0;
 };
 
-class ssdAPI : public ISSD {
+class ssdAPI : public ISSD{
 public:
-	string read(int lba) override {
+	string read(int lba) override{
 		// ssd.exe call
 		string fileName = "ssd-cli.exe";
 		string command = fileName + " " + "R" + " " + to_string(lba);
 		system(command.c_str());
 
-		// result.txt open
+	  // result.txt open
 		ifstream resultFile;
 		string data = "";
 		resultFile.open("result.txt");
@@ -36,7 +36,7 @@ public:
 		return data;
 	};
 
-	void write(int lba, string data) override {
+  void write(int lba, string data) override {
 		string fileName = "ssd-cli.exe";
 		string command = fileName + " " + "W" + " " + to_string(lba) + " " + data;
 		system(command.c_str());
@@ -116,5 +116,6 @@ public:
 		}
 		return true;
 	}
+
 };
 

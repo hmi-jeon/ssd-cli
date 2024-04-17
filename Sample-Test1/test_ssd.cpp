@@ -4,13 +4,21 @@
 #include "../ssd-cli/virtual_nand.cpp"
 #include <fstream>
 #include <windows.h>
+#include <string>
 
+using namespace std;
 using namespace testing;
 
-class MockNand : public lNAND {
+class MockNand : public INAND {
 public:
-	MOCK_METHOD(void, read, (int), (override));
-	MOCK_METHOD(void, write, (int, string), (override));
+	MOCK_METHOD(string, read, (const int), (override));
+	MOCK_METHOD(void, write, (const int, const string), (override));
+};
+
+class SsdMockTest : public Test {
+public:
+protected:
+	MockNand mockNand;
 };
 
 class SsdTest : public Test {
@@ -19,32 +27,7 @@ protected:
 	VirtualNAND vnand;
 };
 
-TEST_F(SsdTest, TestValidLba) {
-	EXPECT_TRUE(SSD(&vnand).isValidLba(5));
-}
-
-TEST_F(SsdTest, TestInValidLba) {
-	EXPECT_FALSE(SSD(&vnand).isValidLba(101));
-}
-
-TEST_F(SsdTest, TestValidValue) {
-	EXPECT_TRUE(SSD(&vnand).isValidValue("0x14329589"));
-}
-
-TEST_F(SsdTest, TestInValidValueSize) {
-	EXPECT_FALSE(SSD(&vnand).isValidValue("a"));
-}
-
-TEST_F(SsdTest, TestInValidValue0x) {
-	EXPECT_FALSE(SSD(&vnand).isValidValue("0b123410af"));
-}
-
-TEST_F(SsdTest, TestInValidValueHex) {
-	EXPECT_FALSE(SSD(&vnand).isValidValue("0x0012341Z"));
-}
-
-TEST(MockTest, TestMockReadInvalid) {
-	MockNand mockNand;
+TEST_F(SsdMockTest, TestMockReadInvalidLBA) {
 	SSD ssd(&mockNand);
 
 	EXPECT_CALL(mockNand, read(101))
@@ -53,8 +36,7 @@ TEST(MockTest, TestMockReadInvalid) {
 	ssd.read(101);
 }
 
-TEST(MockTest, TestMockRead) {
-	MockNand mockNand;
+TEST_F(SsdMockTest, TestMockRead) {
 	SSD ssd(&mockNand);
 
 	EXPECT_CALL(mockNand, read(5))
@@ -63,8 +45,7 @@ TEST(MockTest, TestMockRead) {
 	ssd.read(5);
 }
 
-TEST(MockTest, TestMockWriteInvlaid) {
-	MockNand mockNand;
+TEST_F(SsdMockTest, TestMockWriteInvalidLBA) {
 	SSD ssd(&mockNand);
 
 	EXPECT_CALL(mockNand, write(101, "12345667"))
@@ -73,12 +54,51 @@ TEST(MockTest, TestMockWriteInvlaid) {
 	ssd.write(101, "0x12345667");
 }
 
-TEST(MockTest, TestMockWrite) {
-	MockNand mockNand;
+TEST_F(SsdMockTest, TestMockWriteInvalidValueSize) {
+	SSD ssd(&mockNand);
+
+	EXPECT_CALL(mockNand, write(5, "12"))
+		.Times(0);
+
+	ssd.write(5, "0x12");
+}
+
+TEST_F(SsdMockTest, TestMockWriteInvalidValueHex) {
+	SSD ssd(&mockNand);
+
+	EXPECT_CALL(mockNand, write(5, "1234566Z"))
+		.Times(0);
+
+	ssd.write(5, "0x1234566Z");
+}
+
+TEST_F(SsdMockTest, TestMockWriteInvalidValuePrefix) {
+	SSD ssd(&mockNand);
+
+	EXPECT_CALL(mockNand, write(5, "12345667"))
+		.Times(0);
+
+	ssd.write(5, "0b12345667");
+}
+
+TEST_F(SsdMockTest, TestMockWrite) {
 	SSD ssd(&mockNand);
 
 	EXPECT_CALL(mockNand, write(5, "12345667"))
 		.Times(1);
 
 	ssd.write(5, "0x12345667");
+}
+TEST_F(SsdTest, TestWriteAndRead) {
+	SSD ssd(&vnand);
+	string testString = "0x11223344";
+	ssd.write(0, testString);
+	ssd.read(0);
+
+	FILE* file;
+	fopen_s(&file, "result.txt", "r");
+	char readData[11];
+	fread(readData, 1, 10, file);
+	readData[10] = '\0';
+	EXPECT_EQ(readData, testString);
 }
