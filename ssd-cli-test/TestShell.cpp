@@ -139,6 +139,19 @@ public:
 				_printInvalidCommand();
 				return;
 			}
+
+			if (data.substr(0, 2) != "0x") {
+				_printInvalidCommand();
+				return;
+			}
+
+			for (const char& c : data.substr(2)) {
+				if (!isxdigit(c)) {
+					_printInvalidCommand();
+					return;
+				}
+			}
+
 			ssdAPI->write(lba, data);
 		}
 

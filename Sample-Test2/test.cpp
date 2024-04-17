@@ -76,7 +76,7 @@ TEST_F(TestShellFixture, InvalidNumberOfData2) {
 	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
 }
 
-TEST_F(TestShellFixture, DISABLED_InvalidData_NotInteger) {
+TEST_F(TestShellFixture, InvalidData_NotInteger) {
 	TestShell testShell(&shell);
 
 	testShell.inputCommand("write 2 0x1234567Z");
