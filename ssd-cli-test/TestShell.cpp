@@ -46,9 +46,13 @@ public:
 class TestShell {
 public:
 	ISSD* ssdAPI;
-	bool status{ true };
+	
 	string line{};
 	int adr[100] = { 0 , };
+
+	TestShell(ISSD* ssdAPI) {
+		this->ssdAPI = ssdAPI;
+	}
 
 	void inputCommand(string userInput) {
 		stringstream ss(userInput);
@@ -75,9 +79,11 @@ public:
 		}
 
 		if (args[0] == "exit") {
+			exit();
 		}
 
 		if (args[0] == "help") {
+			help();
 		}
 
 		if (args[0] == "fullread") {
@@ -90,10 +96,6 @@ public:
 
 	}
 
-	TestShell(ISSD* ssdAPI) {
-		this->ssdAPI = ssdAPI;
-	}
-
 	string read(int lba) {
 		ssdAPI->read(lba);
 		return "";
@@ -104,6 +106,7 @@ public:
 	}
 
 	void exit() {
+		isExit = true;
 	};
 
 	void help() {
@@ -123,5 +126,12 @@ public:
 			ssdAPI->write(lba, data);
 		}
 	}
+
+	bool getExit() {
+		return isExit;
+	}
+
+private:
+	bool isExit = false;
 };
 

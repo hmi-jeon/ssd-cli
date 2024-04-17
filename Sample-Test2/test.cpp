@@ -69,9 +69,18 @@ TEST_F(TestFixture, TestInputCommnadInvalid) {
 	EXPECT_THROW(testShell.inputCommand("roead 10"); , invalid_argument);
 }
 
-TEST_F(TestFixture, TestInputCommnadInvalid) {
+TEST_F(TestFixture, TestInputCommnadExit) {
 
 	TestShell testShell(&shell);
 
-	EXPECT_THROW(testShell.inputCommand("roead 10");, invalid_argument);
+	testShell.exit();
+
+	EXPECT_EQ(true, testShell.getExit());
+}
+
+TEST_F(TestFixture, DistabledTestInputCommnadInvalid) {
+
+	TestShell testShell(&shell);
+
+	EXPECT_THROW(testShell.inputCommand("roead 10"); , invalid_argument);
 }

@@ -6,16 +6,14 @@
 using namespace std;
 
 int main(int argc, char **argv, char **envp) {
-	TestShell ssdTestShell;
+	ssdAPI ssdApi;
+	TestShell ssdTestShell(&ssdApi);
 	int a = 0;
 	// Sample Main Code
-	while (ssdTestShell.status) {
+	while (ssdTestShell.getExit()) {
 		ssdTestShell.read(a++);
 		cout << "> ";
 		cin >> ssdTestShell.line;
-		if (!ssdTestShell.line.compare("exit"))
-			ssdTestShell.status = false;
-
 		cout << ssdTestShell.line << endl;
 	}
 
