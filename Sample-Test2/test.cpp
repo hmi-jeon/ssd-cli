@@ -1,8 +1,10 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 #include "../ssd-cli-test/TestShell.cpp"
+#include <iostream>
 
 using namespace testing;
+using namespace std;
 
 class MockShell : public ISSD {
 public:
@@ -12,11 +14,77 @@ public:
 
 class TestShellFixture : public testing::Test {
 public:
+	void SetUp() override {
+		old = cout.rdbuf(ss.rdbuf());
+	}
+
+	void TearDown() override {
+		cout.rdbuf(old);
+	}
+
+protected:
 	MockShell shell;
+	stringstream ss;
+	streambuf* old;
 };
 
-TEST_F(TestShellFixture, read_count_once) {
+TEST_F(TestShellFixture, InvalidCommand) {
+	TestShell testShell(&shell);
 
+	testShell.inputCommand("dump");
+
+	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
+}
+
+TEST_F(TestShellFixture, DISABLED_InvalidArgumentCount) {
+	TestShell testShell(&shell);
+
+	testShell.inputCommand("write 1");
+
+	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
+}
+
+TEST_F(TestShellFixture, DISABLED_InvalidLBA_NotInteger) {
+	TestShell testShell(&shell);
+
+	testShell.inputCommand("read z");
+
+	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
+}
+
+TEST_F(TestShellFixture, DISABLED_InvalidLBA_OverRange) {
+	TestShell testShell(&shell);
+
+	testShell.inputCommand("read 101");
+
+	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
+}
+
+TEST_F(TestShellFixture, DISABLED_InvalidNumberOfData1) {
+	TestShell testShell(&shell);
+
+	testShell.inputCommand("write 2 0x00");
+
+	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
+}
+
+TEST_F(TestShellFixture, DISABLED_InvalidNumberOfData2) {
+	TestShell testShell(&shell);
+
+	testShell.inputCommand("write 2 0x123456789");
+
+	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
+}
+
+TEST_F(TestShellFixture, DISABLED_InvalidData_NotInteger) {
+	TestShell testShell(&shell);
+
+	testShell.inputCommand("write 2 0x1234567Z");
+
+	EXPECT_EQ(ss.str(), string("INVALID COMMAND\n"));
+}
+
+TEST_F(TestShellFixture, read_count_once) {
 	TestShell testShell(&shell);
 
 	EXPECT_CALL(shell, read).Times(1);
