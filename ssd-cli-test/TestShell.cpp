@@ -8,6 +8,7 @@
 #include <sstream>
 #include <vector>
 #include <stdexcept>
+#include <algorithm>
 
 #define interface struct
 #define MAX_SIZE 100
@@ -27,7 +28,7 @@ public:
 		string command = fileName + " " + "R" + " " + to_string(lba);
 		system(command.c_str());
 
-	  // result.txt open
+		// result.txt open
 		ifstream resultFile;
 		string data = "";
 		resultFile.open("result.txt");
@@ -37,7 +38,7 @@ public:
 		return data;
 	};
 
-  void write(int lba, string data) override {
+	void write(int lba, string data) override {
 		string fileName = "ssd-cli.exe";
 		string command = fileName + " " + "W" + " " + to_string(lba) + " " + data;
 		system(command.c_str());
@@ -76,11 +77,15 @@ public:
 			argList.push_back(arg);
 		}
 
+		if (argList.size() > 0) {
+			transform(argList[0].begin(), argList[0].end(), argList[0].begin(), ::toupper);
+		}
+
 		return argList;
 	}
 
 	bool checkExistcommand(string command) {
-		vector<string> commandList = { "write", "read", "exit" , "help", "fullread", "fullwrite" };
+		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE" };
 
 		if (find(commandList.begin(), commandList.end(), command) == commandList.end()) {
 			cout << "INVALID COMMAND" << endl;
@@ -95,18 +100,18 @@ public:
 
 		string command = args[0];
 
-		if (command == "exit" || command == "help" || command == "fullread") {
+		if (command == "EXIT" || command == "HELP" || command == "FULLREAD") {
 			if (args.size() != 1) return false;
 		}
 
-		if (command == "read" || command == "fullwrite") {
+		if (command == "READ" || command == "FULLWRITE") {
 			if (args.size() != 2) return false;
 		}
 
-		if (command == "write") {
+		if (command == "WRITE") {
 			if (args.size() != 3) return false;
 		}
-		
+
 		return true;
 	}
 
@@ -119,48 +124,50 @@ public:
 		if (checkExistcommand(args[0]) == false) {
 			return false;
 		}
-		
+
 		return true;
 	}
 
 	void executeCommand() {
 
 		string command = args[0];
-		
+
 		int lba;
 		if (args.size() >= 2) lba = stoi(args[1]);
 
 		string data;
 		if (args.size() == 3) data = args[2];
 
-		if (command == "write") {
+		if (command == "WRITE") {
 			ssdAPI->write(lba, data);
 		}
 
-		if (command == "read") {
+		if (command == "READ") {
 			ssdAPI->read(lba);
 		}
 
-		if (command == "exit") {
+		if (command == "EXIT") {
 			exit();
 		}
 
-		if (command == "help") {
+		if (command == "HELP") {
 			help();
 		}
 
-		if (command == "fullread") {
+		if (command == "FULLREAD") {
 			fullread();
 		}
 
-		if (command == "fullwrite") {
+		if (command == "FULLWRITE") {
 			fullwrite(data);
 		}
 	}
 
 	void inputCommand(string userInput) {
+
+
 		args = parsingInput(userInput);
-		if(checkInputValidation() == false) return;
+		if (checkInputValidation() == false) return;
 		executeCommand();
 	}
 
@@ -200,7 +207,7 @@ public:
 		return status;
 	}
 
-  bool testApp1() {
+	bool testApp1() {
 		vector<string> res;
 		string testData = "0x12345678";
 		fullwrite(testData);
