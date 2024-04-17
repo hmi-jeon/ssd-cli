@@ -65,36 +65,48 @@ public:
 		return argList;
 	}
 
-	void checkExistcommand(string command) {
+	bool checkExistcommand(string command) {
 		vector<string> commandList = { "write", "read", "exit" , "help", "fullread", "fullwrite" };
 
 		if (find(commandList.begin(), commandList.end(), command) == commandList.end()) {
 			cout << "INVALID COMMAND" << endl;
-			throw invalid_argument("");
+			return false;
 		}
+
+		return true;
 	}
 
-	void checkNumberOfArguments(vector<string> args) {
-		if (args.size() < 1) throw invalid_argument("");
-		
+	bool checkNumberOfArguments(vector<string> args) {
+		if (args.size() < 1)  return false;
+
 		string command = args[0];
 
 		if (command == "exit" || command == "help" || command == "fullread") {
-			if (args.size() != 1) throw invalid_argument("");
+			if (args.size() != 1) return false;
 		}
 
 		if (command == "read" || command == "fullwrite") {
-			if (args.size() != 2) throw invalid_argument("");
+			if (args.size() != 2) return false;
 		}
 
 		if (command == "write") {
-			if (args.size() != 3) throw invalid_argument("");
+			if (args.size() != 3) return false;
 		}
+		
+		return true;
 	}
 
-	void checkInputValidation() {
-		checkNumberOfArguments(args);
-		checkExistcommand(args[0]);
+	bool checkInputValidation() {
+
+		if (checkNumberOfArguments(args) == false) {
+			return false;
+		};
+
+		if (checkExistcommand(args[0]) == false) {
+			return false;
+		}
+		
+		return true;
 	}
 
 	void executeCommand() {
@@ -134,7 +146,7 @@ public:
 
 	void inputCommand(string userInput) {
 		args = parsingInput(userInput);
-		checkInputValidation();
+		if(checkInputValidation() == false) return;
 		executeCommand();
 	}
 
@@ -147,7 +159,7 @@ public:
 	}
 
 	void exit() {
-		status = true;
+		status = false;
 	};
 
 	void help() {
@@ -207,7 +219,7 @@ public:
 	}
   
 private:
-	bool status = false;
+	bool status = true;
 	vector<string> args;
   
 };
