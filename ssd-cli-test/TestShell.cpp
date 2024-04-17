@@ -49,6 +49,10 @@ public:
 	string line{};
 	int adr[100] = { 0 , };
 
+	void inputCommand(string userInput) {
+		ssdAPI->read(10);
+	}
+
 	TestShell(ISSD* ssdAPI) {
 		this->ssdAPI = ssdAPI;
 	}

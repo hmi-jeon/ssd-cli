@@ -49,3 +49,12 @@ TEST_F(TestFixture, TestFullWrite) {
 	testShell.fullwrite("0xAAAABBBB");
 }
 
+TEST_F(TestFixture, TestInputCommnad) {
+
+	TestShell testShell(&shell);
+
+	EXPECT_CALL(shell, read).Times(1);
+
+	testShell.inputCommand("read 10");
+}
+
