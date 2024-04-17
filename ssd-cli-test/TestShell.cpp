@@ -80,7 +80,7 @@ public:
 		return true;
 	}
 
-	bool checkNumberOfArguments(const vector<string> args) {
+	bool checkValidArguments(const vector<string> args) {
 		if (args.size() < 1)  return false;
 
 		string command = args[0];
@@ -93,8 +93,6 @@ public:
 			if (args.size() != 2) return false;
 			if (!_isValidLba(args[1])) return false;
 		}
-
-		
 
 		if (command == "FULLWRITE") {
 			if (args.size() != 2) return false;
@@ -116,7 +114,7 @@ public:
 			return false;
 		}
 
-		if (checkNumberOfArguments(args) == false) {
+		if (checkValidArguments(args) == false) {
 			return false;
 		};
 
