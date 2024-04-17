@@ -23,21 +23,23 @@ class ssdAPI : public ISSD {
 public:
 	string read(int lba) override {
 		// ssd.exe call
-		//system(ssd.exe read lba);
+		string fileName = "ssd-cli.exe";
+		string command = fileName + " " + "R" + " " + to_string(lba);
+		system(command.c_str());
 
-		// result.txt open
+	  // result.txt open
 		ifstream resultFile;
 		string data = "";
 		resultFile.open("result.txt");
 		if (resultFile.is_open()) {
 			resultFile >> data;
-			cout << data << endl;
 		}
 		return data;
 	};
 
-	void write(int lba, string data) override {
-		string command = "ssd.exe W " + to_string(lba) + " " + data;
+  void write(int lba, string data) override {
+		string fileName = "ssd-cli.exe";
+		string command = fileName + " " + "W" + " " + to_string(lba) + " " + data;
 		system(command.c_str());
 	};
 };
@@ -137,8 +139,7 @@ public:
 	}
 
 	string read(int lba) {
-		ssdAPI->read(lba);
-		return "";
+		return ssdAPI->read(lba);;
 	}
 
 	void write(int lba, string data) {
@@ -155,15 +156,17 @@ public:
 		cout << "--format: write [LBA] [DATA]--" << endl;
 	};
 
-	void fullread() {
+	vector<string> fullread() {
+		vector<string> res;
 		for (int lba = 0; lba < MAX_SIZE; lba++) {
-			ssdAPI->read(lba);
+			res.push_back(read(lba));
 		}
+		return res;
 	};
 
 	void fullwrite(string data) {
 		for (int lba = 0; lba < 100; lba++) {
-			ssdAPI->write(lba, data);
+			write(lba, data);
 		}
 	}
 
@@ -171,8 +174,41 @@ public:
 		return status;
 	}
 
+  bool testApp1() {
+		vector<string> res;
+		string testData = "0x12345678";
+		fullwrite(testData);
+		res = fullread();
+
+		for (string data : res) {
+			if (data != testData)
+				return false;
+		}
+		return true;
+	}
+
+	bool testApp2() {
+		string oldTestData = "0xAAAABBBB";
+		string newTestData = "0x12345678";
+		for (int i = 0; i < 30; i++) {
+			for (int lba = 0; lba <= 5; lba++) {
+				write(lba, oldTestData);
+			}
+		}
+		for (int lba = 0; lba <= 5; lba++) {
+			write(lba, newTestData);
+		}
+
+		for (int lba = 0; lba <= 5; lba++) {
+			if (read(lba) != newTestData)
+				return false;
+		}
+		return true;
+	}
+  
 private:
 	bool status = false;
 	vector<string> args;
+  
 };
 

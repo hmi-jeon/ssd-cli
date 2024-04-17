@@ -17,6 +17,6 @@ int main(int argc, char **argv, char **envp) {
 		ssdTestShell.inputCommand(userInput);
 		cout << userInput << endl;
 	}
-
+	
 	return 0;
 }
