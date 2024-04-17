@@ -46,12 +46,15 @@ TEST_F(SsdMockTest, TestMockRead) {
 
 	ssd.read(5);
 
-	FILE* file;
-	fopen_s(&file, "result.txt", "r");
-	char readData[11];
-	fread(readData, 1, 10, file);
-	readData[10] = '\0';
-	EXPECT_EQ(readData, testString);
+	const string fileName = "result.txt";
+	char readData[VirtualNAND::LBA_SIZE + 3] = {};
+	fstream fs;
+	fs.open(fileName.c_str(), ios_base::in);
+	fs.read(readData, VirtualNAND::LBA_SIZE + 3);
+	readData[VirtualNAND::LBA_SIZE + 2] = '\0';
+	fs.close();
+
+	EXPECT_EQ(string(readData), testString);
 }
 
 TEST_F(SsdMockTest, TestMockWriteInvalidLBA) {
@@ -101,14 +104,17 @@ TEST_F(SsdMockTest, TestMockWrite) {
 
 TEST_F(SsdTest, TestWriteAndRead) {
 	SSD ssd(&vnand);
-	string testString = "0x11223344";
+	string testString = "0x11223354";
 	ssd.write(0, testString);
 	ssd.read(0);
 
-	FILE* file;
-	fopen_s(&file, "result.txt", "r");
-	char readData[11];
-	fread(readData, 1, 10, file);
-	readData[10] = '\0';
-	EXPECT_EQ(readData, testString);
+	const string fileName = "result.txt";
+	char readData[VirtualNAND::LBA_SIZE + 3] = {};
+	fstream fs;
+	fs.open(fileName.c_str(), ios_base::in);
+	fs.read(readData, VirtualNAND::LBA_SIZE + 3);
+	readData[VirtualNAND::LBA_SIZE + 2] = '\0';
+	fs.close();
+
+	EXPECT_EQ(string(readData), testString);
 }
