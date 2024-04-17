@@ -1,16 +1,18 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 #include "inand.h"
 
 using namespace std;
 
 class SSD {
 public:
-	SSD(lNAND* nand)
+	SSD(INAND* nand)
 		: nand_(nand) {
 
 	}
+
 	void command(int argc, char* argv[])
 	{
 		std::vector<std::string> cmdString(argv, argv + argc);
@@ -23,32 +25,39 @@ public:
 			read(std::stoi(cmdString[2]));
 			return;
 		}
-		cout << "INVALID COMMAND" << endl;
+		_printInvalidCommand();
 	}
 
-	void read(int lba) {
-		if (!isValidLba(lba)) {
-			std::cout << "Invalid Parameter" << std::endl;
+	void read(const int lba) {
+		if (!_isValidLba(lba)) {
+			_printInvalidCommand();
 			return;
 		}
 			
-		nand_->read(lba);
+		string readData = nand_->read(lba);
+		_writeResult(readData);
 	}
 
-	void write(int lba, string value) {
-		if (!isValidLba(lba) || !isValidValue(value)) {
-			std::cout << "Invalid Parameter" << std::endl;
+	void write(const int lba, const string value) {
+		if (!_isValidLba(lba) || !_isValidValue(value)) {
+			_printInvalidCommand();
 			return;
 		}
 
 		nand_->write(lba, value.substr(2));
 	}
 
-	bool isValidLba(int lba) {
+	string getResultFileName() const {
+		return RESULT_FILE_NAME;
+	}
+
+private:
+	static constexpr char RESULT_FILE_NAME[] = "result.txt";
+	bool _isValidLba(const int lba) {
 		return (lba >= 0 && lba < 100);
 	}
 
-	bool isValidValue(const string value) {
+	bool _isValidValue(const string value) {
 		if (value.size() != 10)
 			return false;
 
@@ -62,6 +71,17 @@ public:
 		}
 		return true;
 	}
-private:
-	lNAND* nand_;
+
+	void _printInvalidCommand() {
+		std::cout << "INVALID COMMAND" << std::endl;
+	}
+	
+	void _writeResult(string readData) {
+		fstream fs;
+		fs.open(RESULT_FILE_NAME, ios_base::out);
+		fs.write(("0x" + readData).c_str(), readData.size() + 2);
+		fs.close();
+	}
+
+	INAND* nand_;
 };

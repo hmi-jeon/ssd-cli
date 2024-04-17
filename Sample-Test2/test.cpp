@@ -8,12 +8,12 @@ public:
 	MOCK_METHOD(void, write, (int lba, string data), (override));
 };
 
-class TestFixture : public testing::Test {
+class TestShellFixture : public testing::Test {
 public:
 	MockShell shell;
 };
 
-TEST_F(TestFixture, read_count_once) {
+TEST_F(TestShellFixture, read_count_once) {
 
 	TestShell testShell(&shell);
 
@@ -22,7 +22,7 @@ TEST_F(TestFixture, read_count_once) {
 	testShell.read(10);
 }
 
-TEST_F(TestFixture, write_count_once) {
+TEST_F(TestShellFixture, write_count_once) {
 
 	TestShell testShell(&shell);
 
@@ -31,7 +31,7 @@ TEST_F(TestFixture, write_count_once) {
 	testShell.write(10, "0xAAAABBBB");
 }
 
-TEST_F(TestFixture, fullRead_count) {
+TEST_F(TestShellFixture, fullRead_count) {
 
 	TestShell testShell(&shell);
 
@@ -40,7 +40,7 @@ TEST_F(TestFixture, fullRead_count) {
 	testShell.fullread();
 }
 
-TEST_F(TestFixture, fullWrite_count) {
+TEST_F(TestShellFixture, fullWrite_count) {
 
 	TestShell testShell(&shell);
 
@@ -49,8 +49,30 @@ TEST_F(TestFixture, fullWrite_count) {
 	testShell.fullwrite("0xAAAABBBB");
 }
 
+TEST_F(TestShellFixture, TestInputCommnad) {
 
-TEST_F(TestFixture, testApp1_read_write_count) {
+	TestShell testShell(&shell);
+
+	EXPECT_CALL(shell, read).Times(101);
+	EXPECT_CALL(shell, write).Times(101);
+
+	testShell.inputCommand("read 10");
+	testShell.inputCommand("write 10 0xAAAABBBB");
+	testShell.inputCommand("fullread");
+	testShell.inputCommand("fullwrite 0xAAAABBBB");
+}
+
+
+TEST_F(TestShellFixture, TestInputCommnadExit) {
+
+	TestShell testShell(&shell);
+
+	testShell.exit();
+
+	EXPECT_EQ(false, testShell.getStatus());
+}
+
+TEST_F(TestShellFixture, testApp1_read_write_count) {
 
 	TestShell testShell(&shell);
 
@@ -59,7 +81,7 @@ TEST_F(TestFixture, testApp1_read_write_count) {
 	testShell.testApp1();
 }
 
-TEST_F(TestFixture, testApp2_read_write_count) {
+TEST_F(TestShellFixture, testApp2_read_write_count) {
 
 	TestShell testShell(&shell);
 
@@ -68,5 +90,3 @@ TEST_F(TestFixture, testApp2_read_write_count) {
 	EXPECT_CALL(shell, read).Times(1);
 	testShell.testApp2();
 }
-
-

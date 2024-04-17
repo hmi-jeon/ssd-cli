@@ -4,58 +4,76 @@
 
 using namespace std;
 
-class VirtualNAND : public lNAND{
+class VirtualNAND : public INAND{
 public :
 	VirtualNAND() {
 		_initNand();
 	}
 
-	void read(int lba) {
-		char buffer[LBA_SIZE + 3] = {'0', 'x'};
-		_readFile(NAND_FILE_NAME, &buffer[2], lba);
-		_writeFile(RESULT_FILE_NAME, buffer, LBA_SIZE + 2);
+	string read(const int lba) {
+		char buffer[LBA_SIZE + 1]{};
+		_readFile(NAND_FILE_NAME, buffer, lba);	
+		return string(buffer);
 	}
 
-	void write(int lba, string value) {
+	void write(const int lba, const string value) {
 		char buffer[NAND_SIZE + 1] = {};
 		_readFileAll(NAND_FILE_NAME, buffer);
 		_replaceData(&buffer[lba * LBA_SIZE], value.c_str(), LBA_SIZE);
 		_writeFile(NAND_FILE_NAME, buffer, NAND_SIZE);
 	}
 
+	int getLBASize() const {
+		return LBA_SIZE;
+	}
+
+	int getMaxLBA() const {
+		return MAX_LBA;
+	}
+
+	int getNandSize() const {
+		return NAND_SIZE;
+	}
+
+	string getNandFileName() const {
+		return NAND_FILE_NAME;
+	}
+
 private:
+	static constexpr int LBA_SIZE = 8;
+	static constexpr int MAX_LBA = 100;
+	static constexpr int NAND_SIZE = LBA_SIZE * MAX_LBA;
+	static constexpr char NAND_FILE_NAME[12] = "nand.txt";
+	static constexpr char FORMAT_DATA[LBA_SIZE + 1] = "00000000";
+
 	void _initNand() {
-		FILE* file;
-		fopen_s(&file, NAND_FILE_NAME, "r");
-		if (file == nullptr) {
-			fopen_s(&file, NAND_FILE_NAME, "w");
+		fs_.open(NAND_FILE_NAME, ios_base::in);
+		if (fs_.is_open() == false) {
+			fs_.open(NAND_FILE_NAME, ios_base::out);
 			for (int cnt = 0; cnt < MAX_LBA; ++cnt) {
-				fwrite(FORMAT_DATA, 1, LBA_SIZE, file);
+				fs_.write(FORMAT_DATA, LBA_SIZE);
 			}
 		}
-		fclose(file);
+		fs_.close();
 	}
 
 	void _readFile(const string fileName, char buffer[], int lba) {
-		fstream fs;
-		fs.open(fileName.c_str(), ios_base::in);
-		fs.seekg(lba * LBA_SIZE, ios_base::beg);
-		fs.read(buffer, LBA_SIZE);
-		fs.close();
+		fs_.open(fileName.c_str(), ios_base::in);
+		fs_.seekg(lba * LBA_SIZE, ios_base::beg);
+		fs_.read(buffer, LBA_SIZE);
+		fs_.close();
 	}
 
 	void _readFileAll(const string fileName, char buffer[]) {
-		fstream fs;
-		fs.open(fileName.c_str(), ios_base::in);
-		fs.read(buffer, NAND_SIZE);
-		fs.close();
+		fs_.open(fileName.c_str(), ios_base::in);
+		fs_.read(buffer, NAND_SIZE);
+		fs_.close();
 	}
 
 	void _writeFile(const string fileName, const char buffer[], int size) {
-		fstream fs;
-		fs.open(fileName.c_str(), ios_base::out);
-		fs.write(buffer, size);
-		fs.close();
+		fs_.open(fileName.c_str(), ios_base::out);
+		fs_.write(buffer, size);
+		fs_.close();
 	}
 
 	void _replaceData(char dst[], const char src[], int size) {
@@ -63,4 +81,6 @@ private:
 			dst[idx] = src[idx];
 		}
 	}
+	
+	fstream fs_;
 };

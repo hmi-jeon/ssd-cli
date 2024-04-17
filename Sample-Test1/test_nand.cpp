@@ -6,58 +6,48 @@
 
 using namespace testing;
 
-class NandTest : public Test {
+class VirtualNandTest : public Test {
 public:
 	void SetUp() override {
-
+		strNandFileName = nand.getNandFileName();
+		LBA_SIZE = nand.getLBASize();
 	}
 
 	void TearDown() override {
+		if (fs.is_open()) {
+			fs.close();
+		}
 	}
 
 protected:
 	VirtualNAND nand;
+	fstream fs;
+	string strNandFileName;
+	int LBA_SIZE;
 };
 
-TEST_F(NandTest, CheckFileExist) {
-	FILE* file;
-	fopen_s(&file, "nand.txt", "r");
-	EXPECT_NE(file, nullptr);
-	fclose(file);
+TEST_F(VirtualNandTest, CheckFileExist) {
+	fs.open(strNandFileName, ios_base::in);
+	EXPECT_EQ(fs.is_open(), true);
 }
 
-TEST_F(NandTest, CheckWriteTest) {
-	nand.write(2, "12345678");
+TEST_F(VirtualNandTest, CheckWriteTest) {
+	int lba = 2;
+	string TEST_DATA = "12345678";
+	nand.write(lba, TEST_DATA);
 
-	FILE* file;
-	fopen_s(&file, "nand.txt", "r");
-	fseek(file, 16, SEEK_SET);
-	char buffer[9] = {};
-	fread_s(buffer, 8, 1, 8, file);
-	string s = buffer;
-	EXPECT_EQ(s, string("12345678"));
-	fclose(file);
+	fs.open(strNandFileName, ios_base::in);
+	fs.seekg(lba * LBA_SIZE, ios_base::beg);
+	char* buffer = (char*)malloc(LBA_SIZE + 1);
+	fs.read(buffer, LBA_SIZE);
+	buffer[LBA_SIZE] = '\0';
+	EXPECT_EQ(string(buffer), TEST_DATA);
 }
 
-TEST_F(NandTest, ReadZerotoCheckResultFile)
+TEST_F(VirtualNandTest, WriteAndReadOneAddr)
 {
-	nand.read(0);
-	FILE* file;
-	fopen_s(&file, "result.txt", "r");
-
-	EXPECT_NE(file, nullptr);
-	if (file != nullptr) fclose(file);
-}
-
-TEST_F(NandTest, WriteAndReadOneAddr)
-{
-	string testString = "0x11223344";
-	nand.write(10, testString.c_str()+2);
-	nand.read(10);
-	FILE* file;
-	fopen_s(&file, "result.txt", "r");
-	char readData[11];
-	fread(readData, 1, 10, file);
-	readData[10] = '\0';
-	EXPECT_EQ(readData, testString);
+	string TEST_DATA = "11223344";
+	int lba = 10;
+	nand.write(lba, TEST_DATA);
+	EXPECT_EQ(nand.read(lba), TEST_DATA);
 }

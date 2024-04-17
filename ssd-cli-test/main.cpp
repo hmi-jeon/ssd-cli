@@ -5,22 +5,18 @@
 
 using namespace std;
 
-int main(int argc, char** argv, char** envp) {
-	TestShell ssdTestShell;
-	ssdTestShell.help();
-	/*
-	TestShell ssdTestShell;
-	int a = 0;
-	// Sample Main Code
-	while (ssdTestShell.status) {
-		ssdTestShell.read(a++);
-		cout << "> ";
-		cin >> ssdTestShell.line;
-		if (!ssdTestShell.line.compare("exit"))
-			ssdTestShell.status = false;
+int main(int argc, char **argv, char **envp) {
+	ssdAPI ssdApi;
+	TestShell ssdTestShell(&ssdApi);
+	
+	string userInput;
 
-		cout << ssdTestShell.line << endl;
+	// Sample Main Code
+	while (ssdTestShell.getStatus()) {
+		cin >> userInput;
+		ssdTestShell.inputCommand(userInput);
+		cout << userInput << endl;
 	}
-	*/
+	
 	return 0;
 }
