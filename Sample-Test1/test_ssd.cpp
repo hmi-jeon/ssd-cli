@@ -4,12 +4,14 @@
 #include "../ssd-cli/virtual_nand.cpp"
 #include <fstream>
 #include <windows.h>
+#include <string>
 
+using namespace std;
 using namespace testing;
 
 class MockNand : public INAND {
 public:
-	MOCK_METHOD(void, read, (const int), (override));
+	MOCK_METHOD(string, read, (const int), (override));
 	MOCK_METHOD(void, write, (const int, const string), (override));
 };
 
