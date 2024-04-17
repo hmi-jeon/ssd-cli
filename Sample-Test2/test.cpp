@@ -2,15 +2,10 @@
 #include "gtest/gtest.h"
 #include "../ssd-cli-test/TestShell.cpp"
 
-class MockShell : public TestShell {
+class MockShell : public ISSD {
 public:
-	MOCK_METHOD(string, read, (int lba), ());
-	MOCK_METHOD(void, write, (int lba, string data), ());
-	MOCK_METHOD(void, exit, (), ());
-	MOCK_METHOD(void, help, (), ());
- 	MOCK_METHOD(void, fullread, (), ());
-	MOCK_METHOD(void, fullwrite, (string data), ());
-
+	MOCK_METHOD(string, read, (int lba), (override));
+	MOCK_METHOD(void, write, (int lba, string data), (override));
 };
 
 class TestFixture : public testing::Test {
@@ -18,39 +13,60 @@ public:
 	MockShell shell;
 };
 
-TEST_F(TestFixture, TestRealClassRead) {
-	TestShell tShell;
+TEST_F(TestFixture, read_count_once) {
 
-	tShell.write(10, "0xAAAABBBF");
-	EXPECT_EQ(tShell.read(10), "0xAAAABBBF");
+	TestShell testShell(&shell);
+
+	EXPECT_CALL(shell, read).Times(1);
+
+	testShell.read(10);
 }
 
-TEST_F(TestFixture, TestExit) {
-	EXPECT_CALL(shell, exit).Times(1);
-	shell.exit();
+TEST_F(TestFixture, write_count_once) {
+
+	TestShell testShell(&shell);
+
+	EXPECT_CALL(shell, write).Times(1);
+
+	testShell.write(10, "0xAAAABBBB");
 }
 
-TEST_F(TestFixture, TestFullRead) {
-	EXPECT_CALL(shell, fullread).Times(1);
+TEST_F(TestFixture, fullRead_count) {
 
-	shell.fullread();
+	TestShell testShell(&shell);
+
+	EXPECT_CALL(shell, read).Times(100);
+
+	testShell.fullread();
 }
 
-TEST_F(TestFixture, TestWrite) {
-	EXPECT_CALL(shell, write(10, "0xAAAABBBB")).Times(1);
+TEST_F(TestFixture, fullWrite_count) {
 
-	shell.write(10, "0xAAAABBBB");
+	TestShell testShell(&shell);
+
+	EXPECT_CALL(shell, write).Times(100);
+
+	testShell.fullwrite("0xAAAABBBB");
 }
 
-TEST_F(TestFixture, TestHelp) {
-	EXPECT_CALL(shell, help).Times(1);
 
-	shell.help();
+TEST_F(TestFixture, testApp1_read_write_count) {
+
+	TestShell testShell(&shell);
+
+	EXPECT_CALL(shell, write).Times(100);
+	EXPECT_CALL(shell, read).Times(100);
+	testShell.testApp1();
 }
 
-TEST_F(TestFixture, TestFullwrite) {
-	EXPECT_CALL(shell, fullwrite("0xAAAABBBB")).Times(1);
+TEST_F(TestFixture, testApp2_read_write_count) {
 
-	shell.fullwrite("0xAAAABBBB");
+	TestShell testShell(&shell);
+
+	EXPECT_CALL(shell, write).Times(186);
+	// called once becaue of return false
+	EXPECT_CALL(shell, read).Times(1);
+	testShell.testApp2();
 }
+
 

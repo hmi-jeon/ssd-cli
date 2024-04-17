@@ -5,19 +5,20 @@
 
 using namespace std;
 
-int main(int argc, char **argv, char **envp) {
+int main(int argc, char** argv, char** envp) {
+	/*
 	TestShell ssdTestShell;
 	int a = 0;
 	// Sample Main Code
 	while (ssdTestShell.status) {
+		ssdTestShell.read(a++);
 		cout << "> ";
 		cin >> ssdTestShell.line;
 		if (!ssdTestShell.line.compare("exit"))
 			ssdTestShell.status = false;
 
-
 		cout << ssdTestShell.line << endl;
 	}
-
+	*/
 	return 0;
 }
