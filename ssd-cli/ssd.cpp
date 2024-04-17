@@ -7,10 +7,11 @@ using namespace std;
 
 class SSD {
 public:
-	SSD(lNAND* nand)
+	SSD(INAND* nand)
 		: nand_(nand) {
 
 	}
+
 	void command(int argc, char* argv[])
 	{
 		std::vector<std::string> cmdString(argv, argv + argc);
@@ -23,21 +24,21 @@ public:
 			read(std::stoi(cmdString[2]));
 			return;
 		}
-		cout << "INVALID COMMAND" << endl;
+		_printInvalidCommand();
 	}
 
-	void read(int lba) {
+	void read(const int lba) {
 		if (!_isValidLba(lba)) {
-			std::cout << "Invalid Parameter" << std::endl;
+			_printInvalidCommand();
 			return;
 		}
 			
 		nand_->read(lba);
 	}
 
-	void write(int lba, string value) {
+	void write(const int lba, const string value) {
 		if (!_isValidLba(lba) || !_isValidValue(value)) {
-			std::cout << "Invalid Parameter" << std::endl;
+			_printInvalidCommand();
 			return;
 		}
 
@@ -45,7 +46,7 @@ public:
 	}
 
 private:
-	bool _isValidLba(int lba) {
+	bool _isValidLba(const int lba) {
 		return (lba >= 0 && lba < 100);
 	}
 
@@ -64,5 +65,9 @@ private:
 		return true;
 	}
 
-	lNAND* nand_;
+	void _printInvalidCommand() {
+		std::cout << "INVALID COMMAND" << std::endl;
+	}
+
+	INAND* nand_;
 };

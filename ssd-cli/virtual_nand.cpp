@@ -4,7 +4,7 @@
 
 using namespace std;
 
-class VirtualNAND : public lNAND{
+class VirtualNAND : public INAND{
 public :
 	static constexpr int LBA_SIZE = 8;
 	static constexpr int MAX_LBA = 100;
@@ -17,13 +17,13 @@ public :
 		_initNand();
 	}
 
-	void read(int lba) {
+	void read(const int lba) {
 		char buffer[LBA_SIZE + 3] = {'0', 'x'};
 		_readFile(NAND_FILE_NAME, &buffer[2], lba);
 		_writeFile(RESULT_FILE_NAME, buffer, LBA_SIZE + 2);
 	}
 
-	void write(int lba, string value) {
+	void write(const int lba, const string value) {
 		char buffer[NAND_SIZE + 1] = {};
 		_readFileAll(NAND_FILE_NAME, buffer);
 		_replaceData(&buffer[lba * LBA_SIZE], value.c_str(), LBA_SIZE);
