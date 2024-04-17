@@ -38,11 +38,20 @@ TEST_F(SsdMockTest, TestMockReadInvalidLBA) {
 
 TEST_F(SsdMockTest, TestMockRead) {
 	SSD ssd(&mockNand);
+	string testString = "0x11223344";
 
 	EXPECT_CALL(mockNand, read(5))
-		.Times(1);
+		.Times(1)
+		.WillOnce(Return(testString.substr(2)));
 
 	ssd.read(5);
+
+	FILE* file;
+	fopen_s(&file, "result.txt", "r");
+	char readData[11];
+	fread(readData, 1, 10, file);
+	readData[10] = '\0';
+	EXPECT_EQ(readData, testString);
 }
 
 TEST_F(SsdMockTest, TestMockWriteInvalidLBA) {
@@ -89,6 +98,7 @@ TEST_F(SsdMockTest, TestMockWrite) {
 
 	ssd.write(5, "0x12345667");
 }
+
 TEST_F(SsdTest, TestWriteAndRead) {
 	SSD ssd(&vnand);
 	string testString = "0x11223344";
