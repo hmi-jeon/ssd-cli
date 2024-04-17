@@ -89,12 +89,22 @@ public:
 			if (args.size() != 1) return false;
 		}
 
-		if (command == "READ" || command == "FULLWRITE") {
+		if (command == "READ") {
 			if (args.size() != 2) return false;
+			if (!_isValidLba(args[1])) return false;
+		}
+
+		
+
+		if (command == "FULLWRITE") {
+			if (args.size() != 2) return false;
+			if (!_isValidValue(args[1])) return false;
+
 		}
 
 		if (command == "WRITE") {
 			if (args.size() != 3) return false;
+			if (!(_isValidLba(args[1]) && _isValidValue(args[2]))) return false;
 		}
 
 		return true;
@@ -102,13 +112,13 @@ public:
 
 	bool checkInputValidation() {
 
-		if (checkNumberOfArguments(args) == false) {
-			return false;
-		};
-
 		if (checkExistcommand(args[0]) == false) {
 			return false;
 		}
+
+		if (checkNumberOfArguments(args) == false) {
+			return false;
+		};
 
 		return true;
 	}
@@ -237,6 +247,31 @@ public:
 	}
 
 protected:
+	bool _isValidLba(const string lba) {
+		for (char c : lba) {
+			if (!std::isdigit(c)) {
+				return false;
+			}
+		}
+		int lbaDisit = stoi(lba);
+		return (lbaDisit >= 0 && lbaDisit < 100);
+	}
+
+	bool _isValidValue(const string value) {
+		if (value.size() != 10)
+			return false;
+
+		if (value.substr(0, 2) != "0x")
+			return false;
+
+		for (const char& c : value.substr(2)) {
+			if (!isxdigit(c)) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	void _printInvalidCommand() {
 		std::cout << "INVALID COMMAND" << std::endl;
 	}
