@@ -19,13 +19,13 @@ interface ISSD {
 	virtual void write(int lba, string data) = 0;
 };
 
-class ssdAPI : public ISSD{
+class ssdAPI : public ISSD {
 public:
-	string read(int lba) override{
+	string read(int lba) override {
 		// ssd.exe call
-	    //system(ssd.exe read lba);
+		//system(ssd.exe read lba);
 
-	    // result.txt open
+		// result.txt open
 		ifstream resultFile;
 		string data = "";
 		resultFile.open("result.txt");
@@ -50,7 +50,35 @@ public:
 	int adr[100] = { 0 , };
 
 	void inputCommand(string userInput) {
-		ssdAPI->read(10);
+		stringstream ss(userInput);
+		vector<string> words;
+		string word;
+
+		while (getline(ss, word, ' ')) {
+			words.push_back(word);
+		}
+
+		if (words[0] == "write") {
+			ssdAPI->write(10, "0xAAAABBBB");
+		}
+
+		if (words[0] == "read") {
+			ssdAPI->read(10);
+		}
+
+		if (words[0] == "exit") {
+		}
+
+		if (words[0] == "help") {
+		}
+
+		if (words[0] == "fullread") {
+
+		}
+
+		if (words[0] == "fullwrite") {
+
+		}
 	}
 
 	TestShell(ISSD* ssdAPI) {
