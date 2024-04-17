@@ -9,7 +9,8 @@ using namespace testing;
 class VirtualNandTest : public Test {
 public:
 	void SetUp() override {
-
+		strNandFileName = nand.getNandFileName();
+		LBA_SIZE = nand.getLBASize();
 	}
 
 	void TearDown() override {
@@ -21,10 +22,12 @@ public:
 protected:
 	VirtualNAND nand;
 	fstream fs;
+	string strNandFileName;
+	int LBA_SIZE;
 };
 
 TEST_F(VirtualNandTest, CheckFileExist) {
-	fs.open(nand.NAND_FILE_NAME, ios_base::in);
+	fs.open(strNandFileName, ios_base::in);
 	EXPECT_EQ(fs.is_open(), true);
 }
 
@@ -33,10 +36,11 @@ TEST_F(VirtualNandTest, CheckWriteTest) {
 	string TEST_DATA = "12345678";
 	nand.write(lba, TEST_DATA);
 
-	fs.open(nand.NAND_FILE_NAME, ios_base::in);
-	fs.seekg(lba * VirtualNAND::LBA_SIZE, ios_base::beg);
-	char buffer[VirtualNAND::LBA_SIZE + 1] = {};
-	fs.read(buffer, VirtualNAND::LBA_SIZE);
+	fs.open(strNandFileName, ios_base::in);
+	fs.seekg(lba * LBA_SIZE, ios_base::beg);
+	char* buffer = (char*)malloc(LBA_SIZE + 1);
+	fs.read(buffer, LBA_SIZE);
+	buffer[LBA_SIZE] = '\0';
 	EXPECT_EQ(string(buffer), TEST_DATA);
 }
 
