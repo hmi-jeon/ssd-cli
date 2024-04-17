@@ -73,6 +73,8 @@ public:
 	}
 
 	void checkNumberOfArguments(vector<string> args) {
+		if (args.size() < 1) throw invalid_argument("");
+		
 		string command = args[0];
 
 		if (command == "exit" || command == "help" || command == "fullread") {
@@ -88,12 +90,12 @@ public:
 		}
 	}
 
-	void checkInputValidation(vector<string> args) {
-		checkExistCommnad(args[0]);
+	void checkInputValidation() {
 		checkNumberOfArguments(args);
+		checkExistCommnad(args[0]);
 	}
 
-	void executeCommand(vector<string> args) {
+	void executeCommand() {
 
 		string commnad = args[0];
 		
@@ -129,9 +131,9 @@ public:
 	}
 
 	void inputCommand(string userInput) {
-		vector<string> args = parsingInput(userInput);
-		checkInputValidation(args);
-		executeCommand(args);
+		args = parsingInput(userInput);
+		checkInputValidation();
+		executeCommand();
 	}
 
 	string read(int lba) {
@@ -171,5 +173,6 @@ public:
 
 private:
 	bool status = false;
+	vector<string> args;
 };
 
