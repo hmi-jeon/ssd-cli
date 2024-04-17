@@ -37,6 +37,7 @@ TEST_F(TestFixture, TestFullRead) {
 	EXPECT_CALL(shell, fullread).Times(1);
 
 	shell.fullread();
+}
 
 TEST_F(TestFixture, TestWrite) {
 	EXPECT_CALL(shell, write(10, "0xAAAABBBB")).Times(1);
@@ -56,3 +57,13 @@ TEST_F(TestFixture, TestFullwrite) {
 	shell.fullwrite("0xAAAABBBB");
 }
 
+TEST(TestCaseName, TestInputCommand) {
+	//Arrange
+	TestShell testShell;
+
+	//Act
+	string ret = testShell.inputCommand("write 10 0xAAAABBBB");
+
+	//Assert
+	EXPECT_EQ(ret, "write 10 0xAAAABBBB");
+}

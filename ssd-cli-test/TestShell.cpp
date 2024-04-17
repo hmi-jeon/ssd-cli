@@ -5,7 +5,7 @@
 #include <fstream>
 #include <windows.h>
 #include <process.h>
-
+#include <format>
 #define MAX_SIZE 100
 
 using namespace std;
@@ -15,10 +15,13 @@ public:
 	bool status{ true };
 	string line{};
 	int adr[100] = { 0 , };
-
+	
+	string inputCommand(string command) {
+		return command;
+	}
 
 	void write(int lba, string data) {
-		string command = "ssd.exe W" + ' ' + lba + ' ' + data;
+		string command = "ssd.exe W " + to_string(lba) + " " + data;
 		system(command.c_str());
 	};
 
