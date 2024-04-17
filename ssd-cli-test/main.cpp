@@ -6,6 +6,8 @@
 using namespace std;
 
 int main(int argc, char** argv, char** envp) {
+	TestShell ssdTestShell;
+	ssdTestShell.help();
 	/*
 	TestShell ssdTestShell;
 	int a = 0;

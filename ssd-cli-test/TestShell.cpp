@@ -49,6 +49,20 @@ public:
 	bool status{ true };
 	string line{};
 	int adr[100] = { 0 , };
+	vector<vector<string>> helps = {
+		{ "READ","Outputs data written to the LBA address value of the device. (ex. READ 3)" },
+		{ "WRITE","Records input data into the designated LBA of the device. (ex. WRITE 1 0x1234ABCD)" },
+		{ "EXIT","Exit SHELL. (ex. EXIT)" },
+		{ "HELP", "Prints SHELL's command list and help. (ex. HELP)" },
+		{ "FULLREAD", "Reads the entire LBA of the device and outputs all data. (ex. FULLREAD)" },
+		{ "FULLWRITE", "The input data is recorded in the entire LBA of the device. (ex. FULLWRITE 0x1234ABCD)" },
+		{ "TESTAPP1","Test the read and write functions of the entire LBA of the device. (ex. TESTAPP1)" },
+		{ "TESTAPP2","Test your device's ability to overwrite data. (ex. TESTAPP2)" }
+	};
+
+	TestShell() {
+		this->ssdAPI = nullptr;
+	}
 
 	TestShell(ISSD* ssdAPI) {
 		this->ssdAPI = ssdAPI;
@@ -66,9 +80,9 @@ public:
 	};
 
 	void help() {
-		cout << "--help--" << endl;
-		cout << "--[write]--" << endl;
-		cout << "--format: write [LBA] [DATA]--" << endl;
+		for (int i = 0; i < helps.size(); i++) {
+			cout << helps[i][0] << " : " << helps[i][1] << endl;
+		}
 	};
 
 	vector<string> fullread() {
@@ -116,5 +130,6 @@ public:
 		}
 		return true;
 	}
+
 };
 
