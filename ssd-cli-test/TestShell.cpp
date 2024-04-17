@@ -47,7 +47,6 @@ public:
 class TestShell {
 public:
 	ISSD* ssdAPI;
-	int adr[100] = { 0 , };
 	vector<vector<string>> helps = {
 		{ "READ","Outputs data written to the LBA address value of the device. (ex. READ 3)" },
 		{ "WRITE","Records input data into the designated LBA of the device. (ex. WRITE 1 0x1234ABCD)" },
@@ -127,7 +126,7 @@ public:
 
 		string command = args[0];
 		
-		int lba;
+		int lba = -1;
 		if (args.size() >= 2) lba = stoi(args[1]);
 
 		string data;
