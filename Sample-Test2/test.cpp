@@ -13,7 +13,7 @@ public:
 	MockShell shell;
 };
 
-TEST_F(TestFixture, TestRead) {
+TEST_F(TestFixture, read_count_once) {
 
 	TestShell testShell(&shell);
 
@@ -22,7 +22,7 @@ TEST_F(TestFixture, TestRead) {
 	testShell.read(10);
 }
 
-TEST_F(TestFixture, TestWrite) {
+TEST_F(TestFixture, write_count_once) {
 
 	TestShell testShell(&shell);
 
@@ -31,7 +31,7 @@ TEST_F(TestFixture, TestWrite) {
 	testShell.write(10, "0xAAAABBBB");
 }
 
-TEST_F(TestFixture, TestFullRead) {
+TEST_F(TestFixture, fullRead_count) {
 
 	TestShell testShell(&shell);
 
@@ -40,8 +40,8 @@ TEST_F(TestFixture, TestFullRead) {
 	testShell.fullread();
 }
 
-TEST_F(TestFixture, TestFullWrite) {
-	
+TEST_F(TestFixture, fullWrite_count) {
+
 	TestShell testShell(&shell);
 
 	EXPECT_CALL(shell, write).Times(100);
@@ -83,4 +83,23 @@ TEST_F(TestFixture, DistabledTestInputCommnadInvalid) {
 	TestShell testShell(&shell);
 
 	EXPECT_THROW(testShell.inputCommand("roead 10"); , invalid_argument);
+}
+
+TEST_F(TestFixture, testApp1_read_write_count) {
+
+	TestShell testShell(&shell);
+
+	EXPECT_CALL(shell, write).Times(100);
+	EXPECT_CALL(shell, read).Times(100);
+	testShell.testApp1();
+}
+
+TEST_F(TestFixture, testApp2_read_write_count) {
+
+	TestShell testShell(&shell);
+
+	EXPECT_CALL(shell, write).Times(186);
+	// called once becaue of return false
+	EXPECT_CALL(shell, read).Times(1);
+	testShell.testApp2();
 }
