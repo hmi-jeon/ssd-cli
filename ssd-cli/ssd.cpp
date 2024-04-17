@@ -17,6 +17,10 @@ public:
 	{
 		std::vector<std::string> cmdString(argv, argv + argc);
 		
+		if (cmdString[2] == "fdas") {
+			return;
+		}
+
 		if (argc == 4 && cmdString[1]._Equal("W")) {
 			write(std::stoi(cmdString[2]), cmdString[3]);
 			return;
