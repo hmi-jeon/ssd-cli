@@ -214,4 +214,33 @@ TEST_F(SsdVirtualNandTest, TestWriteAndReadSSD_10times) {
 	EXPECT_EQ(string(readData), testString);
 }
 
+TEST_F(SsdVirtualNandTest, TestEraseSSD) {
+	string testString = "0x11223354";
+
+	char* argv[] = { "app", "W", "3", (char*)testString.c_str() };
+	ssd.command(4, (char**)argv);
+
+	char* argv2[] = { "app", "R", "3" };
+	ssd.command(3, argv2);
+
+	char* readData = (char*)malloc(LBA_SIZE + 3);
+	fs_.open(ssd.getResultFileName(), ios_base::in);
+	fs_.read(readData, LBA_SIZE + 2);
+	fs_.close();
+	readData[LBA_SIZE + 2] = '\0';
+
+	EXPECT_EQ(string(readData), testString);
+
+	char* argv3[] = { "app", "E", "3", "5"};
+	ssd.command(4, argv3);
+	ssd.command(3, argv2);
+
+	fs_.open(ssd.getResultFileName(), ios_base::in);
+	fs_.read(readData, LBA_SIZE + 2);
+	fs_.close();
+	readData[LBA_SIZE + 2] = '\0';
+
+	EXPECT_EQ(string(readData), string("0x00000000"));
+}
+
 
