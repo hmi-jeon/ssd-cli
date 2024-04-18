@@ -39,4 +39,5 @@ protected:
 	string name;
 	vector<string> args;
 	const string APP_NAME = "ssd-cli.exe";
+	static constexpr int MAX_LBA = 100;
 };
