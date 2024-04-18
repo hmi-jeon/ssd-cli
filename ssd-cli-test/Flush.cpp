@@ -2,10 +2,10 @@
 #include "ICommand.cpp"
 #include <vector>
 
-class Write : public ICommand {
+class Flush : public ICommand {
 public:
-	Write(vector<string> args) {
-		this->name = "WRITE";
+	Flush(vector<string> args) {
+		this->name = "FLUSH";
 		this->args = args;
 	};
 
@@ -13,7 +13,7 @@ public:
 		if (!checkValidArguments())
 			return false;
 
-		string command = APP_NAME + " " + "W" + " " + args[1] + " " + args[2];
+		string command = APP_NAME + " " + "F";
 		system(command.c_str());
 
 		return true;
@@ -21,7 +21,6 @@ public:
 
 private:
 	virtual bool checkValidArguments() override {
-		if (args.size() != 3) return false;
-		return _isValidLba(args[1]) && _isValidValue(args[2]);
+		if (args.size() != 1) return false;
 	}
 };

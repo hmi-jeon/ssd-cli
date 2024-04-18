@@ -15,10 +15,11 @@
 #include "FullRead.cpp"
 #include "FullWrite.cpp"
 #include "TestApp.cpp"
+#include "Flush.cpp"
+#include "Erase.cpp"
 #include "Logger.cpp"
 
 #define RUN_LIST "run_list.lst"
-
 using namespace std;
 
 interface ISSD {
@@ -53,6 +54,8 @@ public:
 		else if (command == "HELP") icom = new Help(args);
 		else if (command == "FULLREAD")	icom = new FullRead(args);
 		else if (command == "FULLWRITE") icom = new FullWrite(args);
+    else if (command == "FLUSH") icom = new Flush(args);
+		else if (command == "ERASE") icom = new Erase(args);
 		else icom = new TestApp(args);
 
 		isValid = icom->execute();
@@ -63,10 +66,6 @@ public:
 	void inputCommand(const string userInput) {
 		args = parsingInput(userInput);
 		executeCommand();
-	}
-  
-	bool getIsValid() {
-		return isValid;
 	}
 
 	vector<string> getFlieData(string fileName) {
@@ -111,6 +110,7 @@ protected:
 	void _printInvalidCommand() {
 		std::cout << "INVALID COMMAND" << std::endl;
 	}
+
 	Logger& logger = Logger::getInstance();
 	bool isValid = false;
 	vector<string> args;
