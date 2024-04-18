@@ -9,6 +9,7 @@
 #include <vector>
 #include <stdexcept>
 #include <algorithm>
+#include "Logger.cpp"
 
 #define MAX_SIZE 100
 
@@ -53,6 +54,7 @@ public:
 	TestShell(ISSD* ssdAPI) {
 		this->ssdAPI = ssdAPI;
 	}
+
 
 	vector<string> parsingInput(const string inputString) {
 		stringstream ss(inputString);
@@ -138,6 +140,7 @@ public:
 		}
 
 		if (command == "EXIT") {
+			logger.print("EXIT");
 			exit();
 		}
 
@@ -276,6 +279,7 @@ protected:
 	}
 
 	ISSD* ssdAPI;
+	Logger& logger = Logger::getInstance();
 	bool status = true;
 	bool isValid = false;
 	vector<string> args;
