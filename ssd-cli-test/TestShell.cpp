@@ -14,6 +14,9 @@
 #include "Help.cpp"
 #include "FullRead.cpp"
 #include "FullWrite.cpp"
+#include "Logger.cpp"
+
+
 
 using namespace std;
 
@@ -40,16 +43,53 @@ public:
 		return argList;
 	}
 
+	bool checkExistcommand(string command) {
+		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE", "TESTAPP1", "TESTAPP2"};
+
+		if (find(commandList.begin(), commandList.end(), command) == commandList.end()) {
+			return false;
+		}
+
+		return true;
+	}
+
+	bool checkValidArguments(const vector<string> args) {
+		if (args.size() < 1)  return false;
+
+		string command = args[0];
+
+		if (command == "EXIT" || command == "HELP" || command == "FULLREAD" || command == "TESTAPP1" || command == "TESTAPP2") {
+			if (args.size() != 1) return false;
+		}
+
+		if (command == "READ") {
+			if (args.size() != 2) return false;
+			if (!_isValidLba(args[1])) return false;
+		}
+
+		if (command == "FULLWRITE") {
+			if (args.size() != 2) return false;
+			if (!_isValidValue(args[1])) return false;
+
+		}
+
+		if (command == "WRITE") {
+			if (args.size() != 3) return false;
+			if (!(_isValidLba(args[1]) && _isValidValue(args[2]))) return false;
+		}
+
+		return true;
+	}
 
 	bool checkInputValidation() {
 
-		if (_checkNumberOfArguments(args) == false) {
-			return false;
-		};
-
-		if (_checkExistcommand(args[0]) == false) {
+		if (checkExistcommand(args[0]) == false) {
 			return false;
 		}
+
+		if (checkValidArguments(args) == false) {
+			return false;
+		};
 
 		return true;
 	}
@@ -57,11 +97,8 @@ public:
 	void executeCommand() {
 		string command = args[0];
 		int lba = -1;
-		if (args.size() >= 2) lba = stoi(args[1]);
-
 		string data;
-		if (args.size() == 3) data = args[2];
-
+    
 		ICommand* icom{};
 		if (command == "WRITE"    ) icom = new Write(args);
 		if (command == "READ"     ) icom = new Read(args);
@@ -82,48 +119,40 @@ public:
 		}
 		executeCommand();
 	}
-
-
-
-protected:
-	void _printInvalidCommand() {
-		std::cout << "INVALID COMMAND" << std::endl;
-	}	
-
-	bool _getIsValid() {
+  
+	bool getIsValid() {
 		return isValid;
 	}
+protected:
+	bool _isValidLba(const string lba) {
+		for (char c : lba) {
+			if (!std::isdigit(c)) {
+				return false;
+			}
+		}
+		int lbaDigit = stoi(lba);
+		return (lbaDigit >= 0 && lbaDigit < 100);
+	}
 
-	bool _checkExistcommand(string command) {
-		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE", "TESTAPP1", "TESTAPP2" };
-
-		if (find(commandList.begin(), commandList.end(), command) == commandList.end()) {
+	bool _isValidValue(const string value) {
+		if (value.size() != 10)
 			return false;
-		}
 
+		if (value.substr(0, 2) != "0x")
+			return false;
+
+		for (const char& c : value.substr(2)) {
+			if (!isxdigit(c)) {
+				return false;
+			}
+		}
 		return true;
 	}
 
-	bool _checkNumberOfArguments(const vector<string> args) {
-		if (args.size() < 1)  return false;
-
-		string command = args[0];
-
-		if (command == "EXIT" || command == "HELP" || command == "FULLREAD" || command == "TESTAPP1" || command == "TESTAPP2") {
-			if (args.size() != 1) return false;
-		}
-
-		if (command == "READ" || command == "FULLWRITE") {
-			if (args.size() != 2) return false;
-		}
-
-		if (command == "WRITE") {
-			if (args.size() != 3) return false;
-		}
-
-		return true;
+	void _printInvalidCommand() {
+		std::cout << "INVALID COMMAND" << std::endl;
 	}
-
+	Logger& logger = Logger::getInstance();
 	bool isValid = false;
 	vector<string> args;
 };

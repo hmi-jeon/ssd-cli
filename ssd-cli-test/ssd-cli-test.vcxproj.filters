@@ -48,6 +48,9 @@
     <ClCompile Include="FullRead.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Text Include="result.txt">
