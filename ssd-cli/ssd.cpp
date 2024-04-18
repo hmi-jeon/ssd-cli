@@ -53,6 +53,9 @@ private:
 		else if (argc == 4 && cmdString[0]._Equal("E")) {
 			command = new Erase();
 		}
+		else if (argc == 2 && cmdString[0]._Equal("F")) {
+			command = new Flush();
+		}
 
 		return command;
 	}
