@@ -19,6 +19,9 @@
 #include "Logger.cpp"
 
 #define RUN_LIST "run_list.lst"
+#define TEST_PASS 0
+#define TEST_FAIL 1
+
 using namespace std;
 
 interface ISSD {
@@ -117,11 +120,11 @@ public:
 
 		logger.setLoggerMode(RUNNER_MODE);
 
-		int TestResult = 1;
+		int TestResult = TEST_FAIL;
 
 		for (const string TestScenario : TestFileList) {
 			TestResult = system(TestScenario.c_str());
-			if (TestResult != 0) {
+			if (TestResult != TEST_PASS) {
 				cout << TestScenario + "\t---\tRun...Fail!" << endl;
 				break;
 			}
