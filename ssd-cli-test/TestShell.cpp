@@ -14,12 +14,16 @@
 #include "Help.cpp"
 #include "FullRead.cpp"
 #include "FullWrite.cpp"
+#include "TestApp.cpp"
 #include "Flush.cpp"
 #include "Erase.cpp"
 #include "EraseRange.cpp"
 #include "Logger.cpp"
 
 #define RUN_LIST "run_list.lst"
+#define TEST_PASS 0
+#define TEST_FAIL 1
+
 using namespace std;
 
 interface ISSD {
@@ -57,19 +61,6 @@ public:
 
 	void executeCommand() {
 		string command = args[0];
-		if (command == "TESTAPP1") {
-			//TestApp1
-			string appName = "FullWriteReadCompare.exe";
-			if (system(appName.c_str())) cout << "FAIL";
-			return;
-		}
-		if (command == "TESTAPP2") {
-			//TestApp2
-			string appName = "FullWriteReadCompare.exe";
-			if (system(appName.c_str())) cout << "FAIL";
-			return;
-		}
-
 		ICommand* icom{};
 		if (command == "WRITE") icom = new Write(args);
 		else if (command == "READ") icom = new Read(args);
@@ -77,9 +68,10 @@ public:
 		else if (command == "HELP") icom = new Help(args);
 		else if (command == "FULLREAD")	icom = new FullRead(args);
 		else if (command == "FULLWRITE") icom = new FullWrite(args);
-		else if (command == "FLUSH") icom = new Flush(args);
+    else if (command == "FLUSH") icom = new Flush(args);
 		else if (command == "ERASE") icom = new Erase(args);
 		else if (command == "ERASE_RANGE") icom = new EraseRange(args);
+		else icom = new TestApp(args);
 
 		isValid = icom->execute();
 		if (isValid == false)
@@ -88,11 +80,6 @@ public:
 
 	void inputCommand(const string userInput) {
 		args = parsingInput(userInput);
-		isValid = checkExistcommand(args[0]);
-		if (isValid == false) {
-			_printInvalidCommand();
-			return;
-		}
 		executeCommand();
 	}
 
@@ -119,18 +106,17 @@ public:
 
 		logger.setLoggerMode(RUNNER_MODE);
 
-		int TestResult = 1;
+		int TestResult = TEST_FAIL;
 
 		for (const string TestScenario : TestFileList) {
-
+			cout << TestScenario + "\t---\tRun...";
 			TestResult = system(TestScenario.c_str());
-
-			if (TestResult != 0) {
-				logger.print(TestScenario + "\t---\tRun...Fail!");
+			if (TestResult != TEST_PASS) {
+				cout << "Fail!" << endl;
 				break;
 			}
 
-			logger.print(TestScenario + "\t---\tRun...Pass");
+			cout << "Pass" << endl;
 		}
 	}
 

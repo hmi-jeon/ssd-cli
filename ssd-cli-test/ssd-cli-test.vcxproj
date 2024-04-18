@@ -138,6 +138,7 @@
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Read.cpp" />
+    <ClCompile Include="TestApp.cpp" />
     <ClCompile Include="TestShell.cpp" />
     <ClCompile Include="Write.cpp" />
   </ItemGroup>

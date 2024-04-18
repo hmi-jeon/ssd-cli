@@ -8,8 +8,9 @@ int main(int argc, char **argv, char **envp) {
 
 	TestShell ssdTestShell;
 
-	if (argc == 2 && argv[1] == RUN_LIST) {
-		ssdTestShell.Runner();
+	if (argc == 2) {
+		string firstArg = argv[1];
+		if(firstArg == RUN_LIST) ssdTestShell.Runner();
 	}
 
 	if (argc == 1) {
