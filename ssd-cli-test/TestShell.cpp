@@ -120,15 +120,13 @@ public:
 		int TestResult = 1;
 
 		for (const string TestScenario : TestFileList) {
-
 			TestResult = system(TestScenario.c_str());
-
 			if (TestResult != 0) {
-				logger.print(TestScenario + "\t---\tRun...Fail!");
+				cout << TestScenario + "\t---\tRun...Fail!" << endl;
 				break;
 			}
 
-			logger.print(TestScenario + "\t---\tRun...Pass");
+			cout << TestScenario + "\t---\tRun...Pass" << endl;
 		}
 	}
 

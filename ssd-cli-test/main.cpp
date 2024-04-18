@@ -7,8 +7,9 @@ using namespace std;
 int main(int argc, char **argv, char **envp) {
 
 	TestShell ssdTestShell;
+	string firstArg = argv[1];
 
-	if (argc == 2 && argv[1] == RUN_LIST) {
+	if (argc == 2 && firstArg == RUN_LIST) {
 		ssdTestShell.Runner();
 	}
 
