@@ -13,6 +13,10 @@ class MockNand : public INAND {
 public:
 	MOCK_METHOD(string, read, (const int), (override));
 	MOCK_METHOD(void, write, (const int, const string), (override));
+
+	int getLBASize() const { return 8; }
+
+	int getMaxLBA() const { return 100; }
 };
 
 class SsdTest : public Test {
@@ -23,7 +27,7 @@ public:
 	}
 
 	void SetUp() override {
-
+		ssd.init();
 	}
 
 	void TearDown() override {
