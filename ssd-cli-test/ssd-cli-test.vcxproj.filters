@@ -51,6 +51,9 @@
     <ClCompile Include="Logger.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Flush.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>  
     <ClCompile Include="Erase.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>

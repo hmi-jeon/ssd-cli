@@ -14,6 +14,7 @@
 #include "Help.cpp"
 #include "FullRead.cpp"
 #include "FullWrite.cpp"
+#include "Flush.cpp"
 #include "Erase.cpp"
 #include "Logger.cpp"
 
@@ -44,7 +45,7 @@ public:
 	}
 
 	bool checkExistcommand(string command) {
-		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE", "TESTAPP1", "TESTAPP2", "ERASE"};
+		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE", "TESTAPP1", "TESTAPP2", "FLUSH", "ERASE"};
 
 		if (find(commandList.begin(), commandList.end(), command) == commandList.end()) {
 			return false;
@@ -58,7 +59,7 @@ public:
 		if (command == "TESTAPP1") {
 			//TestApp1
 			string appName = "FullWriteReadCompare.exe";
-			if(system(appName.c_str())) cout << "FAIL";
+			if (system(appName.c_str())) cout << "FAIL";
 			return;
 		}
 		if (command == "TESTAPP2") {
@@ -69,12 +70,13 @@ public:
 		}
 
 		ICommand* icom{};
-		if (command == "WRITE"    ) icom = new Write(args);
-		else if (command == "READ"     ) icom = new Read(args);
-		else if (command == "EXIT"     ) icom = new Exit(args);
-		else if (command == "HELP"     ) icom = new Help(args);
-		else if (command == "FULLREAD" )	icom = new FullRead(args);
+		if (command == "WRITE") icom = new Write(args);
+		else if (command == "READ") icom = new Read(args);
+		else if (command == "EXIT") icom = new Exit(args);
+		else if (command == "HELP") icom = new Help(args);
+		else if (command == "FULLREAD")	icom = new FullRead(args);
 		else if (command == "FULLWRITE") icom = new FullWrite(args);
+		else if (command == "FLUSH") icom = new Flush(args);
 		else if (command == "ERASE") icom = new Erase(args);
 
 		isValid = icom->execute();
@@ -90,10 +92,6 @@ public:
 			return;
 		}
 		executeCommand();
-	}
-  
-	bool getIsValid() {
-		return isValid;
 	}
 
 	vector<string> getFlieData(string fileName) {

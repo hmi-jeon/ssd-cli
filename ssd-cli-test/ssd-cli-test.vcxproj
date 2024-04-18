@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Erase.cpp" />
     <ClCompile Include="Exit.cpp" />
+    <ClCompile Include="Flush.cpp" />
     <ClCompile Include="FullRead.cpp" />
     <ClCompile Include="FullWrite.cpp" />
     <ClCompile Include="Help.cpp" />
