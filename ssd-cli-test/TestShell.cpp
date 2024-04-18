@@ -102,7 +102,7 @@ public:
 			return;
 		}
 		if (command == "TESTAPP2") {
-			//TestApp1
+			//TestApp2
 			string appName = "FullWriteReadCompare.exe";
 			if (system(appName.c_str())) cout << "FAIL";
 			return;
