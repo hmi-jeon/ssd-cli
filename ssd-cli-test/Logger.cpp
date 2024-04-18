@@ -7,6 +7,9 @@
 #include <iomanip>
 #include <sstream>
 #include <cstdio>
+#include <windows.h>
+#include <vector>
+
 
 #define  print(str) log(__FUNCTION__,str)
 
@@ -55,6 +58,7 @@ private:
 
 	static constexpr char LATEST_LOG_FILE_NAME[11] = "latest.log";
 	static constexpr int LIMIT_LOG_SIZE = 200;// 1024 * 10; // 10KB
+	static constexpr int LOG_FILE_THRESHOLD = 3;
 
 	string makeDateString(DateType dateType) {
 		std::time_t now = std::time(nullptr);
@@ -101,6 +105,7 @@ private:
 		if (latestLogFilesize == -1) return;
 		if (latestLogFilesize + logSize > LIMIT_LOG_SIZE) {
 			saveUntilLog();
+			compressLogFile();
 		}
 	}
 
@@ -119,10 +124,42 @@ private:
 		makeDateString(FILENAME_DATE);
 		string oldFilename = LATEST_LOG_FILE_NAME;
 		string newFilename = "until_" + makeDateString(FILENAME_DATE) + ".log";
-		if (std::rename(oldFilename.c_str(), newFilename.c_str()) != 0) {
+		return renameFile(oldFilename, newFilename);
+	}
+
+	bool renameFile(string oldName, string neName)
+	{
+		if (std::rename(oldName.c_str(), neName.c_str()) != 0) {
 			return false;
 		}
 		return true;
+	}
+
+	void compressLogFile()
+	{
+		string strDirName = "";
+		string logPattern = "until*.log";
+
+		WIN32_FIND_DATAA data;
+		HANDLE hFind;
+		vector<string> vecFiles;
+
+		if ((hFind = FindFirstFileA(logPattern.c_str(), &data)) != INVALID_HANDLE_VALUE)
+		{
+			do {
+				vecFiles.emplace_back(string(data.cFileName));
+			} while (FindNextFileA(hFind, &data) != 0);
+			FindClose(hFind);
+		}
+
+		if (vecFiles.size() <= LOG_FILE_THRESHOLD) return;
+		
+		for (int i = 0; i < vecFiles.size() - LOG_FILE_THRESHOLD; i++)
+		{
+			string oldFilename = vecFiles[i];
+			size_t pos = vecFiles[i].find(".log");
+			renameFile(oldFilename, vecFiles[i].replace(pos, 4, ".zip"));
+		}
 	}
 
 };
