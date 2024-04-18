@@ -45,7 +45,7 @@ private:
 	fstream log_fs;
 
 	static constexpr char LATEST_LOG_FILE_NAME[11] = "latest.log";
-	static constexpr int LIMIT_LOG_SIZE = 200;// 1024 * 10; // 10KB
+	static constexpr int LIMIT_LOG_SIZE = 1024 * 10; // 10KB
 	static constexpr int LOG_FILE_THRESHOLD = 3;
 	static constexpr int FORMAT_LENGTH = 40;
 
