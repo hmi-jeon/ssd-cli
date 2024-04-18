@@ -6,6 +6,8 @@
 #include <ctime>
 #include <iomanip>
 #include <sstream>
+#include <cstdio>
+
 #define  print(str) log(__FUNCTION__,str)
 
 using namespace std;
@@ -13,6 +15,11 @@ using namespace std;
 enum LoggerMode {
 	SHELL_MODE,
 	RUNNER_MODE
+};
+
+enum DateType {
+	LOG_DATE,
+	FILENAME_DATE
 };
 
 class Logger {
@@ -31,7 +38,7 @@ public:
 		if (makeLog(logBuffer, functionName, logMsg) == false) {
 			return;
 		}
-		saveLogger(logBuffer);
+		saveLog(logBuffer);
 		if (mode != RUNNER_MODE)
 			cout << logBuffer << endl;
 	}
@@ -47,23 +54,38 @@ private:
 	fstream log_fs;
 
 	static constexpr char LATEST_LOG_FILE_NAME[11] = "latest.log";
+	static constexpr char UNTIL_LOG_FILE_NAME[11] = "until.log";
 	static constexpr int LIMIT_LOG_SIZE = 200;// 1024 * 10; // 10KB
 
-
-	
-	streampos checkFileSize(const std::string& filename) {
-		std::ifstream file(filename, std::ios::binary);
-
-		if (!file.is_open()) {
-			return -1; // 에러 시 -1 반환
+	string makeDateString(DateType dateType) {
+		std::time_t now = std::time(nullptr);
+		std::tm* current_time = std::localtime(&now);
+		stringstream ss{};
+		switch (dateType)
+		{
+		case LOG_DATE:
+			ss << "[" << std::put_time(current_time, "%y.%m.%d %H:%M:%S") << "]";
+			break;
+		case FILENAME_DATE:
+			ss << std::put_time(current_time, "%y%m%d_%Hh%Mm%Ss");
+			break;
+		default:
+			ss << std::put_time(current_time, "%y.%m.%d %H:%M:%S");
 		}
+		return ss.str();
+	}
 
-		file.seekg(0, std::ios::end);
-		std::streampos size = file.tellg();
+	bool makeLog(string& logBuffer, string functionName, string logMsg) {
+		logBuffer = makeDateString(LOG_DATE) + functionName + ":" + logMsg;
+		return true;
+	}
 
-		file.close();
 
-		return size;
+	void saveLog(string logBuffer) {
+		checkLogFileSize(logBuffer.size());
+		openLogFile(log_fs, LATEST_LOG_FILE_NAME);
+		log_fs << logBuffer << endl;
+		log_fs.close();
 	}
 
 	bool openLogFile(fstream& log_fs, const std::string& filename) {
@@ -73,33 +95,33 @@ private:
 		}
 	}
 
-	void saveUntilLog()	{		
-		cout << "saveUntilLog : file size over" << endl;
-	}
-
-	void saveLogger(string logBuffer) {
-
-		streampos latestLogFilesize = checkFileSize(LATEST_LOG_FILE_NAME);
-		if(latestLogFilesize == -1) return;
-		if (static_cast<int>(latestLogFilesize) + logBuffer.size() > LIMIT_LOG_SIZE){
+	void checkLogFileSize(int logSize) {
+		int latestLogFilesize = checkFileSize(LATEST_LOG_FILE_NAME);
+		if (latestLogFilesize == -1) return;
+		if (latestLogFilesize + logSize > LIMIT_LOG_SIZE) {
 			saveUntilLog();
 		}
-
-		openLogFile(log_fs, LATEST_LOG_FILE_NAME);
-		log_fs << logBuffer << endl;
-		log_fs.close();
 	}
 
-	string makeDateString() {
-		std::time_t now = std::time(nullptr);
-		std::tm* current_time = std::localtime(&now);
-		stringstream ss{};
-		ss << "[" << std::put_time(current_time, "%y.%m.%d %H:%M:%S") << "]";
-		return ss.str();
+	int checkFileSize(const std::string& filename) {
+		std::ifstream file(filename, std::ios::binary);
+		if (!file.is_open()) {
+			return -1;
+		}
+		file.seekg(0, std::ios::end);
+		streampos size = file.tellg();
+		file.close();
+		return static_cast<int>(size);
 	}
 
-	bool makeLog(string& logBuffer, string functionName, string logMsg) {
-		logBuffer = makeDateString() + functionName + ":" + logMsg;
+	bool saveUntilLog() {
+		makeDateString(FILENAME_DATE);
+		string oldFilename = LATEST_LOG_FILE_NAME;
+		string newFilename = "until_" + makeDateString(FILENAME_DATE) + ".log";
+		if (std::rename(oldFilename.c_str(), newFilename.c_str()) != 0) {
+			return false;
+		}
 		return true;
 	}
+
 };
