@@ -9,7 +9,14 @@ public:
 		this->args = args;
 	};
 
-	void execute() override {
+	virtual bool execute() override {
+		if (!checkValidArguments())
+			return false;
 		exit(0);
+	}
+
+private:
+	virtual bool checkValidArguments() override {
+		return (args.size() == 1);
 	}
 };
