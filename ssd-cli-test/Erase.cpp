@@ -13,8 +13,7 @@ public:
 		if (!checkValidArguments())
 			return false;
 
-		string fileName = "ssd-cli.exe";
-		string command = fileName + " " + "E" + " " + args[1] + " " + args[2];
+		string command = APP_NAME + " " + "E" + " " + args[1] + " " + args[2];
 		system(command.c_str());
 
 		return true;
@@ -43,6 +42,4 @@ private:
 	bool _isMaxEraseSize(const int lba, const int size) {
 		return (lba + size <= MAX_LBA);
 	}
-
-	static constexpr int MAX_LBA = 100;
 };

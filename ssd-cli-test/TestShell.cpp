@@ -16,6 +16,7 @@
 #include "FullWrite.cpp"
 #include "Flush.cpp"
 #include "Erase.cpp"
+#include "EraseRange.cpp"
 #include "Logger.cpp"
 
 #define RUN_LIST "run_list.lst"
@@ -45,7 +46,7 @@ public:
 	}
 
 	bool checkExistcommand(string command) {
-		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE", "TESTAPP1", "TESTAPP2", "FLUSH", "ERASE"};
+		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE", "TESTAPP1", "TESTAPP2", "FLUSH", "ERASE", "ERASE_RANGE"};
 
 		if (find(commandList.begin(), commandList.end(), command) == commandList.end()) {
 			return false;
@@ -78,6 +79,7 @@ public:
 		else if (command == "FULLWRITE") icom = new FullWrite(args);
 		else if (command == "FLUSH") icom = new Flush(args);
 		else if (command == "ERASE") icom = new Erase(args);
+		else if (command == "ERASE_RANGE") icom = new EraseRange(args);
 
 		isValid = icom->execute();
 		if (isValid == false)

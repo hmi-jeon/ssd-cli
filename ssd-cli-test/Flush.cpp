@@ -21,6 +21,6 @@ public:
 
 private:
 	virtual bool checkValidArguments() override {
-		if (args.size() != 1) return false;
+		return (args.size() == 1);
 	}
 };
