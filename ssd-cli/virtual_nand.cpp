@@ -11,16 +11,16 @@ public :
 	}
 
 	string read(const int lba) {
-		char buffer[LBA_SIZE + 1]{};
-		_readFile(NAND_FILE_NAME, buffer, lba);	
-		return string(buffer);
+		char data[LBA_SIZE + 1]{};
+		_readFile(NAND_FILE_NAME, data, lba);
+		return string(data);
 	}
 
 	void write(const int lba, const string value) {
-		char buffer[NAND_SIZE + 1] = {};
-		_readFileAll(NAND_FILE_NAME, buffer);
-		_replaceData(&buffer[lba * LBA_SIZE], value.c_str(), LBA_SIZE);
-		_writeFile(NAND_FILE_NAME, buffer, NAND_SIZE);
+		char data[NAND_SIZE + 1] = {};
+		_readFileAll(NAND_FILE_NAME, data);
+		_replaceData(&data[lba * LBA_SIZE], value.c_str(), LBA_SIZE);
+		_writeFile(NAND_FILE_NAME, data, NAND_SIZE);
 	}
 
 	int getLBASize() const {
@@ -57,22 +57,22 @@ private:
 		fs_.close();
 	}
 
-	void _readFile(const string fileName, char buffer[], int lba) {
+	void _readFile(const string fileName, char data[], int lba) {
 		fs_.open(fileName.c_str(), ios_base::in);
 		fs_.seekg(lba * LBA_SIZE, ios_base::beg);
-		fs_.read(buffer, LBA_SIZE);
+		fs_.read(data, LBA_SIZE);
 		fs_.close();
 	}
 
-	void _readFileAll(const string fileName, char buffer[]) {
+	void _readFileAll(const string fileName, char data[]) {
 		fs_.open(fileName.c_str(), ios_base::in);
-		fs_.read(buffer, NAND_SIZE);
+		fs_.read(data, NAND_SIZE);
 		fs_.close();
 	}
 
-	void _writeFile(const string fileName, const char buffer[], int size) {
+	void _writeFile(const string fileName, const char data[], int size) {
 		fs_.open(fileName.c_str(), ios_base::out);
-		fs_.write(buffer, size);
+		fs_.write(data, size);
 		fs_.close();
 	}
 
