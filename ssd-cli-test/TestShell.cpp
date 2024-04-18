@@ -18,7 +18,6 @@
 #include "TestApp.cpp"
 #include "Flush.cpp"
 #include "Erase.cpp"
-#include "Logger.cpp"
 
 #define RUN_LIST "run_list.lst"
 #define TEST_PASS 0
