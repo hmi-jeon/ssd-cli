@@ -44,6 +44,9 @@ private:
 		else if (argc == 3 && cmdString[0]._Equal("R")) {
 			command = new Read();
 		}
+		else if (argc == 4 && cmdString[0]._Equal("E")) {
+			command = new Erase();
+		}
 
 		return command;
 	}
