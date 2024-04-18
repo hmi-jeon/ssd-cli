@@ -6,6 +6,8 @@
     <ClCompile Include="virtual_nand.cpp">
       <Filter>Nand</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
     <ClCompile Include="Command.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -20,5 +22,8 @@
     <ClInclude Include="inand.h">
       <Filter>Nand</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>

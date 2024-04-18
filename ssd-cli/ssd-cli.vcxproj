@@ -133,10 +133,10 @@
     <ClCompile Include="ssd.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ClInclude Include="inand.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="inand.h" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
