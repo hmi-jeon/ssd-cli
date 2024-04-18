@@ -16,8 +16,7 @@ public:
 			return false;
 
 		// ssd.exe call
-		string fileName = "ssd-cli.exe";
-		string command = fileName + " " + "R" + " " + args[1];
+		string command = APP_NAME + " " + "R" + " " + args[1];
 		system(command.c_str());
 
 		// result.txt open

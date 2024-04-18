@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <string>
 
 using namespace std;
 
@@ -38,4 +39,5 @@ protected:
 
 	string name;
 	vector<string> args;
+	const string APP_NAME = "ssd-cli.exe";
 };

@@ -13,8 +13,7 @@ public:
 		if (!checkValidArguments())
 			return false;
 
-		string fileName = "ssd-cli.exe";
-		string command = fileName + " " + "W" + " " + args[1] + " " + args[2];
+		string command = APP_NAME + " " + "W" + " " + args[1] + " " + args[2];
 		system(command.c_str());
 
 		return true;
