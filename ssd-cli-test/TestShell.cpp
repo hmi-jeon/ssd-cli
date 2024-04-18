@@ -14,6 +14,7 @@
 #include "Help.cpp"
 #include "FullRead.cpp"
 #include "FullWrite.cpp"
+#include "TestApp.cpp"
 #include "Flush.cpp"
 #include "Erase.cpp"
 #include "Logger.cpp"
@@ -44,31 +45,8 @@ public:
 		return argList;
 	}
 
-	bool checkExistcommand(string command) {
-		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE", "TESTAPP1", "TESTAPP2", "FLUSH", "ERASE"};
-
-		if (find(commandList.begin(), commandList.end(), command) == commandList.end()) {
-			return false;
-		}
-
-		return true;
-	}
-
 	void executeCommand() {
 		string command = args[0];
-		if (command == "TESTAPP1") {
-			//TestApp1
-			string appName = "FullWriteReadCompare.exe";
-			if (system(appName.c_str())) cout << "FAIL";
-			return;
-		}
-		if (command == "TESTAPP2") {
-			//TestApp2
-			string appName = "FullWriteReadCompare.exe";
-			if (system(appName.c_str())) cout << "FAIL";
-			return;
-		}
-
 		ICommand* icom{};
 		if (command == "WRITE") icom = new Write(args);
 		else if (command == "READ") icom = new Read(args);
@@ -76,8 +54,9 @@ public:
 		else if (command == "HELP") icom = new Help(args);
 		else if (command == "FULLREAD")	icom = new FullRead(args);
 		else if (command == "FULLWRITE") icom = new FullWrite(args);
-		else if (command == "FLUSH") icom = new Flush(args);
+    else if (command == "FLUSH") icom = new Flush(args);
 		else if (command == "ERASE") icom = new Erase(args);
+		else icom = new TestApp(args);
 
 		isValid = icom->execute();
 		if (isValid == false)
@@ -86,11 +65,6 @@ public:
 
 	void inputCommand(const string userInput) {
 		args = parsingInput(userInput);
-		isValid = checkExistcommand(args[0]);
-		if (isValid == false) {
-			_printInvalidCommand();
-			return;
-		}
 		executeCommand();
 	}
 

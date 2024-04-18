@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WriteAgingAndCompare.cpp">
+    <ClCompile Include="WRITE_AGING_AND_COMPARE.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

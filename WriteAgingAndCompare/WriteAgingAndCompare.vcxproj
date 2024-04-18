@@ -24,6 +24,7 @@
     <ProjectGuid>{2cf134d5-6e6c-4baf-b654-8183b30aa090}</ProjectGuid>
     <RootNamespace>WriteAgingAndCompare</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>WRITE_AGING_AND_COMPARE</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -127,7 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="WriteAgingAndCompare.cpp" />
+    <ClCompile Include="WRITE_AGING_AND_COMPARE.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

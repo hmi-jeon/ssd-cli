@@ -63,6 +63,7 @@ private:
 	
 	string makeDateString(DateType dateType) {
 		std::time_t now = std::time(nullptr);
+
 		std::tm current_time;
 		localtime_s(&current_time, &now);
 
