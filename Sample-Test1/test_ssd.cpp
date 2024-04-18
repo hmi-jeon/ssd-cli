@@ -48,6 +48,7 @@ public:
 
 protected:
 	MockNand nand;
+	Command* command;
 };
 
 class SsdVirtualNandTest : public SsdTest {
@@ -98,7 +99,8 @@ TEST_F(SsdMockNandTest, TestMockReadInvalidLBA) {
 	EXPECT_CALL(nand, read(101))
 		.Times(0);
 
-	ssd.read(101);
+	command = new Read();
+	command->execute(vector<string>{"R", "101"}, &nand);
 }
 
 TEST_F(SsdMockNandTest, TestMockRead) {
@@ -108,7 +110,8 @@ TEST_F(SsdMockNandTest, TestMockRead) {
 		.Times(1)
 		.WillOnce(Return(testString.substr(2)));
 
-	ssd.read(5);
+	command = new Read();
+	command->execute(vector<string>{"R", "5"}, &nand);
 
 	char* readData = (char*)malloc(LBA_SIZE + 3);
 	fs_.open(ssd.getResultFileName(), ios_base::in);
@@ -122,41 +125,50 @@ TEST_F(SsdMockNandTest, TestMockWriteInvalidLBA) {
 	EXPECT_CALL(nand, write(101, "12345667"))
 		.Times(0);
 
-	ssd.write(101, "0x12345667");
+	command = new Write();
+	command->execute(vector<string>{"W", "101", "0x12345667"}, &nand);
 }
 
 TEST_F(SsdMockNandTest, TestMockWriteInvalidValueSize) {
 	EXPECT_CALL(nand, write(5, "12"))
 		.Times(0);
 
-	ssd.write(5, "0x12");
+	command = new Write();
+	command->execute(vector<string>{"W", "5", "0x12"}, &nand);
 }
 
 TEST_F(SsdMockNandTest, TestMockWriteInvalidValueHex) {
 	EXPECT_CALL(nand, write(5, "1234566Z"))
 		.Times(0);
 
-	ssd.write(5, "0x1234566Z");
+	command = new Write();
+	command->execute(vector<string>{"W", "5", "0x1234566Z"}, &nand);
 }
 
 TEST_F(SsdMockNandTest, TestMockWriteInvalidValuePrefix) {
 	EXPECT_CALL(nand, write(5, "12345667"))
 		.Times(0);
 
-	ssd.write(5, "0b12345667");
+	command = new Write();
+	command->execute(vector<string>{"W", "5", "0b12345667"}, &nand);
 }
 
 TEST_F(SsdMockNandTest, TestMockWrite) {
 	EXPECT_CALL(nand, write(5, "12345667"))
 		.Times(1);
 
-	ssd.write(5, "0x12345667");
+	command = new Write();
+	command->execute(vector<string>{"W", "5", "0x12345667"}, &nand);
 }
 
 TEST_F(SsdVirtualNandTest, TestWriteAndRead) {
 	string testString = "0x11223354";
-	ssd.write(0, testString);
-	ssd.read(0);
+
+	Command* commandWrite = new Write();
+	Command* commandRead = new Read();
+
+	commandWrite->execute(vector<string>{"W", "0", testString}, &nand);
+	commandRead->execute(vector<string>{"R", "0"}, &nand);
 
 	char* readData = (char*)malloc(LBA_SIZE + 3);
 	fs_.open(ssd.getResultFileName(), ios_base::in);
