@@ -17,6 +17,7 @@
 #include "Erase.cpp"
 #include "Logger.cpp"
 
+#define RUN_LIST "run_list.lst"
 using namespace std;
 
 interface ISSD {
@@ -54,6 +55,18 @@ public:
 
 	void executeCommand() {
 		string command = args[0];
+		if (command == "TESTAPP1") {
+			//TestApp1
+			string appName = "FullWriteReadCompare.exe";
+			if(system(appName.c_str())) cout << "FAIL";
+			return;
+		}
+		if (command == "TESTAPP2") {
+			//TestApp2
+			string appName = "FullWriteReadCompare.exe";
+			if (system(appName.c_str())) cout << "FAIL";
+			return;
+		}
 
 		ICommand* icom{};
 		if (command == "WRITE"    ) icom = new Write(args);
@@ -82,6 +95,45 @@ public:
 	bool getIsValid() {
 		return isValid;
 	}
+
+	vector<string> getFlieData(string fileName) {
+		string filename(fileName);
+		vector<string> lines;
+		string line;
+
+		ifstream input_file(filename);
+
+		if (!input_file.is_open()) return lines;
+
+		while (getline(input_file, line)) {
+			lines.push_back(line);
+		}
+
+		input_file.close();
+
+		return lines;
+	}
+
+	void Runner() {
+		vector<string> TestFileList = getFlieData(RUN_LIST);
+
+		logger.setLoggerMode(RUNNER_MODE);
+
+		int TestResult = 1;
+
+		for (const string TestScenario : TestFileList) {
+
+			TestResult = system(TestScenario.c_str());
+
+			if (TestResult != 0) {
+				logger.print(TestScenario + "\t---\tRun...Fail!");
+				break;
+			}
+
+			logger.print(TestScenario + "\t---\tRun...Pass");
+		}
+	}
+
 protected:
 	void _printInvalidCommand() {
 		std::cout << "INVALID COMMAND" << std::endl;
