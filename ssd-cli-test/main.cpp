@@ -16,6 +16,9 @@ int main(int argc, char **argv, char **envp) {
 	while (ssdTestShell.getStatus()) {
 		cout << "> ";
 		cin.getline(userInput, 100);
+		if (userInput[0] == '\0') {
+			continue;
+		}
 		ssdTestShell.inputCommand(userInput);
 	}
 	
