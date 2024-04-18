@@ -17,6 +17,8 @@ enum LoggerMode {
 
 class Logger {
 public:
+	static constexpr char LATEST_LOG_FILE_NAME[11] = "latest.log";
+
 	static Logger& getInstance() {
 		static Logger instance;
 		return instance;
@@ -25,29 +27,32 @@ public:
 	void setLoggerMode(LoggerMode mode) {
 		this->mode = mode;
 	}
-
-	void saveLogger(string logBuffer)
-	{
-
+	bool openLogFile(fstream& log_fs, const std::string& filename) {
+		log_fs.open(filename, std::ios::out);
+		if (!log_fs.is_open()) {
+			return false;
+		}
+	}
+	void saveLogger(string logBuffer) {
+		openLogFile(log_fs, LATEST_LOG_FILE_NAME);
+		log_fs << logBuffer << endl;
+		log_fs.close();
 	}
 
-	string makeDateString()
-	{
+	string makeDateString() {
 		std::time_t now = std::time(nullptr);
 		std::tm* current_time = std::localtime(&now);
 		stringstream ss{};
-		ss << "[" << std::put_time(current_time, "%y.%m.%d %H:%M") << "]";
+		ss << "[" << std::put_time(current_time, "%y.%m.%d %H:%M:%S") << "]";
 		return ss.str();
 	}
 
-	bool makeLog(string& logBuffer, string functionName, string logMsg)
-	{
+	bool makeLog(string& logBuffer, string functionName, string logMsg) {
 		logBuffer = makeDateString() + functionName + ":" + logMsg;
 		return true;
 	}
 
-	void log(string functionName, string logMsg)
-	{
+	void log(string functionName, string logMsg) {
 		string logBuffer;
 		if (makeLog(logBuffer, functionName, logMsg) == false) {
 			return;
