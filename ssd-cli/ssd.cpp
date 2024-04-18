@@ -18,7 +18,7 @@ public:
 		vector<string> cmdString(argv + 1, argv + argc);
 		Command* command;
 
-		command = getCommandType(argc, argv);
+		command = _getCommandType(argc, argv);
 		if (command == nullptr) {
 			_printInvalidCommand();
 			return;
@@ -34,7 +34,7 @@ public:
 private:
 	static constexpr char RESULT_FILE_NAME[] = "result.txt";
 
-	Command* getCommandType(int argc, char* argv[]) {
+	Command* _getCommandType(int argc, char* argv[]) {
 		vector<string> cmdString(argv + 1, argv + argc);
 		Command* command = nullptr;
 

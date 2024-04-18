@@ -118,7 +118,7 @@ public:
 		int lba = stoi(cmdString[1]);
 		int size = stoi(cmdString[2]);
 
-		if (!_isValidLba(lba) || !isValidEraseSize(size)) {
+		if (!_isValidLba(lba) || !_isValidEraseSize(size)) {
 			_printInvalidCommand();
 			return;
 		}
@@ -131,7 +131,7 @@ public:
 private:
 	static constexpr int cmdSize = 3;
 
-	bool isValidEraseSize(int size) {
+	bool _isValidEraseSize(const int size) {
 		return (size > 0 && size <= 10);
 	}
 };
