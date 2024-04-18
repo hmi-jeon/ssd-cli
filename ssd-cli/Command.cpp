@@ -101,3 +101,37 @@ public:
 private:
 	static constexpr int cmdSize = 3;
 };
+
+class Erase : public Command {
+public:
+	virtual void execute(vector<string> cmdString, INAND* nand) override {
+		if (cmdString.size() != cmdSize) {
+			_printInvalidCommand();
+			return;
+		}
+
+		if (!isNumber(cmdString[1]) || !isNumber(cmdString[2])) {
+			_printInvalidCommand();
+			return;
+		}
+
+		int lba = stoi(cmdString[1]);
+		int size = stoi(cmdString[2]);
+
+		if (!_isValidLba(lba) || !isValidEraseSize(size)) {
+			_printInvalidCommand();
+			return;
+		}
+		
+		for (int i = 1; i <= size; i++) {
+			nand->write(lba + i, "00000000");
+		}
+	}
+
+private:
+	static constexpr int cmdSize = 3;
+
+	bool isValidEraseSize(int size) {
+		return (size > 0 && size <= 10);
+	}
+};
