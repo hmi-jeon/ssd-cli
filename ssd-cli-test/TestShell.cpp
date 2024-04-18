@@ -16,6 +16,7 @@
 #include "FullWrite.cpp"
 #include "Logger.cpp"
 
+#define RUN_LIST "run_list.lst"
 
 using namespace std;
 
@@ -93,6 +94,45 @@ public:
 	bool getIsValid() {
 		return isValid;
 	}
+
+	vector<string> getFlieData(string fileName) {
+		string filename(fileName);
+		vector<string> lines;
+		string line;
+
+		ifstream input_file(filename);
+
+		if (!input_file.is_open()) return lines;
+
+		while (getline(input_file, line)) {
+			lines.push_back(line);
+		}
+
+		input_file.close();
+
+		return lines;
+	}
+
+	void Runner() {
+		vector<string> TestFileList = getFlieData(RUN_LIST);
+
+		logger.setLoggerMode(RUNNER_MODE);
+
+		int TestResult = 1;
+
+		for (const string TestScenario : TestFileList) {
+
+			TestResult = system(TestScenario.c_str());
+
+			if (TestResult != 0) {
+				logger.print(TestScenario + "\t---\tRun...Fail!");
+				break;
+			}
+
+			logger.print(TestScenario + "\t---\tRun...Pass");
+		}
+	}
+
 protected:
 	void _printInvalidCommand() {
 		std::cout << "INVALID COMMAND" << std::endl;
