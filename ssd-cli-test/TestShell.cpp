@@ -14,11 +14,11 @@
 #include "Help.cpp"
 #include "FullRead.cpp"
 #include "FullWrite.cpp"
+#include "Logger.hpp"
 #include "TestApp.cpp"
 #include "Flush.cpp"
 #include "Erase.cpp"
 #include "EraseRange.cpp"
-#include "Logger.cpp"
 
 #define RUN_LIST "run_list.lst"
 #define TEST_PASS 0

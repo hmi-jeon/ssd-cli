@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "Logger.hpp"
 
 using namespace std;
 
@@ -38,6 +39,7 @@ protected:
 
 	string name;
 	vector<string> args;
+	Logger& logger = Logger::getInstance();
 	const string APP_NAME = "ssd-cli.exe";
 	static constexpr int MAX_LBA = 100;
 };
