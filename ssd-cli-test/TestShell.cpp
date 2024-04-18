@@ -17,7 +17,6 @@
 #include "Logger.cpp"
 
 
-
 using namespace std;
 
 interface ISSD {
@@ -96,6 +95,18 @@ public:
 
 	void executeCommand() {
 		string command = args[0];
+		if (command == "TESTAPP1") {
+			//TestApp1
+			string appName = "FullWriteReadCompare.exe";
+			if(system(appName.c_str())) cout << "FAIL";
+			return;
+		}
+		if (command == "TESTAPP2") {
+			//TestApp1
+			string appName = "FullWriteReadCompare.exe";
+			if (system(appName.c_str())) cout << "FAIL";
+			return;
+		}
 
 		ICommand* icom{};
 		if (command == "WRITE"    ) icom = new Write(args);
