@@ -96,9 +96,7 @@ public:
 
 	void executeCommand() {
 		string command = args[0];
-		int lba = -1;
-		string data;
-    
+
 		ICommand* icom{};
 		if (command == "WRITE"    ) icom = new Write(args);
 		if (command == "READ"     ) icom = new Read(args);
