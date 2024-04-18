@@ -22,11 +22,6 @@
 #define RUN_LIST "run_list.lst"
 using namespace std;
 
-interface ISSD {
-	virtual string read(const int lba) = 0;
-	virtual void write(const int lba, const string data) = 0;
-};
-
 class TestShell {
 public:
 	vector<string> parsingInput(const string inputString) {
@@ -45,7 +40,8 @@ public:
 		return argList;
 	}
 
-	void executeCommand() {
+	void executeCommand(const string userInput) {
+		args = parsingInput(userInput);
 		string command = args[0];
 		ICommand* icom{};
 		if (command == "WRITE") icom = new Write(args);
@@ -54,18 +50,13 @@ public:
 		else if (command == "HELP") icom = new Help(args);
 		else if (command == "FULLREAD")	icom = new FullRead(args);
 		else if (command == "FULLWRITE") icom = new FullWrite(args);
-    else if (command == "FLUSH") icom = new Flush(args);
+		else if (command == "FLUSH") icom = new Flush(args);
 		else if (command == "ERASE") icom = new Erase(args);
 		else icom = new TestApp(args);
 
 		isValid = icom->execute();
 		if (isValid == false)
 			_printInvalidCommand();
-	}
-
-	void inputCommand(const string userInput) {
-		args = parsingInput(userInput);
-		executeCommand();
 	}
 
 	vector<string> getFlieData(string fileName) {

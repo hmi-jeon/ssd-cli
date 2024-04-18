@@ -13,14 +13,19 @@ public:
 		this->args = args;
 	};
 
-	bool execute() override {
+	virtual bool execute() override {
+		if (!checkValidArguments())
+			return false;
+
 		string appName = args[0];
 		appName = appName + ".exe";
 		char fileName[100];
 		strcpy(fileName, appName.c_str());
 
-		if (access(fileName, 0) == -1) return false;
-		if (system(fileName)) return false;
+		if (access(fileName, 0) == -1)
+			return false;
+		if (system(fileName))
+			return false;
 
 		return true;
 	}

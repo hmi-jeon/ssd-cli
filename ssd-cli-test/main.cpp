@@ -21,7 +21,7 @@ int main(int argc, char **argv, char **envp) {
 			if (userInput[0] == '\0') {
 				continue;
 			}
-			ssdTestShell.inputCommand(userInput);
+			ssdTestShell.executeCommand(userInput);
 		}
 	}
 
