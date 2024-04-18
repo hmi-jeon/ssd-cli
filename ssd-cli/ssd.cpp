@@ -22,7 +22,7 @@ public:
 
 	void command(int argc, char* argv[]) {
 		vector<string> cmdString(argv + 1, argv + argc);
-		Command* command;
+		ICommand* command;
 
 		command = _getCommandType(argc, argv);
 		if (command == nullptr) {
@@ -45,9 +45,9 @@ private:
 	static constexpr char RESULT_FILE_NAME[] = "result.txt";
 	static constexpr char BUFFER_FILE_NAME[] = "buffer.txt";
 
-	Command* _getCommandType(int argc, char* argv[]) {
+	ICommand* _getCommandType(int argc, char* argv[]) {
 		vector<string> cmdString(argv + 1, argv + argc);
-		Command* command = nullptr;
+		ICommand* command = nullptr;
 
 		if (argc == 4 && cmdString[0]._Equal("W")) {
 			command = new Write();

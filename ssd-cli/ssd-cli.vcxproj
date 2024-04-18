@@ -133,7 +133,12 @@
     <ClCompile Include="ssd.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Erase.h" />
+    <ClInclude Include="Flush.h" />
+    <ClInclude Include="ICommand.h" />
     <ClInclude Include="inand.h" />
+    <ClInclude Include="Read.h" />
+    <ClInclude Include="Write.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

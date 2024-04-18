@@ -8,7 +8,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
     <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
-    <ClCompile Include="Command.cpp" />
+    <ClCompile Include="Command.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -17,10 +19,28 @@
     <Filter Include="Nand">
       <UniqueIdentifier>{58200bd8-4f88-4115-ae86-6a8dff2df51d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Command">
+      <UniqueIdentifier>{add3e881-545c-4d01-bd8c-2d0a6bdf9674}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inand.h">
       <Filter>Nand</Filter>
+    </ClInclude>
+    <ClInclude Include="Read.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Write.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Erase.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="Flush.h">
+      <Filter>Command</Filter>
+    </ClInclude>
+    <ClInclude Include="ICommand.h">
+      <Filter>Command</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
