@@ -54,25 +54,24 @@ private:
 	fstream log_fs;
 
 	static constexpr char LATEST_LOG_FILE_NAME[11] = "latest.log";
-	static constexpr char UNTIL_LOG_FILE_NAME[11] = "until.log";
 	static constexpr int LIMIT_LOG_SIZE = 200;// 1024 * 10; // 10KB
 
 	string makeDateString(DateType dateType) {
 		std::time_t now = std::time(nullptr);
-		std::tm* current_time;
-		localtime_s(current_time, &now);
+		std::tm current_time;
+		localtime_s(&current_time, &now);
 
 		stringstream ss{};
 		switch (dateType)
 		{
 		case LOG_DATE:
-			ss << "[" << std::put_time(current_time, "%y.%m.%d %H:%M:%S") << "]";
+			ss << "[" << std::put_time(&current_time, "%y.%m.%d %H:%M:%S") << "]";
 			break;
 		case FILENAME_DATE:
-			ss << std::put_time(current_time, "%y%m%d_%Hh%Mm%Ss");
+			ss << std::put_time(&current_time, "%y%m%d_%Hh%Mm%Ss");
 			break;
 		default:
-			ss << std::put_time(current_time, "%y.%m.%d %H:%M:%S");
+			ss << std::put_time(&current_time, "%y.%m.%d %H:%M:%S");
 		}
 		return ss.str();
 	}
