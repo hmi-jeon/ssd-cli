@@ -41,4 +41,5 @@ protected:
 	vector<string> args;
 	Logger& logger = Logger::getInstance();
 	const string APP_NAME = "ssd-cli.exe";
+	static constexpr int MAX_LBA = 100;
 };

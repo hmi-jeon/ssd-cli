@@ -35,6 +35,8 @@ private:
 		{ "FULLWRITE", "The input data is recorded in the entire LBA of the device. (ex. FULLWRITE 0x1234ABCD)" },
 		{ "TESTAPP1","Test the read and write functions of the entire LBA of the device. (ex. TESTAPP1)" },
 		{ "TESTAPP2","Test your device's ability to overwrite data. (ex. TESTAPP2)" },
-		{ "ERASE", "Deletes datas from a specific LBA to a specific size. (ex. ERASE 3 5)"}
+		{ "FLUSH", "The data in the write buffer are applied to the SSD." },
+		{ "ERASE", "Delete data from a specific LBA to a specific size. (ex. ERASE 3 5)"},
+		{ "ERASE_RANGE", "Delete data from startLBA to endLBA (ex. ERASE 20 25)"}
 	};
 };
