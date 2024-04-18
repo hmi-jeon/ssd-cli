@@ -53,64 +53,25 @@ public:
 		return true;
 	}
 
-	bool checkValidArguments(const vector<string> args) {
-		if (args.size() < 1)  return false;
-
-		string command = args[0];
-
-		if (command == "EXIT" || command == "HELP" || command == "FULLREAD" || command == "TESTAPP1" || command == "TESTAPP2") {
-			if (args.size() != 1) return false;
-		}
-
-		if (command == "READ") {
-			if (args.size() != 2) return false;
-			if (!_isValidLba(args[1])) return false;
-		}
-
-		if (command == "FULLWRITE") {
-			if (args.size() != 2) return false;
-			if (!_isValidValue(args[1])) return false;
-
-		}
-
-		if (command == "WRITE") {
-			if (args.size() != 3) return false;
-			if (!(_isValidLba(args[1]) && _isValidValue(args[2]))) return false;
-		}
-
-		return true;
-	}
-
-	bool checkInputValidation() {
-
-		if (checkExistcommand(args[0]) == false) {
-			return false;
-		}
-
-		if (checkValidArguments(args) == false) {
-			return false;
-		};
-
-		return true;
-	}
-
 	void executeCommand() {
 		string command = args[0];
 
 		ICommand* icom{};
 		if (command == "WRITE"    ) icom = new Write(args);
-		if (command == "READ"     ) icom = new Read(args);
-		if (command == "EXIT"     ) icom = new Exit(args);
-		if (command == "HELP"     ) icom = new Help(args);
-		if (command == "FULLREAD" )	icom = new FullRead(args);
-		if (command == "FULLWRITE") icom = new FullWrite(args);
+		else if (command == "READ"     ) icom = new Read(args);
+		else if (command == "EXIT"     ) icom = new Exit(args);
+		else if (command == "HELP"     ) icom = new Help(args);
+		else if (command == "FULLREAD" )	icom = new FullRead(args);
+		else if (command == "FULLWRITE") icom = new FullWrite(args);
 
-		icom->execute();
+		isValid = icom->execute();
+		if (isValid == false)
+			_printInvalidCommand();
 	}
 
 	void inputCommand(const string userInput) {
 		args = parsingInput(userInput);
-		isValid = checkInputValidation();
+		isValid = checkExistcommand(args[0]);
 		if (isValid == false) {
 			_printInvalidCommand();
 			return;
@@ -122,31 +83,6 @@ public:
 		return isValid;
 	}
 protected:
-	bool _isValidLba(const string lba) {
-		for (char c : lba) {
-			if (!std::isdigit(c)) {
-				return false;
-			}
-		}
-		int lbaDigit = stoi(lba);
-		return (lbaDigit >= 0 && lbaDigit < 100);
-	}
-
-	bool _isValidValue(const string value) {
-		if (value.size() != 10)
-			return false;
-
-		if (value.substr(0, 2) != "0x")
-			return false;
-
-		for (const char& c : value.substr(2)) {
-			if (!isxdigit(c)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	void _printInvalidCommand() {
 		std::cout << "INVALID COMMAND" << std::endl;
 	}

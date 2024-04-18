@@ -10,13 +10,22 @@ public:
 		this->args = args;
 	};
 
-	void execute() override {
+	virtual bool execute() override {
+		if (!checkValidArguments())
+			return false;
+
 		for (int i = 0; i < helps.size(); i++) {
 			cout << helps[i][0] << " : " << helps[i][1] << endl;
 		}
+
+		return true;
 	}
 
 private:
+	virtual bool checkValidArguments() override {
+		return (args.size() == 1);
+	}
+
 	vector<vector<string>> helps = {
 		{ "READ","Outputs data written to the LBA address value of the device. (ex. READ 3)" },
 		{ "WRITE","Records input data into the designated LBA of the device. (ex. WRITE 1 0x1234ABCD)" },

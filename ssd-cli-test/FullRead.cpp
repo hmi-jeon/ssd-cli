@@ -11,7 +11,10 @@ public:
 		this->args = args;
 	};
 
-	void execute() override {
+	virtual bool execute() override {
+		if (!checkValidArguments())
+			return false;
+
 		for (int lba = 0; lba < 100; lba++) {
 			callArgs.clear();
 			callArgs.push_back("READ");
@@ -20,8 +23,15 @@ public:
 			ICommand* com = new Read(callArgs);
 			com->execute();
 		}
+
+		return true;
 	}
+
 private:
+	virtual bool checkValidArguments() override {
+		return (args.size() == 1);
+	}
+
 	vector<string> callArgs;
 	const int MAX_SIZE = 100;
 };
