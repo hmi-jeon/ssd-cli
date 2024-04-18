@@ -59,7 +59,8 @@ private:
 	static constexpr char LATEST_LOG_FILE_NAME[11] = "latest.log";
 	static constexpr int LIMIT_LOG_SIZE = 200;// 1024 * 10; // 10KB
 	static constexpr int LOG_FILE_THRESHOLD = 3;
-
+	static constexpr int FORMAT_LENGTH = 40;
+	
 	string makeDateString(DateType dateType) {
 		std::time_t now = std::time(nullptr);
 		std::tm current_time;
@@ -81,10 +82,17 @@ private:
 	}
 
 	bool makeLog(string& logBuffer, string functionName, string logMsg) {
-		logBuffer = makeDateString(LOG_DATE) + functionName + ":" + logMsg;
+
+		logBuffer = makeDateString(LOG_DATE) + padString(functionName) + ":" + logMsg;
 		return true;
 	}
 
+	string padString(const string& input) {
+		if (input.length() >= FORMAT_LENGTH) {
+			return input;
+		}
+		return input + std::string(FORMAT_LENGTH - input.length(), ' ');
+	}
 
 	void saveLog(string logBuffer) {
 		checkLogFileSize(logBuffer.size());
