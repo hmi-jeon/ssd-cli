@@ -38,10 +38,10 @@ TEST_F(VirtualNandTest, CheckWriteTest) {
 
 	fs.open(strNandFileName, ios_base::in);
 	fs.seekg(lba * LBA_SIZE, ios_base::beg);
-	char* buffer = (char*)malloc(LBA_SIZE + 1);
-	fs.read(buffer, LBA_SIZE);
-	buffer[LBA_SIZE] = '\0';
-	EXPECT_EQ(string(buffer), TEST_DATA);
+	char* data = (char*)malloc(LBA_SIZE + 1);
+	fs.read(data, LBA_SIZE);
+	data[LBA_SIZE] = '\0';
+	EXPECT_EQ(string(data), TEST_DATA);
 }
 
 TEST_F(VirtualNandTest, WriteAndReadOneAddr)

@@ -100,7 +100,7 @@ TEST_F(SsdMockNandTest, TestMockReadInvalidLBA) {
 		.Times(0);
 
 	command = new Read();
-	command->execute(vector<string>{"R", "101"}, &nand);
+	command->execute(vector<string>{"R", "101"}, &nand, WriteBuffer());
 }
 
 TEST_F(SsdMockNandTest, TestMockRead) {
@@ -111,7 +111,7 @@ TEST_F(SsdMockNandTest, TestMockRead) {
 		.WillOnce(Return(testString.substr(2)));
 
 	command = new Read();
-	command->execute(vector<string>{"R", "5"}, &nand);
+	command->execute(vector<string>{"R", "5"}, &nand, WriteBuffer());
 
 	char* readData = (char*)malloc(LBA_SIZE + 3);
 	fs_.open(ssd.getResultFileName(), ios_base::in);
@@ -126,7 +126,7 @@ TEST_F(SsdMockNandTest, TestMockWriteInvalidLBA) {
 		.Times(0);
 
 	command = new Write();
-	command->execute(vector<string>{"W", "101", "0x12345667"}, &nand);
+	command->execute(vector<string>{"W", "101", "0x12345667"}, &nand, WriteBuffer());
 }
 
 TEST_F(SsdMockNandTest, TestMockWriteInvalidValueSize) {
@@ -134,7 +134,7 @@ TEST_F(SsdMockNandTest, TestMockWriteInvalidValueSize) {
 		.Times(0);
 
 	command = new Write();
-	command->execute(vector<string>{"W", "5", "0x12"}, &nand);
+	command->execute(vector<string>{"W", "5", "0x12"}, &nand, WriteBuffer());
 }
 
 TEST_F(SsdMockNandTest, TestMockWriteInvalidValueHex) {
@@ -142,7 +142,7 @@ TEST_F(SsdMockNandTest, TestMockWriteInvalidValueHex) {
 		.Times(0);
 
 	command = new Write();
-	command->execute(vector<string>{"W", "5", "0x1234566Z"}, &nand);
+	command->execute(vector<string>{"W", "5", "0x1234566Z"}, &nand, WriteBuffer());
 }
 
 TEST_F(SsdMockNandTest, TestMockWriteInvalidValuePrefix) {
@@ -150,7 +150,7 @@ TEST_F(SsdMockNandTest, TestMockWriteInvalidValuePrefix) {
 		.Times(0);
 
 	command = new Write();
-	command->execute(vector<string>{"W", "5", "0b12345667"}, &nand);
+	command->execute(vector<string>{"W", "5", "0b12345667"}, &nand, WriteBuffer());
 }
 
 TEST_F(SsdMockNandTest, TestMockWrite) {
@@ -158,17 +158,17 @@ TEST_F(SsdMockNandTest, TestMockWrite) {
 		.Times(1);
 
 	command = new Write();
-	command->execute(vector<string>{"W", "5", "0x12345667"}, &nand);
+	command->execute(vector<string>{"W", "5", "0x12345667"}, &nand, WriteBuffer());
 }
 
-TEST_F(SsdVirtualNandTest, TestWriteAndRead) {
+TEST_F(SsdVirtualNandTest, DISABLED_TestWriteAndRead) {
 	string testString = "0x11223354";
 
 	Command* commandWrite = new Write();
 	Command* commandRead = new Read();
 
-	commandWrite->execute(vector<string>{"W", "0", testString}, &nand);
-	commandRead->execute(vector<string>{"R", "0"}, &nand);
+	commandWrite->execute(vector<string>{"W", "0", testString}, &nand, WriteBuffer());
+	commandRead->execute(vector<string>{"R", "0"}, &nand, WriteBuffer());
 
 	char* readData = (char*)malloc(LBA_SIZE + 3);
 	fs_.open(ssd.getResultFileName(), ios_base::in);
@@ -177,3 +177,41 @@ TEST_F(SsdVirtualNandTest, TestWriteAndRead) {
 
 	EXPECT_EQ(string(readData), testString);
 }
+
+TEST_F(SsdVirtualNandTest, TestWriteAndReadSSD) {
+	string testString = "0x11223354";
+
+	const char* argv[] = { "app", "W", "1", testString.c_str() };
+	ssd.command(4, (char**)argv);
+
+	const char* argv2[] = { "app", "R", "1" };
+	ssd.command(3, (char**)argv2);
+
+	char* readData = (char*)malloc(LBA_SIZE + 3);
+	fs_.open(ssd.getResultFileName(), ios_base::in);
+	fs_.read(readData, LBA_SIZE + 2);
+	readData[LBA_SIZE + 2] = '\0';
+
+	EXPECT_EQ(string(readData), testString);
+}
+
+TEST_F(SsdVirtualNandTest, TestWriteAndReadSSD_10times) {
+	string testString = "0x11223354";
+
+	for (int cnt = 0; cnt < 10; ++cnt) {
+		const char* argv[] = { "app", "W", "1", testString.c_str() };
+		ssd.command(4, (char**)argv);
+	}
+
+	const char* argv2[] = { "app", "R", "1" };
+	ssd.command(3, (char**)argv2);
+
+	char* readData = (char*)malloc(LBA_SIZE + 3);
+	fs_.open(ssd.getResultFileName(), ios_base::in);
+	fs_.read(readData, LBA_SIZE + 2);
+	readData[LBA_SIZE + 2] = '\0';
+
+	EXPECT_EQ(string(readData), testString);
+}
+
+
