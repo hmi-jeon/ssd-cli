@@ -26,16 +26,9 @@ public:
 
 		command->execute(cmdString, nand_, buffer_);
 
-		fstream fs;
-		fs.open(BUFFER_FILE_NAME, ios_base::out);
-		fs.write(to_string(buffer_.cnt).c_str(), 1);
-		for (int idx = 0; idx < 100; ++idx) {
-			fs.write(to_string(buffer_.dirty[idx]).c_str(), 1);
-		}
-		for (int idx = 0; idx < 100; ++idx) {
-			fs.write(buffer_.data[idx].c_str(), 8);
-		}
-		fs.close();
+		_openBufferFile(ios_base::out);
+		_writeToBufferFile();
+		_closeBufferFile();
 	}
 
 	string getResultFileName() const {
@@ -43,15 +36,9 @@ public:
 	}
 
 private:
-	enum COMMAND {
-		eREAD,
-		eWRITE,
-		eERASE,
-		eFLUSH,
-	};
-
 	static constexpr char RESULT_FILE_NAME[] = "result.txt";
 	static constexpr char BUFFER_FILE_NAME[] = "buffer.txt";
+	static constexpr int BUFFER_FILE_SIZE = 1 + 100 + 800;
 
 	Command* _getCommandType(int argc, char* argv[]) {
 		vector<string> cmdString(argv + 1, argv + argc);
@@ -75,35 +62,75 @@ private:
 	}
 
 	void _initBuffer() {
-		fstream fs;
-		fs.open(BUFFER_FILE_NAME, ios_base::in);
-		if (fs.is_open() == false) {
-			fs.open(BUFFER_FILE_NAME, ios_base::out);
-			fs.write(to_string(buffer_.cnt).c_str(), 1);
-			for (int idx = 0; idx < 100; ++idx) {
-				fs.write(to_string(buffer_.dirty[idx]).c_str(), 1);
-			}
-			for (int idx = 0; idx < 100; ++idx) {
-				buffer_.data[idx] = "00000000";
-				fs.write(buffer_.data[idx].c_str(), 8);
-			}
+		_openBufferFile(ios_base::in);
+		if (_isBufferFileOpened() == false) {
+			_openBufferFile(ios_base::out);
+			_resetWriteBuffer();
+			_writeToBufferFile();
 		}
 		else {
-			char temp[1 + 100 + 800 + 1] = {};
-			fs.read(temp, 1 + 100 + 800);
-			string fileData(temp);
-			buffer_.cnt = stoi(fileData.substr(0,1));
-			int idx = 1;
-			for (int cnt = 0; cnt < 100; ++cnt, ++idx) {
-				buffer_.dirty[cnt] = stoi(fileData.substr(idx, 1));
-			}
-			for (int cnt = 0; cnt < 100; ++cnt, idx += 8) {
-				buffer_.data[cnt] = fileData.substr(idx, 8);
-			}
+			_readDataFromBufferFile();
 		}
-		fs.close();
+		_closeBufferFile();
+	}
+
+	void _openBufferFile(ios_base::openmode mode) {
+		fs_.open(BUFFER_FILE_NAME, mode);
+	}
+
+	bool _isBufferFileOpened() {
+		return fs_.is_open();
+	}
+
+	void _closeBufferFile() {
+		fs_.close();
+	}
+
+	void _writeBufferCount() {
+		fs_.write(to_string(buffer_.cnt).c_str(), 1);
+	}
+
+	void _writeBufferDirtyBit() {
+		for (int idx = 0; idx < 100; ++idx) {
+			fs_.write(to_string(buffer_.dirty[idx]).c_str(), 1);
+		}
+	}
+
+	void _writeBufferData() {
+		for (int idx = 0; idx < 100; ++idx) {
+			fs_.write(buffer_.data[idx].c_str(), 8);
+		}
+	}
+
+	void _writeToBufferFile() {
+		_writeBufferCount();
+		_writeBufferDirtyBit();
+		_writeBufferData();
+	}
+
+	void _resetWriteBuffer() {
+		buffer_.cnt = 0;
+		for (int idx = 0; idx < 100; ++idx) {
+			buffer_.dirty[idx] = 0;
+			buffer_.data[idx] = "00000000";
+		}
+	}
+
+	void _readDataFromBufferFile() {
+		char temp[BUFFER_FILE_SIZE + 1] = {};
+		fs_.read(temp, BUFFER_FILE_SIZE);
+		string fileData(temp);
+		buffer_.cnt = stoi(fileData.substr(0, 1));
+		int idx = 1;
+		for (int cnt = 0; cnt < 100; ++cnt, ++idx) {
+			buffer_.dirty[cnt] = stoi(fileData.substr(idx, 1));
+		}
+		for (int cnt = 0; cnt < 100; ++cnt, idx += 8) {
+			buffer_.data[cnt] = fileData.substr(idx, 8);
+		}
 	}
 
 	INAND* nand_;
 	WriteBuffer buffer_;
+	fstream fs_;
 };

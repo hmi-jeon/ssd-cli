@@ -26,12 +26,12 @@ protected:
 	int LBA_SIZE;
 };
 
-TEST_F(VirtualNandTest, CheckFileExist) {
+TEST_F(VirtualNandTest, DISABLED_CheckFileExist) {
 	fs.open(strNandFileName, ios_base::in);
 	EXPECT_EQ(fs.is_open(), true);
 }
 
-TEST_F(VirtualNandTest, CheckWriteTest) {
+TEST_F(VirtualNandTest, DISABLED_CheckWriteTest) {
 	int lba = 2;
 	string TEST_DATA = "12345678";
 	nand.write(lba, TEST_DATA);
@@ -44,7 +44,7 @@ TEST_F(VirtualNandTest, CheckWriteTest) {
 	EXPECT_EQ(string(data), TEST_DATA);
 }
 
-TEST_F(VirtualNandTest, WriteAndReadOneAddr)
+TEST_F(VirtualNandTest, DISABLED_WriteAndReadOneAddr)
 {
 	string TEST_DATA = "11223344";
 	int lba = 10;

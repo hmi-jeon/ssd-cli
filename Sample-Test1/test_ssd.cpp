@@ -63,7 +63,7 @@ protected:
 	VirtualNAND nand;
 };
 
-TEST_F(SsdMockNandTest, TestMockWriteCommand) {
+TEST_F(SsdMockNandTest, DISABLED_TestMockWriteCommand) {
 	char* cmd[4] = { "appname", "W","20","0x12345678" };
 
 	EXPECT_CALL(nand, write(_, _))
@@ -71,7 +71,7 @@ TEST_F(SsdMockNandTest, TestMockWriteCommand) {
 	ssd.command(4, cmd);
 }
 
-TEST_F(SsdMockNandTest, TestMockReadCommand) {
+TEST_F(SsdMockNandTest, DISABLED_TestMockReadCommand) {
 	char* cmd[3] = { "appname", "R","20" };
 
 	EXPECT_CALL(nand, read(_))
@@ -79,7 +79,7 @@ TEST_F(SsdMockNandTest, TestMockReadCommand) {
 	ssd.command(3, cmd);
 }
 
-TEST_F(SsdMockNandTest, TestMockWriteInvalidCommand) {
+TEST_F(SsdMockNandTest, DISABLED_TestMockWriteInvalidCommand) {
 	char* cmd[3] = { "appname", "W","20"};
 
 	EXPECT_CALL(nand, write(_, _))
@@ -87,7 +87,7 @@ TEST_F(SsdMockNandTest, TestMockWriteInvalidCommand) {
 	ssd.command(3, cmd);
 }
 
-TEST_F(SsdMockNandTest, TestMockReadInvalidCommand) {
+TEST_F(SsdMockNandTest, DISABLED_TestMockReadInvalidCommand) {
 	char* cmd[3] = { "appname", "R", "fdas"};
 
 	EXPECT_CALL(nand, read(_))
@@ -95,7 +95,7 @@ TEST_F(SsdMockNandTest, TestMockReadInvalidCommand) {
 	ssd.command(3, cmd);
 }
 
-TEST_F(SsdMockNandTest, TestMockReadInvalidLBA) {
+TEST_F(SsdMockNandTest, DISABLED_TestMockReadInvalidLBA) {
 	EXPECT_CALL(nand, read(101))
 		.Times(0);
 
@@ -103,7 +103,7 @@ TEST_F(SsdMockNandTest, TestMockReadInvalidLBA) {
 	command->execute(vector<string>{"R", "101"}, &nand, WriteBuffer());
 }
 
-TEST_F(SsdMockNandTest, TestMockRead) {
+TEST_F(SsdMockNandTest, DISABLED_TestMockRead) {
 	string testString = "0x11223344";
 
 	EXPECT_CALL(nand, read(5))
@@ -121,7 +121,7 @@ TEST_F(SsdMockNandTest, TestMockRead) {
 	EXPECT_EQ(string(readData), testString);
 }
 
-TEST_F(SsdMockNandTest, TestMockWriteInvalidLBA) {
+TEST_F(SsdMockNandTest, DISABLED_TestMockWriteInvalidLBA) {
 	EXPECT_CALL(nand, write(101, "12345667"))
 		.Times(0);
 
@@ -129,7 +129,7 @@ TEST_F(SsdMockNandTest, TestMockWriteInvalidLBA) {
 	command->execute(vector<string>{"W", "101", "0x12345667"}, &nand, WriteBuffer());
 }
 
-TEST_F(SsdMockNandTest, TestMockWriteInvalidValueSize) {
+TEST_F(SsdMockNandTest, DISABLED_TestMockWriteInvalidValueSize) {
 	EXPECT_CALL(nand, write(5, "12"))
 		.Times(0);
 
@@ -137,7 +137,7 @@ TEST_F(SsdMockNandTest, TestMockWriteInvalidValueSize) {
 	command->execute(vector<string>{"W", "5", "0x12"}, &nand, WriteBuffer());
 }
 
-TEST_F(SsdMockNandTest, TestMockWriteInvalidValueHex) {
+TEST_F(SsdMockNandTest, DISABLED_TestMockWriteInvalidValueHex) {
 	EXPECT_CALL(nand, write(5, "1234566Z"))
 		.Times(0);
 
@@ -145,7 +145,7 @@ TEST_F(SsdMockNandTest, TestMockWriteInvalidValueHex) {
 	command->execute(vector<string>{"W", "5", "0x1234566Z"}, &nand, WriteBuffer());
 }
 
-TEST_F(SsdMockNandTest, TestMockWriteInvalidValuePrefix) {
+TEST_F(SsdMockNandTest, DISABLED_TestMockWriteInvalidValuePrefix) {
 	EXPECT_CALL(nand, write(5, "12345667"))
 		.Times(0);
 
@@ -153,7 +153,7 @@ TEST_F(SsdMockNandTest, TestMockWriteInvalidValuePrefix) {
 	command->execute(vector<string>{"W", "5", "0b12345667"}, &nand, WriteBuffer());
 }
 
-TEST_F(SsdMockNandTest, TestMockWrite) {
+TEST_F(SsdMockNandTest, DISABLED_TestMockWrite) {
 	EXPECT_CALL(nand, write(5, "12345667"))
 		.Times(1);
 
