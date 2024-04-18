@@ -14,6 +14,7 @@
 #include "Help.cpp"
 #include "FullRead.cpp"
 #include "FullWrite.cpp"
+#include "Flush.cpp"
 #include "Logger.cpp"
 
 #define RUN_LIST "run_list.lst"
@@ -75,7 +76,7 @@ public:
 		else if (command == "HELP") icom = new Help(args);
 		else if (command == "FULLREAD")	icom = new FullRead(args);
 		else if (command == "FULLWRITE") icom = new FullWrite(args);
-		else if (command == "FLUSH") icom = new FullWrite(args);
+		else if (command == "FLUSH") icom = new Flush(args);
 
 		isValid = icom->execute();
 		if (isValid == false)
