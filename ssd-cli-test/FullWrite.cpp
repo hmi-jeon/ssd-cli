@@ -12,6 +12,7 @@ public:
 
 	void execute() override {
 		for (int lba = 0; lba < MAX_SIZE; lba++) {
+			callArgs.clear();
 			callArgs.push_back("WRITE");
 			callArgs.push_back(to_string(lba));
 			callArgs.push_back(args[1]);
