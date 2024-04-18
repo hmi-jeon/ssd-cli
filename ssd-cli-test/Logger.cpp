@@ -2,6 +2,11 @@
 #include <iostream>
 using namespace std;
 
+enum LoggerMode {
+	SHELL_MODE,
+	RUNNER_MODE
+};
+
 class Logger {
 public:
 	static Logger& getInstance() {
@@ -9,7 +14,11 @@ public:
 		return instance;
 	}
 
-	void log(string logMsg)
+	void setLoggerMode(LoggerMode mode) {
+		this->mode = mode;
+	}
+
+	void print(string logMsg)
 	{
 		cout << "[currectTime] FunctionName() :" << logMsg << endl;
 	}
@@ -18,7 +27,7 @@ private:
 	Logger() {
 
 	}
-
+	LoggerMode mode = SHELL_MODE;
 	Logger(const Logger&) = delete;
 	Logger& operator=(const Logger&) = delete;
 

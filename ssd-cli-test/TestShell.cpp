@@ -140,7 +140,7 @@ public:
 		}
 
 		if (command == "EXIT") {
-			logger.log("EXIT");
+			logger.print("EXIT");
 			exit();
 		}
 
