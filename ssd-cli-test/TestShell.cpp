@@ -123,13 +123,14 @@ public:
 		int TestResult = TEST_FAIL;
 
 		for (const string TestScenario : TestFileList) {
+			cout << TestScenario + "\t---\tRun...";
 			TestResult = system(TestScenario.c_str());
 			if (TestResult != TEST_PASS) {
-				cout << TestScenario + "\t---\tRun...Fail!" << endl;
+				cout << "Fail!" << endl;
 				break;
 			}
 
-			cout << TestScenario + "\t---\tRun...Pass" << endl;
+			cout << "Pass" << endl;
 		}
 	}
 
