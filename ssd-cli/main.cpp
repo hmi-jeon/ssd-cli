@@ -5,6 +5,7 @@
 int main(int argc, char* argv[]) {
 	VirtualNAND nand;
 	SSD ssd(&nand);
+	ssd.init();
 	ssd.command(argc, argv);
 
 	return 0;
