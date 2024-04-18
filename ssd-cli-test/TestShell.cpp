@@ -91,10 +91,6 @@ public:
 		executeCommand();
 	}
   
-	bool getIsValid() {
-		return isValid;
-	}
-
 	vector<string> getFlieData(string fileName) {
 		string filename(fileName);
 		vector<string> lines;
