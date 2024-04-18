@@ -13,6 +13,7 @@ public:
 
 	void execute() override {
 		for (int lba = 0; lba < 100; lba++) {
+			callArgs.clear();
 			callArgs.push_back("READ");
 			callArgs.push_back(to_string(lba));
 
