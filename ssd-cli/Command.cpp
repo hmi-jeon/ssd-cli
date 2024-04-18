@@ -151,7 +151,7 @@ public:
 			return;
 		}
 		
-		for (int i = 1; i <= size; i++) {
+		for (int i = 0; i < size; i++) {
 			nand->write(lba + i, "00000000");
 		}
 	}
