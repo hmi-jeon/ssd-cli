@@ -2,21 +2,25 @@
 #include "ICommand.cpp"
 #include <vector>
 
-class Exit : public ICommand {
+class Flush : public ICommand {
 public:
-	Exit(vector<string> args) {
-		this->name = "EXIT";
+	Flush(vector<string> args) {
+		this->name = "FLUSH";
 		this->args = args;
 	};
 
 	virtual bool execute() override {
 		if (!checkValidArguments())
 			return false;
-		exit(0);
+
+		string command = APP_NAME + " " + "F";
+		system(command.c_str());
+
+		return true;
 	}
 
 private:
 	virtual bool checkValidArguments() override {
-		return (args.size() == 1);
+		if (args.size() != 1) return false;
 	}
 };
