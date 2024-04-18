@@ -243,4 +243,36 @@ TEST_F(SsdVirtualNandTest, TestEraseSSD) {
 	EXPECT_EQ(string(readData), string("0x00000000"));
 }
 
+TEST_F(SsdVirtualNandTest, TestFlushSSD) {
+	string testString = "0x11223354";
+
+	char* argv[] = { "app", "E", "0", "5" };
+	ssd.command(4, argv);
+
+	char* argv2[] = { "app", "F" };
+	ssd.command(2, argv2);
+
+	char* argv3[] = { "app", "W", "2", (char*)testString.c_str() };
+	ssd.command(4, argv3);
+
+	char* nandData = (char*)malloc(LBA_SIZE + 1);
+	fs_.open("nand.txt", ios_base::in);
+	fs_.seekg(2 * LBA_SIZE, ios_base::beg);
+	fs_.read(nandData, LBA_SIZE);
+	fs_.close();
+	nandData[LBA_SIZE] = '\0';
+
+	EXPECT_EQ(string(nandData), string("00000000"));
+	
+	ssd.command(2, argv2);
+
+	fs_.open("nand.txt", ios_base::in);
+	fs_.seekg(2 * LBA_SIZE, ios_base::beg);
+	fs_.read(nandData, LBA_SIZE);
+	fs_.close();
+	nandData[LBA_SIZE] = '\0';
+
+	EXPECT_EQ(string(nandData), testString.substr(2));
+}
+
 
