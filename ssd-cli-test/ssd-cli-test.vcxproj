@@ -127,14 +127,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Exit.cpp" />
+    <ClCompile Include="FullRead.cpp" />
+    <ClCompile Include="FullWrite.cpp" />
+    <ClCompile Include="Help.cpp" />
+    <ClCompile Include="ICommand.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Read.cpp" />
     <ClCompile Include="TestShell.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <ClCompile Include="Write.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="result.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
