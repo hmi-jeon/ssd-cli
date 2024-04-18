@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <string>
+#include "Logger.hpp"
 
 using namespace std;
 
@@ -12,4 +13,5 @@ public:
 protected :
 	string name;
 	vector<string> args;
+	Logger& logger = Logger::getInstance();
 };
