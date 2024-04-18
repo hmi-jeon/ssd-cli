@@ -14,10 +14,10 @@
 #include "Help.cpp"
 #include "FullRead.cpp"
 #include "FullWrite.cpp"
+#include "Erase.cpp"
 #include "Logger.cpp"
 
 #define RUN_LIST "run_list.lst"
-
 using namespace std;
 
 interface ISSD {
@@ -44,7 +44,7 @@ public:
 	}
 
 	bool checkExistcommand(string command) {
-		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE", "TESTAPP1", "TESTAPP2"};
+		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE", "TESTAPP1", "TESTAPP2", "ERASE"};
 
 		if (find(commandList.begin(), commandList.end(), command) == commandList.end()) {
 			return false;
@@ -75,6 +75,7 @@ public:
 		else if (command == "HELP"     ) icom = new Help(args);
 		else if (command == "FULLREAD" )	icom = new FullRead(args);
 		else if (command == "FULLWRITE") icom = new FullWrite(args);
+		else if (command == "ERASE") icom = new Erase(args);
 
 		isValid = icom->execute();
 		if (isValid == false)
@@ -137,6 +138,7 @@ protected:
 	void _printInvalidCommand() {
 		std::cout << "INVALID COMMAND" << std::endl;
 	}
+
 	Logger& logger = Logger::getInstance();
 	bool isValid = false;
 	vector<string> args;
