@@ -11,7 +11,7 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-	string fileName = "ssd-cli.exe";
+	string fileName = "ssd.exe";
 	string oldTtestData = "0xAAAABBBB";
 	string newTtestData = "0x12345678";
 	string command = "";

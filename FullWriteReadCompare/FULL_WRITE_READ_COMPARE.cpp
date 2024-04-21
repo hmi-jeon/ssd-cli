@@ -10,7 +10,7 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
-	string fileName = "ssd-cli.exe";
+	string fileName = "ssd.exe";
 	string testData = "0x12345678";
 	string command = "";
 

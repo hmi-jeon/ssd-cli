@@ -24,6 +24,7 @@
     <ProjectGuid>{6a6e2856-02dd-4ae3-afe4-5ebc6c75fb69}</ProjectGuid>
     <RootNamespace>ssdcli</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>ssd</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
