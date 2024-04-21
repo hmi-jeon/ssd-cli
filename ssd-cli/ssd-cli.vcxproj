@@ -128,9 +128,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Command.cpp" />
+    <ClCompile Include="Erase.cpp" />
+    <ClCompile Include="Flush.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Read.cpp" />
     <ClCompile Include="virtual_nand.cpp" />
     <ClCompile Include="ssd.cpp" />
+    <ClCompile Include="Write.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="inand.h" />

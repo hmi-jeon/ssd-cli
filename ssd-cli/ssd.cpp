@@ -4,6 +4,10 @@
 #include <fstream>
 #include "inand.h"
 #include "Command.cpp"
+#include "Read.cpp"
+#include "Write.cpp"
+#include "Erase.cpp"
+#include "Flush.cpp"
 
 using namespace std;
 
