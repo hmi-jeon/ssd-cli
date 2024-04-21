@@ -3,6 +3,10 @@
 
 class Flush : public ICommand {
 public:
+	virtual string getCommandCode() const override {
+		return COMMAND_CODE;
+	}
+
 	virtual void execute(vector<string> cmdString, INAND* nand, WriteBuffer& buffer) override {
 		if (cmdString.size() != cmdSize) {
 			_printInvalidCommand();
@@ -20,4 +24,5 @@ public:
 
 private:
 	static constexpr int cmdSize = 1;
+	static constexpr char COMMAND_CODE[] = "F";
 };
