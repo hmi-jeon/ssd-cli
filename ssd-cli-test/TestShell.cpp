@@ -48,6 +48,12 @@ public:
 			}
 		}
 	}
+
+protected:
+	Logger& logger = Logger::getInstance();
+	bool isValid = false;
+	vector<string> args;
+
 	vector<string> parsingInput(const string inputString) {
 		stringstream ss(inputString);
 		vector<string> argList;
@@ -120,9 +126,4 @@ public:
 			cout << "Pass" << endl;
 		}
 	}
-
-protected:
-	Logger& logger = Logger::getInstance();
-	bool isValid = false;
-	vector<string> args;
 };
