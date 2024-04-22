@@ -3,7 +3,7 @@
 #include <vector>
 #include "Write.cpp"
 
-class FullWrite : public ICommand {
+class FullWrite : public Write {
 public:
 	FullWrite() {
 		this->name = "FULLWRITE";
@@ -14,13 +14,7 @@ public:
 			return false;
 
 		for (int lba = 0; lba < MAX_LBA; lba++) {
-			callArgs.clear();
-			callArgs.push_back("WRITE");
-			callArgs.push_back(to_string(lba));
-			callArgs.push_back(args[1]);
-
-			ICommand* com = new Write();
-			com->execute(callArgs);
+			_doWrite(lba, args[1]);
 		}
 
 		return true;
