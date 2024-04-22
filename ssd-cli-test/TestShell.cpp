@@ -11,7 +11,6 @@
 #include "ICommand.cpp"
 #include "Logger.hpp"
 
-#define RUN_LIST "run_list.lst"
 #define TEST_PASS 0
 #define TEST_FAIL 1
 
@@ -23,22 +22,16 @@ public:
 
 	void prompt(int argc, char* argv[])
 	{
-		if (argc == 2) {
-			string firstArg = argv[1];
-			if (firstArg == RUN_LIST) Runner();
-		}
-
-		if (argc == 1) {
-			char userInput[100];
-
-			while (1) {
-				cout << "> ";
-				cin.getline(userInput, 100);
-				if (userInput[0] == '\0') {
-					continue;
-				}
-				executeCommand(userInput);
-			}
+		switch (argc)
+		{
+		case 1:
+			userInputMode();
+			break;
+		case 2:
+			runnerMode(argv[1]);
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -98,8 +91,20 @@ protected:
 		return lines;
 	}
 
-	void Runner() {
-		vector<string> TestFileList = getFlieData(RUN_LIST);
+	void userInputMode() {
+		const int BUF_SIZE = 100;
+		char userInput[BUF_SIZE];
+
+		while (1) {
+			cout << "> ";
+			cin.getline(userInput, BUF_SIZE);
+			if (userInput[0] == '\0') continue;
+			executeCommand(userInput);
+		}
+	}
+
+	void runnerMode(const string filename) {
+		vector<string> TestFileList = getFlieData(filename);
 
 		logger.setLoggerMode(RUNNER_MODE);
 		logger.print("[Runner Mode Start]");
