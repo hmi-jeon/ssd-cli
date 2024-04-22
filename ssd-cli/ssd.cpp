@@ -28,15 +28,13 @@ public:
 	}
 
 	void command(int argc, char* argv[]) {
-		vector<string> cmdString(argv + 1, argv + argc);
-		ICommand* command;
-
-		command = _getCommandType(argc, argv);
+		ICommand* command = _getCommandType(argc, argv);
 		if (command == nullptr) {
 			_printInvalidCommand();
 			return;
 		}
 
+		vector<string> cmdString(argv + 1, argv + argc);
 		command->execute(cmdString, nand_, buffer_);
 
 		_openBufferFile(ios_base::out);
