@@ -122,11 +122,11 @@ protected:
 
 		logger.setLoggerMode(RUNNER_MODE);
 		logger.print("[Runner Mode Start]");
-		executeTestSenario(TestFileList);
+		executeTestScenario(TestFileList);
 		logger.print("[Runner Mode End]");
 	}
 
-	void executeTestSenario(vector<string> TestFileList) {
+	void executeTestScenario(vector<string> TestFileList) {
 		int TestResult = TEST_FAIL;
 		string command;
 
