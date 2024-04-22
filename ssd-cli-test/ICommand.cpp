@@ -10,6 +10,9 @@ class ICommand {
 public:
 	virtual bool execute(vector<string> args) = 0;
 	virtual bool checkValidArguments(vector<string> args) = 0;
+	string getCommandName() const {
+		return name;
+	}
 
 protected:
 	bool _isValidLba(const string lba) {
