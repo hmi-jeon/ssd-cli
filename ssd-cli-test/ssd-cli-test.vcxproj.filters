@@ -74,6 +74,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="run_list.lst">
+      <Filter>리소스 파일</Filter>
+    </None>
+    <None Include="run_list_fail_senario.lst">
+      <Filter>리소스 파일</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Logger.hpp">
