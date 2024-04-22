@@ -16,13 +16,13 @@ public:
 
 		return true;
 	}
-
-private:
+protected:
 	void _doWrite(int lba, string data) {
 		string command = APP_NAME + " " + "W" + " " + to_string(lba) + " " + data;
 		system(command.c_str());
 	}
 
+private:
 	virtual bool checkValidArguments(vector<string> args) override {
 		if (args.size() != 3) return false;
 		return _isValidLba(args[1]) && _isValidValue(args[2]);
