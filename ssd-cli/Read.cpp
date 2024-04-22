@@ -1,7 +1,7 @@
 #pragma once
-#include "Command.cpp"
+#include "ICommand.h"
 
-class Read : public Command {
+class Read : public ICommand {
 public:
 	virtual void execute(vector<string> cmdString, INAND* nand, WriteBuffer& buffer) override {
 		if (cmdString.size() != cmdSize) {

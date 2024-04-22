@@ -14,7 +14,7 @@ struct WriteBuffer {
 	int cnt;
 };
 
-class Command {
+class ICommand {
 public:
 	virtual void execute(vector<string> cmdString, INAND* nand_, WriteBuffer& buffer) = 0;
 

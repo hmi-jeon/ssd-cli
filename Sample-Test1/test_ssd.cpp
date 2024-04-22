@@ -48,7 +48,7 @@ public:
 
 protected:
 	MockNand nand;
-	Command* command;
+	ICommand* command;
 };
 
 class SsdVirtualNandTest : public SsdTest {
@@ -164,8 +164,8 @@ TEST_F(SsdMockNandTest, DISABLED_TestMockWrite) {
 TEST_F(SsdVirtualNandTest, DISABLED_TestWriteAndRead) {
 	string testString = "0x11223354";
 
-	Command* commandWrite = new Write();
-	Command* commandRead = new Read();
+	ICommand* commandWrite = new Write();
+	ICommand* commandRead = new Read();
 
 	commandWrite->execute(vector<string>{"W", "0", testString}, &nand, WriteBuffer());
 	commandRead->execute(vector<string>{"R", "0"}, &nand, WriteBuffer());
