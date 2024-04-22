@@ -1,6 +1,5 @@
 #pragma once
 #include "ICommand.cpp"
-#include <vector>
 
 class Exit : public ICommand {
 public:
