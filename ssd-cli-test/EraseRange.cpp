@@ -4,13 +4,12 @@
 
 class EraseRange : public ICommand {
 public:
-	EraseRange(vector<string> args) {
+	EraseRange() {
 		this->name = "ERASE_RANGE";
-		this->args = args;
 	};
 
-	virtual bool execute() override {
-		if (!checkValidArguments())
+	virtual bool execute(vector<string> args) override {
+		if (!checkValidArguments(args))
 			return false;
 
 		string lbaRange = to_string(stoi(args[2]) - stoi(args[1]));
@@ -20,7 +19,7 @@ public:
 		return true;
 	}
 private:
-	virtual bool checkValidArguments() override {
+	virtual bool checkValidArguments(vector<string> args) override {
 		if (args.size() != 3) return false;
 
 		if (!_isValidLba(args[1]) || !_isValidLba(args[2])) {
