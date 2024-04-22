@@ -17,7 +17,7 @@ public:
 		return true;
 	}
 
-private:
+protected:
 	void _doErase(int startLBA, int size) {
 		while (size > 10) {
 			string command = APP_NAME + " " + "E" + " " + to_string(startLBA) + " " + "10";
@@ -29,6 +29,7 @@ private:
 		system(command.c_str());
 	}
 
+private:
 	virtual bool checkValidArguments(vector<string> args) override {
 		if (args.size() != 3) return false;
 
