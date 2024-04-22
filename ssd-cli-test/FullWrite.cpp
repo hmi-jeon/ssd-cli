@@ -5,6 +5,7 @@ class FullWrite : public Write {
 public:
 	FullWrite() {
 		this->name = "FULLWRITE";
+		this->description = "The input data is recorded in the entire LBA of the device. (ex. FULLWRITE 0x1234ABCD)";
 	};
 
 	virtual bool execute(vector<string> args) override {

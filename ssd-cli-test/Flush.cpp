@@ -5,6 +5,7 @@ class Flush : public ICommand {
 public:
 	Flush() {
 		this->name = "FLUSH";
+		this->description = "The data in the write buffer are applied to the SSD.";
 	};
 
 	virtual bool execute(vector<string> args) override {

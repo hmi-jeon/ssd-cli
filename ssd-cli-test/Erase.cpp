@@ -5,6 +5,7 @@ class Erase : public ICommand {
 public:
 	Erase() {
 		this->name = "ERASE";
+		this->description = "Delete data from a specific LBA to a specific size. (ex. ERASE 3 5)";
 	};
 
 	virtual bool execute(vector<string> args) override {

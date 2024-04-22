@@ -5,6 +5,7 @@ class Write : public ICommand {
 public:
 	Write() {
 		this->name = "WRITE";
+		this->description = "Records input data into the designated LBA of the device. (ex. WRITE 1 0x1234ABCD)";
 	};
 
 	virtual bool execute(vector<string> args) override {

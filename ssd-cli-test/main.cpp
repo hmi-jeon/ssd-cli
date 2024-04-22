@@ -3,7 +3,6 @@
 #include "Read.cpp"
 #include "Write.cpp"
 #include "Exit.cpp"
-#include "Help.cpp"
 #include "FullRead.cpp"
 #include "FullWrite.cpp"
 #include "TestApp.cpp"
@@ -19,7 +18,6 @@ int main(int argc, char **argv, char **envp) {
 	commands.push_back(new Read());
 	commands.push_back(new Write());
 	commands.push_back(new Exit());
-	commands.push_back(new Help());
 	commands.push_back(new FullRead());
 	commands.push_back(new FullWrite());
 	commands.push_back(new Erase());

@@ -5,6 +5,7 @@ class Exit : public ICommand {
 public:
 	Exit() {
 		this->name = "EXIT";
+		this->description = "Exit SHELL. (ex. EXIT)";
 	};
 
 	virtual bool execute(vector<string> args) override {

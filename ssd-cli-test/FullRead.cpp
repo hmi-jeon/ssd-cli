@@ -6,6 +6,7 @@ class FullRead : public Read {
 public:
 	FullRead() {
 		this->name = "FULLREAD";
+		this->description = "Reads the entire LBA of the device and outputs all data. (ex. FULLREAD)";
 	};
 
 	virtual bool execute(vector<string> args) override {

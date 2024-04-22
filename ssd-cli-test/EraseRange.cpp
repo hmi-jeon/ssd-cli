@@ -5,6 +5,7 @@ class EraseRange : public Erase {
 public:
 	EraseRange() {
 		this->name = "ERASE_RANGE";
+		this->description = "Delete data from startLBA to endLBA (ex. ERASE 20 25)";
 	};
 
 	virtual bool execute(vector<string> args) override {

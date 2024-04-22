@@ -7,8 +7,9 @@
 class TestApp : public ICommand {
 public:
 	TestApp() {
-		this->name = "TEST_SCENARIO_APPLICATIONS";
-	};
+		this->name = "TESTAPP";
+		this->description = "Test Scenario applications";
+	}
 
 	virtual bool execute(vector<string> args) override {
 		if (!checkValidArguments(args))

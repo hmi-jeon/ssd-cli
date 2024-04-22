@@ -134,7 +134,6 @@
     <ClCompile Include="Flush.cpp" />
     <ClCompile Include="FullRead.cpp" />
     <ClCompile Include="FullWrite.cpp" />
-    <ClCompile Include="Help.cpp" />
     <ClCompile Include="ICommand.cpp" />
     <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
