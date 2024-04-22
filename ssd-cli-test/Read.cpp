@@ -14,22 +14,28 @@ public:
 		if (!checkValidArguments(args))
 			return false;
 
-		// ssd.exe call
-		string command = APP_NAME + " " + "R" + " " + args[1];
-		system(command.c_str());
+		_doRead(stoi(args[1]));
 
-		// result.txt open
+		_printResult();
+
+		return true;
+	};
+
+private:
+	void _doRead(int lba) {
+		string command = APP_NAME + " " + "R" + " " + to_string(lba);
+		system(command.c_str());
+	}
+
+	void _printResult() {
 		ifstream resultFile;
 		string data = "";
 		resultFile.open("result.txt");
 		if (resultFile.is_open())
 			resultFile >> data;
 		cout << data << endl;
+	}
 
-		return true;
-	};
-
-private:
 	virtual bool checkValidArguments(vector<string> args) override {
 		if (args.size() != 2) return false;
 		return _isValidLba(args[1]);
