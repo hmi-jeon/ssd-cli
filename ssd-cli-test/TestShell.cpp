@@ -81,7 +81,7 @@ public:
 
 		isValid = icom->execute();
 		if (isValid == false)
-			_printInvalidCommand();
+			logger.print("INVALID COMMAND");
 	}
 
 	vector<string> getFlieData(string fileName) {
@@ -122,10 +122,6 @@ public:
 	}
 
 protected:
-	void _printInvalidCommand() {
-		std::cout << "INVALID COMMAND" << std::endl;
-	}
-
 	Logger& logger = Logger::getInstance();
 	bool isValid = false;
 	vector<string> args;
