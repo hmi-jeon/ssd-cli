@@ -34,6 +34,7 @@ string getResultFile() {
 int main(int argc, char* argv[]) {
 	const string oldTestData = "0xAAAABBBB";
 	const string newTestData = "0x12345678";
+	Logger& logger = Logger::getInstance();
 	logger.print("[START] WRITE_AGING_AND_COMPARE");
 
 	for (int i = 0; i < LOOP_MAX_SIZE; i++) {
