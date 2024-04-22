@@ -20,7 +20,7 @@ public:
 			callArgs.push_back(args[1]);
 
 			ICommand* com = new Write();
-			com->execute(args);
+			com->execute(callArgs);
 		}
 
 		return true;
