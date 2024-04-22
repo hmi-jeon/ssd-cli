@@ -12,13 +12,17 @@ public:
 		if (!checkValidArguments(args))
 			return false;
 
-		string command = APP_NAME + " " + "W" + " " + args[1] + " " + args[2];
-		system(command.c_str());
+		_doWrite(stoi(args[1]), args[2]);
 
 		return true;
 	}
 
 private:
+	void _doWrite(int lba, string data) {
+		string command = APP_NAME + " " + "W" + " " + to_string(lba) + " " + data;
+		system(command.c_str());
+	}
+
 	virtual bool checkValidArguments(vector<string> args) override {
 		if (args.size() != 3) return false;
 		return _isValidLba(args[1]) && _isValidValue(args[2]);
