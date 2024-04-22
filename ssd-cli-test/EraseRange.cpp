@@ -1,6 +1,5 @@
 #pragma once
 #include "Erase.cpp"
-#include <vector>
 
 class EraseRange : public Erase {
 public:

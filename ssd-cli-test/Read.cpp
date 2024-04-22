@@ -1,8 +1,6 @@
 #pragma once
 #include "ICommand.cpp"
-#include <iostream>
 #include <fstream>
-#include <vector>
 
 class Read : public ICommand {
 public:

@@ -2,8 +2,6 @@
 #pragma warning(disable: 4996)
 #define _CRT_SECURE_NO_WARNINGS 1
 #include "ICommand.cpp"
-#include <vector>
-#include <iostream>
 #include <io.h>
 
 class TestApp : public ICommand {

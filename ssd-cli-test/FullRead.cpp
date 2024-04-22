@@ -1,6 +1,4 @@
 #pragma once
-#include "ICommand.cpp"
-#include <vector>
 #include "Read.cpp"
 
 
@@ -27,6 +25,4 @@ private:
 	virtual bool checkValidArguments(vector<string> args) override {
 		return (args.size() == 1);
 	}
-
-	vector<string> callArgs;
 };

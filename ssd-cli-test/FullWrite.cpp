@@ -1,6 +1,4 @@
 #pragma once
-#include "ICommand.cpp"
-#include <vector>
 #include "Write.cpp"
 
 class FullWrite : public Write {
@@ -26,7 +24,4 @@ private:
 
 		return _isValidValue(args[1]);
 	}
-
-
-	vector<string> callArgs;
 };
