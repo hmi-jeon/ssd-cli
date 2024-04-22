@@ -17,11 +17,14 @@ public:
 		: nand_(nand), buffer_() {
 	}
 
-	void init() {
+	void init(vector<ICommand*>& commandVectors) {
 		LBA_SIZE = nand_->getLBASize();
 		MAX_LBA = nand_->getMaxLBA();
 		BUFFER_SIZE = 1 + MAX_LBA + LBA_SIZE * MAX_LBA;
+	
 		_initBuffer();
+		
+		commandVectors_ = commandVectors;
 	}
 
 	void command(int argc, char* argv[]) {
@@ -50,23 +53,15 @@ private:
 	static constexpr char BUFFER_FILE_NAME[] = "buffer.txt";
 
 	ICommand* _getCommandType(int argc, char* argv[]) {
-		vector<string> cmdString(argv + 1, argv + argc);
-		ICommand* command = nullptr;
+		if (argc < 2) return nullptr;
 
-		if (argc == 4 && cmdString[0]._Equal("W")) {
-			command = new Write();
-		}
-		else if (argc == 3 && cmdString[0]._Equal("R")) {
-			command = new Read();
-		}
-		else if (argc == 4 && cmdString[0]._Equal("E")) {
-			command = new Erase();
-		}
-		else if (argc == 2 && cmdString[0]._Equal("F")) {
-			command = new Flush();
+		for (auto& cmd : commandVectors_) {
+			if (cmd->getCommandCode() == string(argv[1])) {
+				return cmd;
+			}
 		}
 
-		return command;
+		return nullptr;
 	}
 
 	void _printInvalidCommand() {
@@ -146,6 +141,7 @@ private:
 	INAND* nand_;
 	WriteBuffer buffer_;
 	fstream fs_;
+	vector<ICommand*> commandVectors_;
 
 	int LBA_SIZE = 8;
 	int MAX_LBA = 100;

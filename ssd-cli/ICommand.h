@@ -16,6 +16,7 @@ struct WriteBuffer {
 
 class ICommand {
 public:
+	virtual string getCommandCode() const = 0;
 	virtual void execute(vector<string> cmdString, INAND* nand_, WriteBuffer& buffer) = 0;
 
 protected:

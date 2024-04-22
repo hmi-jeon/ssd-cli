@@ -5,6 +5,10 @@
 #include <fstream>
 #include <windows.h>
 #include <string>
+#include "../ssd-cli/Read.cpp"
+#include "../ssd-cli/Write.cpp"
+#include "../ssd-cli/Erase.cpp"
+#include "../ssd-cli/Flush.cpp"
 
 using namespace std;
 using namespace testing;
@@ -27,12 +31,20 @@ public:
 	}
 
 	void SetUp() override {
-		ssd.init();
+		commands_.push_back(new Read());
+		commands_.push_back(new Write());
+		commands_.push_back(new Erase());
+		commands_.push_back(new Flush());
+		ssd.init(commands_);
 	}
 
 	void TearDown() override {
 		if (fs_.is_open()) {
 			fs_.close();
+		}
+
+		for (auto& cmd : commands_) {
+			delete cmd;
 		}
 	}
 
@@ -40,6 +52,7 @@ protected:
 	int LBA_SIZE;
 	SSD ssd;
 	fstream fs_;
+	vector<ICommand*> commands_;
 };
 
 class SsdMockNandTest : public SsdTest {
