@@ -21,7 +21,7 @@ public:
 		return true;
 	};
 
-private:
+protected:
 	void _doRead(int lba) {
 		string command = APP_NAME + " " + "R" + " " + to_string(lba);
 		system(command.c_str());
@@ -36,6 +36,7 @@ private:
 		cout << data << endl;
 	}
 
+private:
 	virtual bool checkValidArguments(vector<string> args) override {
 		if (args.size() != 2) return false;
 		return _isValidLba(args[1]);

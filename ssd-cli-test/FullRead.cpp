@@ -4,7 +4,7 @@
 #include "Read.cpp"
 
 
-class FullRead : public ICommand {
+class FullRead : public Read {
 public:
 	FullRead() {
 		this->name = "FULLREAD";
@@ -15,12 +15,8 @@ public:
 			return false;
 
 		for (int lba = 0; lba < MAX_LBA; lba++) {
-			callArgs.clear();
-			callArgs.push_back("READ");
-			callArgs.push_back(to_string(lba));
-
-			ICommand* com = new Read();
-			com->execute(callArgs);
+			_doRead(lba);
+			_printResult();
 		}
 
 		return true;
