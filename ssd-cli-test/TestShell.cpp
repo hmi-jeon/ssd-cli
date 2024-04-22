@@ -20,7 +20,6 @@
 #include "Erase.cpp"
 #include "EraseRange.cpp"
 
-#define RUN_LIST "run_list.lst"
 #define TEST_PASS 0
 #define TEST_FAIL 1
 
@@ -52,7 +51,7 @@ public:
 			break;
 
 		case 2:
-			if(argv[1] == RUN_LIST) RunnerMode();
+			RunnerMode(argv[1]);
 			break;
 
 		default:
@@ -109,8 +108,8 @@ public:
 		return fileData;
 	}
 
-	void RunnerMode() {
-		vector<string> TestFileList = getFlieData(RUN_LIST);
+	void RunnerMode(const string filename) {
+		vector<string> TestFileList = getFlieData(filename);
 
 		logger.setLoggerMode(RUNNER_MODE);
 
