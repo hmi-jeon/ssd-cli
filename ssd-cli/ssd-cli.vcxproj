@@ -128,7 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Command.cpp" />
+    <ClCompile Include="ICommand.h" />
     <ClCompile Include="Erase.cpp" />
     <ClCompile Include="Flush.cpp" />
     <ClCompile Include="main.cpp" />

@@ -7,7 +7,7 @@
 class FullRead : public ICommand {
 public:
 	FullRead(vector<string> args) {
-		this->name = "FULLWRITE";
+		this->name = "FULLREAD";
 		this->args = args;
 	};
 
@@ -15,7 +15,7 @@ public:
 		if (!checkValidArguments())
 			return false;
 
-		for (int lba = 0; lba < 100; lba++) {
+		for (int lba = 0; lba < MAX_LBA; lba++) {
 			callArgs.clear();
 			callArgs.push_back("READ");
 			callArgs.push_back(to_string(lba));
@@ -33,5 +33,4 @@ private:
 	}
 
 	vector<string> callArgs;
-	const int MAX_SIZE = 100;
 };

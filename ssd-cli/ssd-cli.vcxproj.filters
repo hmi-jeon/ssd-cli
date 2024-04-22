@@ -6,11 +6,23 @@
     <ClCompile Include="virtual_nand.cpp">
       <Filter>Nand</Filter>
     </ClCompile>
-    <ClCompile Include="Command.cpp" />
-    <ClCompile Include="Write.cpp" />
-    <ClCompile Include="Read.cpp" />
-    <ClCompile Include="Flush.cpp" />
-    <ClCompile Include="Erase.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gtest\gtest-all.cc" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)..\..\lib\native\src\gmock\gmock-all.cc" />
+    <ClCompile Include="ICommand.h">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Erase.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Flush.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Read.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
+    <ClCompile Include="Write.cpp">
+      <Filter>Command</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -18,6 +30,9 @@
   <ItemGroup>
     <Filter Include="Nand">
       <UniqueIdentifier>{58200bd8-4f88-4115-ae86-6a8dff2df51d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Command">
+      <UniqueIdentifier>{c52bd83d-c792-42cb-90f7-4408c2d75ed0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
