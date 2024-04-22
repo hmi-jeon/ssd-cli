@@ -119,23 +119,29 @@ protected:
 
 	void runnerMode(const string filename) {
 		vector<string> TestFileList = getFlieData(filename);
+		executeTestScenario(TestFileList);
+	}
 
+	void executeTestScenario(vector<string> TestFileList) {
 		logger.setLoggerMode(RUNNER_MODE);
 		logger.print("[Runner Mode Start]");
-
+		
 		int TestResult = TEST_FAIL;
+		string command;
 
 		for (const string TestScenario : TestFileList) {
 			cout << TestScenario + "\t---\tRun...";
-			TestResult = system(TestScenario.c_str());
+			command = TestScenario + " " + "RUN";
+			TestResult = system(command.c_str());
 			if (TestResult != TEST_PASS) {
 				cout << "Fail!" << endl;
 				break;
 			}
-
 			cout << "Pass" << endl;
 		}
 
 		logger.print("[Runner Mode End]");
 	}
+
+	
 };

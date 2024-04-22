@@ -1,7 +1,7 @@
 #pragma once
-#include "ICommand.h"
+#include "Write.cpp"
 
-class Erase : public ICommand {
+class Erase : public Write {
 public:
 	virtual string getCommandCode() const override {
 		return COMMAND_CODE;
@@ -13,7 +13,7 @@ public:
 			return;
 		}
 
-		if (!isNumber(cmdString[1]) || !isNumber(cmdString[2])) {
+		if (!_isNumber(cmdString[1]) || !_isNumber(cmdString[2])) {
 			_printInvalidCommand();
 			return;
 		}
@@ -26,26 +26,24 @@ public:
 			return;
 		}
 
-		for (int idx = 0; idx < size; ++idx) {
-			writeBuffer_->data[lba + idx] = "00000000";
-			writeBuffer_->dirty[lba + idx] = 1;
-		}
-		writeBuffer_->cnt++;
+		_eraseBuffer(lba, size);
 
-		if (writeBuffer_->cnt >= 10) {
-			for (int idx = 0; idx < MAX_LBA; idx++) {
-				if (writeBuffer_->dirty[idx] == 1) {
-					nand->write(idx, writeBuffer_->data[idx]);
-				}
-				writeBuffer_->dirty[idx] = 0;
-			}
-			writeBuffer_->cnt = 0;
+		if (_checkBufferFull()) {
+			_writeBufferToNand(nand);
 		}
 	}
 
 private:
 	static constexpr int cmdSize = 3;
 	static constexpr char COMMAND_CODE[] = "E";
+
+	void _eraseBuffer(int lba, int size) {
+		for (int idx = 0; idx < size; ++idx) {
+			writeBuffer_->data[lba + idx] = "00000000";
+			writeBuffer_->dirty[lba + idx] = 1;
+		}
+		writeBuffer_->cnt++;
+	}
 
 	bool _isValidEraseSize(const int lba, const int size) {
 		if (size <= 0 || size > 10) return false;
