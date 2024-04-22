@@ -15,22 +15,28 @@ protected:
 	bool _isValidLba(const string lba) {
 		for (char c : lba) {
 			if (!std::isdigit(c)) {
+				logger.print("LBA input is not digit.");
 				return false;
 			}
 		}
 		int lbaDigit = stoi(lba);
-		return (lbaDigit >= 0 && lbaDigit < 100);
+		if (lbaDigit >= 0 && lbaDigit < 100)
+			return true;
+		else {
+			logger.print("LBA is Out of range.");
+			return false;
+		}
 	}
 
 	bool _isValidValue(const string value) {
-		if (value.size() != 10)
+		if ((value.size() != 10) || (value.substr(0, 2) != "0x")) {
+			logger.print("Address is incorrect format!");
 			return false;
-
-		if (value.substr(0, 2) != "0x")
-			return false;
+		}
 
 		for (const char& c : value.substr(2)) {
 			if (!isxdigit(c)) {
+				logger.print("Address is not hex value!");
 				return false;
 			}
 		}

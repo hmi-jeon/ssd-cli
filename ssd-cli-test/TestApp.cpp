@@ -16,11 +16,20 @@ public:
 	bool execute() override {
 		string appName = args[0];
 		appName = appName + ".exe";
+
+		logger.print("excute TestApp Scenario:"+ appName);
+
 		char fileName[100];
 		strcpy(fileName, appName.c_str());
 
-		if (access(fileName, 0) == -1) return false;
-		if (system(fileName)) return false;
+		if (access(fileName, 0) == -1) {
+			logger.print("File Access Fail!");
+			return false;
+		}
+		if (system(fileName)) {
+			logger.print("Test APP Fail!!");
+			return false;
+		}
 
 		return true;
 	}
