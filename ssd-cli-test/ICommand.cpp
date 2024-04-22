@@ -8,12 +8,12 @@ using namespace std;
 class ICommand {
 
 public:
-	virtual bool execute() = 0;
-	virtual bool checkValidArguments() = 0;
+	virtual bool execute(vector<string> args) = 0;
+	virtual bool checkValidArguments(vector<string> args) = 0;
 
 protected:
 	bool _isValidLba(const string lba) {
-		for (char c : lba) {
+		for (const char& c : lba) {
 			if (!std::isdigit(c)) {
 				logger.print("LBA input is not digit.");
 				return false;
@@ -44,8 +44,7 @@ protected:
 	}
 
 	string name;
-	vector<string> args;
 	Logger& logger = Logger::getInstance();
-	const string APP_NAME = "ssd-cli.exe";
+	const string APP_NAME = "ssd.exe";
 	static constexpr int MAX_LBA = 100;
 };

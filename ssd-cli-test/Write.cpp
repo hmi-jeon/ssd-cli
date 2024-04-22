@@ -4,13 +4,12 @@
 
 class Write : public ICommand {
 public:
-	Write(vector<string> args) {
+	Write() {
 		this->name = "WRITE";
-		this->args = args;
 	};
 
-	virtual bool execute() override {
-		if (!checkValidArguments())
+	virtual bool execute(vector<string> args) override {
+		if (!checkValidArguments(args))
 			return false;
 
 		string command = APP_NAME + " " + "W" + " " + args[1] + " " + args[2];
@@ -20,7 +19,7 @@ public:
 	}
 
 private:
-	virtual bool checkValidArguments() override {
+	virtual bool checkValidArguments(vector<string> args) override {
 		if (args.size() != 3) return false;
 		return _isValidLba(args[1]) && _isValidValue(args[2]);
 	}

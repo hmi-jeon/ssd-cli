@@ -6,32 +6,30 @@
 
 class FullRead : public ICommand {
 public:
-	FullRead(vector<string> args) {
-		this->name = "FULLWRITE";
-		this->args = args;
+	FullRead() {
+		this->name = "FULLREAD";
 	};
 
-	virtual bool execute() override {
-		if (!checkValidArguments())
+	virtual bool execute(vector<string> args) override {
+		if (!checkValidArguments(args))
 			return false;
 
-		for (int lba = 0; lba < 100; lba++) {
+		for (int lba = 0; lba < MAX_LBA; lba++) {
 			callArgs.clear();
 			callArgs.push_back("READ");
 			callArgs.push_back(to_string(lba));
 
-			ICommand* com = new Read(callArgs);
-			com->execute();
+			ICommand* com = new Read();
+			com->execute(callArgs);
 		}
 
 		return true;
 	}
 
 private:
-	virtual bool checkValidArguments() override {
+	virtual bool checkValidArguments(vector<string> args) override {
 		return (args.size() == 1);
 	}
 
 	vector<string> callArgs;
-	const int MAX_SIZE = 100;
 };

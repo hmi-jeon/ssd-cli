@@ -4,13 +4,12 @@
 
 class Erase : public ICommand {
 public:
-	Erase(vector<string> args) {
+	Erase() {
 		this->name = "ERASE";
-		this->args = args;
 	};
 
-	virtual bool execute() override {
-		if (!checkValidArguments())
+	virtual bool execute(vector<string> args) override {
+		if (!checkValidArguments(args))
 			return false;
 
 		string command = APP_NAME + " " + "E" + " " + args[1] + " " + args[2];
@@ -19,7 +18,7 @@ public:
 		return true;
 	}
 private:
-	virtual bool checkValidArguments() override {
+	virtual bool checkValidArguments(vector<string> args) override {
 		if (args.size() != 3) return false;
 
 		if (!_isValidLba(args[1]) || !_isValidEraseSize(args[2])) {
@@ -30,7 +29,7 @@ private:
 	}
 
 	bool _isValidEraseSize(const string size) {
-		for (char c : size) {
+		for (const char& c : size) {
 			if (!std::isdigit(c)) {
 				return false;
 			}

@@ -8,12 +8,14 @@
 
 class TestApp : public ICommand {
 public:
-	TestApp(vector<string> args) {
+	TestApp() {
 		this->name = "TEST_SCENARIO_APPLICATIONS";
-		this->args = args;
 	};
 
-	bool execute() override {
+	virtual bool execute(vector<string> args) override {
+		if (!checkValidArguments(args))
+			return false;
+
 		string appName = args[0];
 		appName = appName + ".exe";
 
@@ -30,11 +32,11 @@ public:
 			logger.print("Test APP Fail!!");
 			return false;
 		}
-
+    
 		return true;
 	}
 private:
-	virtual bool checkValidArguments() override {
+	virtual bool checkValidArguments(vector<string> args) override {
 		return (args.size() == 1);
 	}
 };

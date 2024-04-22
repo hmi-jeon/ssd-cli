@@ -6,13 +6,12 @@
 
 class Read : public ICommand {
 public:
-	Read(vector<string> args) {
+	Read() {
 		this->name = "READ";
-		this->args = args;
 	};
 
-	virtual bool execute() override {
-		if (!checkValidArguments())
+	virtual bool execute(vector<string> args) override {
+		if (!checkValidArguments(args))
 			return false;
 
 		// ssd.exe call
@@ -31,7 +30,7 @@ public:
 	};
 
 private:
-	virtual bool checkValidArguments() override {
+	virtual bool checkValidArguments(vector<string> args) override {
 		if (args.size() != 2) return false;
 		return _isValidLba(args[1]);
 	}
