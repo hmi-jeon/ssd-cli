@@ -38,7 +38,7 @@ string Logger::makeDateString(DateType dateType) {
 
 bool Logger::makeLog(string& logBuffer, string functionName, string logMsg) {
 
-	logBuffer = makeDateString(LOG_DATE) + padString(functionName) + ":" + logMsg;
+	logBuffer = makeDateString(LOG_DATE) + padString(functionName + "()") + ":" + logMsg;
 	return true;
 }
 
