@@ -33,7 +33,7 @@ public:
 		buffer.cnt++;
 
 		if (buffer.cnt >= 10) {
-			for (int idx = 0; idx < 100; idx++) {
+			for (int idx = 0; idx < MAX_LBA; idx++) {
 				if (buffer.dirty[idx] == 1) {
 					nand->write(idx, buffer.data[idx]);
 				}
@@ -45,7 +45,6 @@ public:
 
 private:
 	static constexpr int cmdSize = 3;
-	static constexpr int MAX_LBA = 100;
 	static constexpr char COMMAND_CODE[] = "E";
 
 	bool _isValidEraseSize(const int lba, const int size) {

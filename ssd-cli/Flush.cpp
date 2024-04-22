@@ -13,7 +13,7 @@ public:
 			return;
 		}
 
-		for (int idx = 0; idx < 100; idx++) {
+		for (int idx = 0; idx < MAX_LBA; idx++) {
 			if (buffer.dirty[idx] == 1) {
 				nand->write(idx, buffer.data[idx]);
 			}

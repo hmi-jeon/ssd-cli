@@ -30,7 +30,7 @@ private:
 	}
 
 	bool _isValidEraseSize(const string size) {
-		for (char c : size) {
+		for (const char& c : size) {
 			if (!std::isdigit(c)) {
 				return false;
 			}

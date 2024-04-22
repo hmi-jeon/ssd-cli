@@ -14,7 +14,7 @@ public:
 		if (!checkValidArguments())
 			return false;
 
-		for (int lba = 0; lba < MAX_SIZE; lba++) {
+		for (int lba = 0; lba < MAX_LBA; lba++) {
 			callArgs.clear();
 			callArgs.push_back("WRITE");
 			callArgs.push_back(to_string(lba));
@@ -35,5 +35,4 @@ private:
 
 
 	vector<string> callArgs;
-	const int MAX_SIZE = 100;
 };
