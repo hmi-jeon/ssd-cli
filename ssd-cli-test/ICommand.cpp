@@ -14,6 +14,10 @@ public:
 		return name;
 	}
 
+	void printHelp() const {
+		cout << this->name << " : " << this->description << endl;
+	}
+
 protected:
 	bool _isValidLba(const string lba) {
 		for (const char& c : lba) {
@@ -47,6 +51,7 @@ protected:
 	}
 
 	string name;
+	string description;
 	Logger& logger = Logger::getInstance();
 	const string APP_NAME = "ssd.exe";
 	static constexpr int MAX_LBA = 100;

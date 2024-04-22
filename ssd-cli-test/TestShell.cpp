@@ -60,15 +60,31 @@ protected:
 	void executeCommand(const string userInput) {
 		args = parsingInput(userInput);
 		string command = args[0];
+
+		if (command == "HELP") {
+			printHelp();
+			return;
+		}
+
 		ICommand* icom = commands_[0];
 		for (auto& cmd : commands_) {
 			if (args[0] == cmd->getCommandName()) {
 				icom = cmd;
+				break;
 			}
 		}
 
 		if (icom->execute(args) == false)
 			logger.print("INVALID COMMAND");
+	}
+
+	void printHelp() {
+		for (auto& cmd : commands_) {
+			if (cmd->getCommandName() == "TESTAPP")
+				continue;
+
+			cmd->printHelp();
+		}
 	}
 
 	vector<string> getFlieData(string fileName) {

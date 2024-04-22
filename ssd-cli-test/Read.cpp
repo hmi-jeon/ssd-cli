@@ -8,6 +8,7 @@ class Read : public ICommand {
 public:
 	Read() {
 		this->name = "READ";
+		this->description = "Outputs data written to the LBA address value of the device. (ex. READ 3)";
 	};
 
 	virtual bool execute(vector<string> args) override {
