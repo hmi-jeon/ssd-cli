@@ -5,6 +5,10 @@
 #include <fstream>
 #include <windows.h>
 #include <string>
+#include "../ssd-cli/Read.cpp"
+#include "../ssd-cli/Write.cpp"
+#include "../ssd-cli/Erase.cpp"
+#include "../ssd-cli/Flush.cpp"
 
 using namespace std;
 using namespace testing;
@@ -13,6 +17,10 @@ class MockNand : public INAND {
 public:
 	MOCK_METHOD(string, read, (const int), (override));
 	MOCK_METHOD(void, write, (const int, const string), (override));
+
+	int getLBASize() const { return 8; }
+
+	int getMaxLBA() const { return 100; }
 };
 
 class SsdTest : public Test {
@@ -23,12 +31,20 @@ public:
 	}
 
 	void SetUp() override {
-
+		commands_.push_back(new Read());
+		commands_.push_back(new Write());
+		commands_.push_back(new Erase());
+		commands_.push_back(new Flush());
+		ssd.init(commands_);
 	}
 
 	void TearDown() override {
 		if (fs_.is_open()) {
 			fs_.close();
+		}
+
+		for (auto& cmd : commands_) {
+			delete cmd;
 		}
 	}
 
@@ -36,6 +52,7 @@ protected:
 	int LBA_SIZE;
 	SSD ssd;
 	fstream fs_;
+	vector<ICommand*> commands_;
 };
 
 class SsdMockNandTest : public SsdTest {
@@ -48,7 +65,7 @@ public:
 
 protected:
 	MockNand nand;
-	Command* command;
+	ICommand* command;
 };
 
 class SsdVirtualNandTest : public SsdTest {
@@ -164,8 +181,8 @@ TEST_F(SsdMockNandTest, DISABLED_TestMockWrite) {
 TEST_F(SsdVirtualNandTest, DISABLED_TestWriteAndRead) {
 	string testString = "0x11223354";
 
-	Command* commandWrite = new Write();
-	Command* commandRead = new Read();
+	ICommand* commandWrite = new Write();
+	ICommand* commandRead = new Read();
 
 	commandWrite->execute(vector<string>{"W", "0", testString}, &nand, WriteBuffer());
 	commandRead->execute(vector<string>{"R", "0"}, &nand, WriteBuffer());
