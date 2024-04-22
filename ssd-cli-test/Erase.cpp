@@ -12,7 +12,15 @@ public:
 		if (!checkValidArguments(args))
 			return false;
 
-		string command = APP_NAME + " " + "E" + " " + args[1] + " " + args[2];
+		int startLBA = stoi(args[1]);
+		int size = stoi(args[2]);
+		while (size > 10) {
+			string command = APP_NAME + " " + "E" + " " + to_string(startLBA) + " " + "10";
+			system(command.c_str());
+			startLBA += 10;
+			size -= 10;
+		}
+		string command = APP_NAME + " " + "E" + " " + to_string(startLBA) + " " + to_string(size);
 		system(command.c_str());
 
 		return true;
@@ -34,8 +42,8 @@ private:
 				return false;
 			}
 		}
-		int sizeDigit = stoi(size);
-		return (sizeDigit > 0 && sizeDigit <= 10);
+
+		return true;
 	}
 
 	bool _isMaxEraseSize(const int lba, const int size) {
