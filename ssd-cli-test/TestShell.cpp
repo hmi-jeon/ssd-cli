@@ -58,6 +58,7 @@ protected:
 		stringstream ss(inputString);
 		vector<string> argList;
 		string arg;
+		logger.print("Parsing Command string :" + inputString);
 
 		while (getline(ss, arg, ' ')) {
 			argList.push_back(arg);
@@ -112,6 +113,7 @@ protected:
 		vector<string> TestFileList = getFlieData(RUN_LIST);
 
 		logger.setLoggerMode(RUNNER_MODE);
+		logger.print("[Runner Mode Start]");
 
 		int TestResult = TEST_FAIL;
 
@@ -125,5 +127,7 @@ protected:
 
 			cout << "Pass" << endl;
 		}
+
+		logger.print("[Runner Mode End]");
 	}
 };
