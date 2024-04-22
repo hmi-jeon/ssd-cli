@@ -20,12 +20,6 @@ public:
 
 protected:
 	bool _isValidLba(const string lba) {
-		for (const char& c : lba) {
-			if (!std::isdigit(c)) {
-				logger.print("LBA input is not digit.");
-				return false;
-			}
-		}
 		int lbaDigit = stoi(lba);
 		if (lbaDigit >= 0 && lbaDigit < MAX_LBA)
 			return true;
@@ -44,6 +38,16 @@ protected:
 		for (const char& c : value.substr(2)) {
 			if (!isxdigit(c)) {
 				logger.print("Address is not hex value!");
+				return false;
+			}
+		}
+		return true;
+	}
+
+	bool _isNumber(const string& str) {
+		for (const char& c : str) {
+			if (!std::isdigit(c)) {
+				logger.print("LBA input is not digit.");
 				return false;
 			}
 		}

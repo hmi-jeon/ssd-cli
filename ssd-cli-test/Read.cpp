@@ -38,6 +38,9 @@ protected:
 private:
 	virtual bool checkValidArguments(vector<string> args) override {
 		if (args.size() != 2) return false;
+
+		if (!_isNumber(args[1])) return false;
+
 		return _isValidLba(args[1]);
 	}
 };

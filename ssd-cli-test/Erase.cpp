@@ -33,21 +33,15 @@ private:
 	virtual bool checkValidArguments(vector<string> args) override {
 		if (args.size() != 3) return false;
 
-		if (!_isValidLba(args[1]) || !_isValidEraseSize(args[2])) {
+		if (!_isNumber(args[1]) || !_isNumber(args[2])) {
+			return false;
+		}
+
+		if (!_isValidLba(args[1])) {
 			return false;
 		}
 
 		return _isMaxEraseSize(stoi(args[1]), stoi(args[2]));
-	}
-
-	bool _isValidEraseSize(const string size) {
-		for (const char& c : size) {
-			if (!std::isdigit(c)) {
-				return false;
-			}
-		}
-
-		return true;
 	}
 
 	bool _isMaxEraseSize(const int lba, const int size) {

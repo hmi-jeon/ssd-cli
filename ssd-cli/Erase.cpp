@@ -13,7 +13,7 @@ public:
 			return;
 		}
 
-		if (!isNumber(cmdString[1]) || !isNumber(cmdString[2])) {
+		if (!_isNumber(cmdString[1]) || !_isNumber(cmdString[2])) {
 			_printInvalidCommand();
 			return;
 		}
