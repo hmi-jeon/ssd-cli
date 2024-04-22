@@ -12,8 +12,13 @@ public:
 		if (!checkValidArguments(args))
 			return false;
 
-		int startLBA = stoi(args[1]);
-		int size = stoi(args[2]);
+		_doErase(stoi(args[1]), stoi(args[2]));
+
+		return true;
+	}
+
+private:
+	void _doErase(int startLBA, int size) {
 		while (size > 10) {
 			string command = APP_NAME + " " + "E" + " " + to_string(startLBA) + " " + "10";
 			system(command.c_str());
@@ -22,10 +27,8 @@ public:
 		}
 		string command = APP_NAME + " " + "E" + " " + to_string(startLBA) + " " + to_string(size);
 		system(command.c_str());
-
-		return true;
 	}
-private:
+
 	virtual bool checkValidArguments(vector<string> args) override {
 		if (args.size() != 3) return false;
 
