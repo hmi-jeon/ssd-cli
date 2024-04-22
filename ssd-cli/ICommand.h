@@ -17,7 +17,11 @@ struct WriteBuffer {
 class ICommand {
 public:
 	virtual string getCommandCode() const = 0;
-	virtual void execute(vector<string> cmdString, INAND* nand_, WriteBuffer& buffer) = 0;
+	virtual void execute(vector<string> cmdString, INAND* nand_) = 0;
+
+	static void setBuffer(WriteBuffer& buffer) {
+		writeBuffer_ = &buffer;
+	}
 
 protected:
 	bool _isValidLba(const int lba) {
@@ -51,4 +55,5 @@ protected:
 	}
 
 	static constexpr int MAX_LBA = 100;
+	static WriteBuffer* writeBuffer_;
 };

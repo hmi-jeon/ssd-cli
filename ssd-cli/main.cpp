@@ -6,6 +6,8 @@
 #include "Erase.cpp"
 #include "Flush.cpp"
 
+WriteBuffer* ICommand::writeBuffer_ = nullptr;
+
 int main(int argc, char* argv[]) {
 	VirtualNAND nand;
 	SSD ssd(&nand);

@@ -19,6 +19,7 @@ public:
 		BUFFER_SIZE = 1 + MAX_LBA + LBA_SIZE * MAX_LBA;
 	
 		_initBuffer();
+		ICommand::setBuffer(buffer_);
 		
 		commandVectors_ = commandVectors;
 	}
@@ -31,7 +32,7 @@ public:
 		}
 
 		vector<string> cmdString(argv + 1, argv + argc);
-		command->execute(cmdString, nand_, buffer_);
+		command->execute(cmdString, nand_);
 
 		_openBufferFile(ios_base::out);
 		_writeToBufferFile();

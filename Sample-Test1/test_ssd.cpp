@@ -13,6 +13,8 @@
 using namespace std;
 using namespace testing;
 
+WriteBuffer* ICommand::writeBuffer_ = new WriteBuffer();
+
 class MockNand : public INAND {
 public:
 	MOCK_METHOD(string, read, (const int), (override));
@@ -117,7 +119,7 @@ TEST_F(SsdMockNandTest, DISABLED_TestMockReadInvalidLBA) {
 		.Times(0);
 
 	command = new Read();
-	command->execute(vector<string>{"R", "101"}, &nand, WriteBuffer());
+	command->execute(vector<string>{"R", "101"}, &nand);
 }
 
 TEST_F(SsdMockNandTest, DISABLED_TestMockRead) {
@@ -128,7 +130,7 @@ TEST_F(SsdMockNandTest, DISABLED_TestMockRead) {
 		.WillOnce(Return(testString.substr(2)));
 
 	command = new Read();
-	command->execute(vector<string>{"R", "5"}, &nand, WriteBuffer());
+	command->execute(vector<string>{"R", "5"}, &nand);
 
 	char* readData = (char*)malloc(LBA_SIZE + 3);
 	fs_.open(ssd.getResultFileName(), ios_base::in);
@@ -143,7 +145,7 @@ TEST_F(SsdMockNandTest, DISABLED_TestMockWriteInvalidLBA) {
 		.Times(0);
 
 	command = new Write();
-	command->execute(vector<string>{"W", "101", "0x12345667"}, &nand, WriteBuffer());
+	command->execute(vector<string>{"W", "101", "0x12345667"}, &nand);
 }
 
 TEST_F(SsdMockNandTest, DISABLED_TestMockWriteInvalidValueSize) {
@@ -151,7 +153,7 @@ TEST_F(SsdMockNandTest, DISABLED_TestMockWriteInvalidValueSize) {
 		.Times(0);
 
 	command = new Write();
-	command->execute(vector<string>{"W", "5", "0x12"}, &nand, WriteBuffer());
+	command->execute(vector<string>{"W", "5", "0x12"}, &nand);
 }
 
 TEST_F(SsdMockNandTest, DISABLED_TestMockWriteInvalidValueHex) {
@@ -159,7 +161,7 @@ TEST_F(SsdMockNandTest, DISABLED_TestMockWriteInvalidValueHex) {
 		.Times(0);
 
 	command = new Write();
-	command->execute(vector<string>{"W", "5", "0x1234566Z"}, &nand, WriteBuffer());
+	command->execute(vector<string>{"W", "5", "0x1234566Z"}, &nand);
 }
 
 TEST_F(SsdMockNandTest, DISABLED_TestMockWriteInvalidValuePrefix) {
@@ -167,7 +169,7 @@ TEST_F(SsdMockNandTest, DISABLED_TestMockWriteInvalidValuePrefix) {
 		.Times(0);
 
 	command = new Write();
-	command->execute(vector<string>{"W", "5", "0b12345667"}, &nand, WriteBuffer());
+	command->execute(vector<string>{"W", "5", "0b12345667"}, &nand);
 }
 
 TEST_F(SsdMockNandTest, DISABLED_TestMockWrite) {
@@ -175,7 +177,7 @@ TEST_F(SsdMockNandTest, DISABLED_TestMockWrite) {
 		.Times(1);
 
 	command = new Write();
-	command->execute(vector<string>{"W", "5", "0x12345667"}, &nand, WriteBuffer());
+	command->execute(vector<string>{"W", "5", "0x12345667"}, &nand);
 }
 
 TEST_F(SsdVirtualNandTest, DISABLED_TestWriteAndRead) {
@@ -184,8 +186,8 @@ TEST_F(SsdVirtualNandTest, DISABLED_TestWriteAndRead) {
 	ICommand* commandWrite = new Write();
 	ICommand* commandRead = new Read();
 
-	commandWrite->execute(vector<string>{"W", "0", testString}, &nand, WriteBuffer());
-	commandRead->execute(vector<string>{"R", "0"}, &nand, WriteBuffer());
+	commandWrite->execute(vector<string>{"W", "0", testString}, &nand);
+	commandRead->execute(vector<string>{"R", "0"}, &nand);
 
 	char* readData = (char*)malloc(LBA_SIZE + 3);
 	fs_.open(ssd.getResultFileName(), ios_base::in);

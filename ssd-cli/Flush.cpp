@@ -7,19 +7,19 @@ public:
 		return COMMAND_CODE;
 	}
 
-	virtual void execute(vector<string> cmdString, INAND* nand, WriteBuffer& buffer) override {
+	virtual void execute(vector<string> cmdString, INAND* nand) override {
 		if (cmdString.size() != cmdSize) {
 			_printInvalidCommand();
 			return;
 		}
 
 		for (int idx = 0; idx < MAX_LBA; idx++) {
-			if (buffer.dirty[idx] == 1) {
-				nand->write(idx, buffer.data[idx]);
+			if (writeBuffer_->dirty[idx] == 1) {
+				nand->write(idx, writeBuffer_->data[idx]);
 			}
-			buffer.dirty[idx] = 0;
+			writeBuffer_->dirty[idx] = 0;
 		}
-		buffer.cnt = 0;
+		writeBuffer_->cnt = 0;
 	}
 
 private:
