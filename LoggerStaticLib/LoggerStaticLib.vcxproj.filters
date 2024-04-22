@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="WRITE_AGING_AND_COMPARE.cpp">
+    <ClCompile Include="..\ssd-cli-test\Logger.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>

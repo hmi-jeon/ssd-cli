@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include "../ssd-cli-test/Logger.hpp"
 
 #define MAX_SIZE 100
 
@@ -31,16 +32,19 @@ string getResultFile() {
 
 int main(int argc, char* argv[]) {
 	const string testData = "0x12345678";
+	Logger& logger = Logger::getInstance();
+	logger.print("[START] FULL_WRITE_READ_COMPARE");
 
 	//fullwrite
 	for (int lba = 0; lba < MAX_SIZE; lba++)
 		write(lba, testData);
-	
+
 	//fullread & prove
 	for (int lba = 0; lba < MAX_SIZE; lba++) {
 		read(lba);
 		if (getResultFile().compare(testData) != 0) return EXIT_FAILURE;
 	}
 
+	logger.print("[END] FULL_WRITE_READ_COMPARE");
 	return EXIT_SUCCESS;
 }

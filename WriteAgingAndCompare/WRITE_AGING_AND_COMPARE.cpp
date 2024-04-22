@@ -3,6 +3,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include "../ssd-cli-test/Logger.hpp"
 
 #define MAX_SIZE 5
 #define LOOP_MAX_SIZE 30
@@ -33,6 +34,7 @@ string getResultFile() {
 int main(int argc, char* argv[]) {
 	const string oldTestData = "0xAAAABBBB";
 	const string newTestData = "0x12345678";
+	logger.print("[START] WRITE_AGING_AND_COMPARE");
 
 	for (int i = 0; i < LOOP_MAX_SIZE; i++) {
 		for (int lba = 0; lba <= MAX_SIZE; lba++) {
@@ -49,5 +51,6 @@ int main(int argc, char* argv[]) {
 		if (getResultFile().compare(newTestData) != 0) return EXIT_FAILURE;
 	}
 
+	logger.print("[END] WRITE_AGING_AND_COMPARE");
 	return EXIT_SUCCESS;
 }

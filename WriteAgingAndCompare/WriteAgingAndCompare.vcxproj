@@ -130,6 +130,14 @@
   <ItemGroup>
     <ClCompile Include="WRITE_AGING_AND_COMPARE.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\ssd-cli-test\Logger.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LoggerStaticLib\LoggerStaticLib.vcxproj">
+      <Project>{f7761927-7a85-4e45-9c76-9936d61a4638}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
