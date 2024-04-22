@@ -28,6 +28,26 @@ using namespace std;
 
 class TestShell {
 public:
+	void prompt(int argc, char* argv[])
+	{
+		if (argc == 2) {
+			string firstArg = argv[1];
+			if (firstArg == RUN_LIST) Runner();
+		}
+
+		if (argc == 1) {
+			char userInput[100];
+
+			while (1) {
+				cout << "> ";
+				cin.getline(userInput, 100);
+				if (userInput[0] == '\0') {
+					continue;
+				}
+				executeCommand(userInput);
+			}
+		}
+	}
 	vector<string> parsingInput(const string inputString) {
 		stringstream ss(inputString);
 		vector<string> argList;
