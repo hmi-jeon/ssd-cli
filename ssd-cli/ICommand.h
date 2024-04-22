@@ -21,7 +21,7 @@ public:
 
 protected:
 	bool _isValidLba(const int lba) {
-		return (lba >= 0 && lba < 100);
+		return (lba >= 0 && lba < MAX_LBA);
 	}
 
 	bool _isValidValue(const string value) {
@@ -40,7 +40,7 @@ protected:
 	}
 
 	bool isNumber(const string& str) {
-		for (char const& c : str) {
+		for (const char& c : str) {
 			if (std::isdigit(c) == 0) return false;
 		}
 		return true;
@@ -49,4 +49,6 @@ protected:
 	void _printInvalidCommand() {
 		std::cout << "INVALID COMMAND" << std::endl;
 	}
+
+	static constexpr int MAX_LBA = 100;
 };

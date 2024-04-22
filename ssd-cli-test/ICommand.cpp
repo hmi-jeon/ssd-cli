@@ -13,7 +13,7 @@ public:
 
 protected:
 	bool _isValidLba(const string lba) {
-		for (char c : lba) {
+		for (const char& c : lba) {
 			if (!std::isdigit(c)) {
 				return false;
 			}
