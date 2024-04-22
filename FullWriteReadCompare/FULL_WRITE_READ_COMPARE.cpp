@@ -3,7 +3,6 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <windows.h>
 
 #define MAX_SIZE 100
 
