@@ -4,6 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <windows.h>
+#include "../ssd-cli-test/Logger.hpp"
 
 #define MAX_SIZE 100
 
@@ -13,6 +14,8 @@ int main(int argc, char* argv[]) {
 	string fileName = "ssd.exe";
 	string testData = "0x12345678";
 	string command = "";
+	Logger& logger = Logger::getInstance();
+	logger.print("[START] FULL_WRITE_READ_COMPARE");
 
 	for (int lba = 0; lba < MAX_SIZE; lba++) {
 		command = fileName + " " + "W" + " " + to_string(lba) + " " + testData;
@@ -34,5 +37,6 @@ int main(int argc, char* argv[]) {
 			return 1;
 	}
 
+	logger.print("[END] FULL_WRITE_READ_COMPARE");
 	return 0;
 }

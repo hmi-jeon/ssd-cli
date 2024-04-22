@@ -4,6 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <windows.h>
+#include "../ssd-cli-test/Logger.hpp"
+
 
 #define MAX_SIZE 5
 #define LOOP_MAX_SIZE 30
@@ -11,10 +13,14 @@
 using namespace std;
 
 int main(int argc, char* argv[]) {
+	Logger& logger = Logger::getInstance();
+
 	string fileName = "ssd.exe";
 	string oldTtestData = "0xAAAABBBB";
 	string newTtestData = "0x12345678";
 	string command = "";
+	logger.print("[START] WRITE_AGING_AND_COMPARE");
+
 	for (int i = 0; i < LOOP_MAX_SIZE; i++) {
 		for (int lba = 0; lba <= MAX_SIZE; lba++) {
 			command = fileName + " " + "W" + " " + to_string(lba) + " " + oldTtestData;
@@ -39,6 +45,8 @@ int main(int argc, char* argv[]) {
 		if (data.compare(newTtestData) != 0)
 			return 1;
 	}
+
+	logger.print("[END] WRITE_AGING_AND_COMPARE");
 
 	return 0;
 }

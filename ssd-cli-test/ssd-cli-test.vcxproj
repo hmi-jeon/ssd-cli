@@ -135,7 +135,6 @@
     <ClCompile Include="FullRead.cpp" />
     <ClCompile Include="FullWrite.cpp" />
     <ClCompile Include="ICommand.cpp" />
-    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Read.cpp" />
     <ClCompile Include="TestApp.cpp" />
@@ -152,6 +151,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Logger.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LoggerStaticLib\LoggerStaticLib.vcxproj">
+      <Project>{f7761927-7a85-4e45-9c76-9936d61a4638}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
