@@ -8,17 +8,8 @@
 #include <vector>
 #include <stdexcept>
 #include <algorithm>
-#include "Read.cpp"
-#include "Write.cpp"
-#include "Exit.cpp"
-#include "Help.cpp"
-#include "FullRead.cpp"
-#include "FullWrite.cpp"
+#include "ICommand.cpp"
 #include "Logger.hpp"
-#include "TestApp.cpp"
-#include "Flush.cpp"
-#include "Erase.cpp"
-#include "EraseRange.cpp"
 
 #define RUN_LIST "run_list.lst"
 #define TEST_PASS 0
@@ -28,6 +19,8 @@ using namespace std;
 
 class TestShell {
 public:
+	TestShell(vector<ICommand*>& cmds) : commands_(cmds) {}
+
 	void prompt(int argc, char* argv[])
 	{
 		if (argc == 2) {
@@ -53,6 +46,7 @@ protected:
 	Logger& logger = Logger::getInstance();
 	bool isValid = false;
 	vector<string> args;
+	vector<ICommand*> commands_;
 
 	vector<string> parsingInput(const string inputString) {
 		stringstream ss(inputString);
@@ -74,17 +68,12 @@ protected:
 	void executeCommand(const string userInput) {
 		args = parsingInput(userInput);
 		string command = args[0];
-		ICommand* icom{};
-		if (command == "WRITE") icom = new Write();
-		else if (command == "READ") icom = new Read();
-		else if (command == "EXIT") icom = new Exit();
-		else if (command == "HELP") icom = new Help();
-		else if (command == "FULLREAD")	icom = new FullRead();
-		else if (command == "FULLWRITE") icom = new FullWrite();
-		else if (command == "FLUSH") icom = new Flush();
-		else if (command == "ERASE") icom = new Erase();
-		else if (command == "ERASE_RANGE") icom = new EraseRange();
-		else icom = new TestApp();
+		ICommand* icom = commands_[0];
+		for (auto& cmd : commands_) {
+			if (args[0] == cmd->getCommandName()) {
+				icom = cmd;
+			}
+		}
 
 		isValid = icom->execute(args);
 		if (isValid == false)
