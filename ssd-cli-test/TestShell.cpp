@@ -37,6 +37,7 @@ public:
 		stringstream ss(inputString);
 		vector<string> argList;
 		string arg;
+		logger.print("Parsing Command string :" + inputString);
 
 		while (getline(ss, arg, ' ')) {
 			argList.push_back(arg);
@@ -51,7 +52,7 @@ public:
 
 	bool checkExistcommand(string command) {
 		vector<string> commandList = { "WRITE", "READ", "EXIT" , "HELP", "FULLREAD", "FULLWRITE", "TESTAPP1", "TESTAPP2", "FLUSH", "ERASE", "ERASE_RANGE"};
-
+		logger.print("Check command : " + command);
 		if (find(commandList.begin(), commandList.end(), command) == commandList.end()) {
 			return false;
 		}
@@ -62,6 +63,8 @@ public:
 	void executeCommand() {
 		string command = args[0];
 		ICommand* icom{};
+		logger.print("Execute Command : " + command);
+
 		if (command == "WRITE") icom = new Write(args);
 		else if (command == "READ") icom = new Read(args);
 		else if (command == "EXIT") icom = new Exit(args);
@@ -79,6 +82,7 @@ public:
 	}
 
 	void inputCommand(const string userInput) {
+		logger.print("Input Command : " + userInput);
 		args = parsingInput(userInput);
 		executeCommand();
 	}
@@ -105,6 +109,7 @@ public:
 		vector<string> TestFileList = getFlieData(RUN_LIST);
 
 		logger.setLoggerMode(RUNNER_MODE);
+		logger.print("[Runner Mode Start]");
 
 		int TestResult = TEST_FAIL;
 
@@ -118,6 +123,8 @@ public:
 
 			cout << "Pass" << endl;
 		}
+
+		logger.print("[Runner Mode End]");
 	}
 
 protected:
