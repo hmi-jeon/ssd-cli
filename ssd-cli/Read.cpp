@@ -7,7 +7,7 @@ public:
 		return COMMAND_CODE;
 	}
 
-	virtual void execute(vector<string> cmdString, INAND* nand, WriteBuffer& buffer) override {
+	virtual void execute(vector<string> cmdString, INAND* nand) override {
 		if (cmdString.size() != cmdSize) {
 			_printInvalidCommand();
 			return;
@@ -25,11 +25,11 @@ public:
 
 		int lba = stoi(cmdString[1]);
 		string readData;
-		if (buffer.dirty[lba] == 0) {
+		if (writeBuffer_->dirty[lba] == 0) {
 			readData = nand->read(lba);
 		}
 		else {
-			readData = buffer.data[lba];
+			readData = writeBuffer_->data[lba];
 		}
 		_writeResult(readData);
 	}

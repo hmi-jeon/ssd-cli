@@ -7,7 +7,7 @@ public:
 		return COMMAND_CODE;
 	}
 
-	virtual void execute(vector<string> cmdString, INAND* nand, WriteBuffer& buffer) override {
+	virtual void execute(vector<string> cmdString, INAND* nand) override {
 		if (cmdString.size() != cmdSize) {
 			_printInvalidCommand();
 			return;
@@ -27,19 +27,19 @@ public:
 		}
 
 		for (int idx = 0; idx < size; ++idx) {
-			buffer.data[lba + idx] = "00000000";
-			buffer.dirty[lba + idx] = 1;
+			writeBuffer_->data[lba + idx] = "00000000";
+			writeBuffer_->dirty[lba + idx] = 1;
 		}
-		buffer.cnt++;
+		writeBuffer_->cnt++;
 
-		if (buffer.cnt >= 10) {
+		if (writeBuffer_->cnt >= 10) {
 			for (int idx = 0; idx < MAX_LBA; idx++) {
-				if (buffer.dirty[idx] == 1) {
-					nand->write(idx, buffer.data[idx]);
+				if (writeBuffer_->dirty[idx] == 1) {
+					nand->write(idx, writeBuffer_->data[idx]);
 				}
-				buffer.dirty[idx] = 0;
+				writeBuffer_->dirty[idx] = 0;
 			}
-			buffer.cnt = 0;
+			writeBuffer_->cnt = 0;
 		}
 	}
 

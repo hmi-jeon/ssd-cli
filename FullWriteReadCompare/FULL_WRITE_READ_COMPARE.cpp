@@ -3,40 +3,48 @@
 #include <string>
 #include <iostream>
 #include <fstream>
-#include <windows.h>
 #include "../ssd-cli-test/Logger.hpp"
 
 #define MAX_SIZE 100
 
 using namespace std;
 
+const string APP_NAME = "ssd.exe";
+const string RESULT_FILE = "result.txt";
+
+void write(const int lba, const string data) {
+	string command = APP_NAME + " " + "W" + " " + to_string(lba) + " " + data;
+	system(command.c_str());
+}
+
+void read(const int lba) {
+	string command = APP_NAME + " " + "R" + " " + to_string(lba);
+	system(command.c_str());
+}
+
+string getResultFile() {
+	ifstream resultFile;
+	string data = "";
+	resultFile.open(RESULT_FILE);
+	if (resultFile.is_open()) resultFile >> data;
+	return data;
+}
+
 int main(int argc, char* argv[]) {
-	string fileName = "ssd.exe";
-	string testData = "0x12345678";
-	string command = "";
+	const string testData = "0x12345678";
 	Logger& logger = Logger::getInstance();
 	logger.print("[START] FULL_WRITE_READ_COMPARE");
 
-	for (int lba = 0; lba < MAX_SIZE; lba++) {
-		command = fileName + " " + "W" + " " + to_string(lba) + " " + testData;
-		system(command.c_str());
-	}
+	//fullwrite
+	for (int lba = 0; lba < MAX_SIZE; lba++)
+		write(lba, testData);
 
+	//fullread & prove
 	for (int lba = 0; lba < MAX_SIZE; lba++) {
-		command = fileName + " " + "R" + " " + to_string(lba);
-		system(command.c_str());
-		
-		// result.txt open
-		ifstream resultFile;
-		string data = "";
-		resultFile.open("result.txt");
-		if (resultFile.is_open())
-			resultFile >> data;
-
-		if (data.compare(testData) != 0)
-			return 1;
+		read(lba);
+		if (getResultFile().compare(testData) != 0) return EXIT_FAILURE;
 	}
 
 	logger.print("[END] FULL_WRITE_READ_COMPARE");
-	return 0;
+	return EXIT_SUCCESS;
 }
