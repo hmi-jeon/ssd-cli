@@ -30,6 +30,10 @@ public:
 		}
 	}
 protected:
+	bool _checkBufferFull() {
+		return writeBuffer_->cnt >= 10;
+	}
+
 	void _writeBufferToNand(INAND* nand) {
 		for (int idx = 0; idx < MAX_LBA; idx++) {
 			if (writeBuffer_->dirty[idx] == 1) {
@@ -41,10 +45,6 @@ protected:
 	}
 
 private:
-	bool _checkBufferFull() {
-		return writeBuffer_->cnt >= 10;
-	}
-
 	void _writeInputToBuffer(int lba, string data) {
 		writeBuffer_->data[lba] = data;
 		writeBuffer_->dirty[lba] = 1;
