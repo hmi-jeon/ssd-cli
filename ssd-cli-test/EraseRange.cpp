@@ -1,8 +1,8 @@
 #pragma once
-#include "ICommand.cpp"
+#include "Erase.cpp"
 #include <vector>
 
-class EraseRange : public ICommand {
+class EraseRange : public Erase {
 public:
 	EraseRange() {
 		this->name = "ERASE_RANGE";
@@ -12,9 +12,7 @@ public:
 		if (!checkValidArguments(args))
 			return false;
 
-		string lbaRange = to_string(stoi(args[2]) - stoi(args[1]));
-		string command = APP_NAME + " " + "E" + " " + args[1] + " " + lbaRange;
-		system(command.c_str());
+		_doErase(stoi(args[1]), stoi(args[2]) - stoi(args[1]));
 
 		return true;
 	}
@@ -35,8 +33,6 @@ private:
 
 	bool _isValidEraseRangeSize(const int startLba, const int endLba) {
 		if (endLba <= startLba) return false;
-
-		int size = endLba - startLba;
-		return (startLba + size <= MAX_LBA);
+		return (endLba <= MAX_LBA);
 	}
 };

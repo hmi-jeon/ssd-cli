@@ -12,11 +12,23 @@ public:
 		if (!checkValidArguments(args))
 			return false;
 
-		string command = APP_NAME + " " + "E" + " " + args[1] + " " + args[2];
-		system(command.c_str());
+		_doErase(stoi(args[1]), stoi(args[2]));
 
 		return true;
 	}
+
+protected:
+	void _doErase(int startLBA, int size) {
+		while (size > 10) {
+			string command = APP_NAME + " " + "E" + " " + to_string(startLBA) + " " + "10";
+			system(command.c_str());
+			startLBA += 10;
+			size -= 10;
+		}
+		string command = APP_NAME + " " + "E" + " " + to_string(startLBA) + " " + to_string(size);
+		system(command.c_str());
+	}
+
 private:
 	virtual bool checkValidArguments(vector<string> args) override {
 		if (args.size() != 3) return false;
@@ -34,8 +46,8 @@ private:
 				return false;
 			}
 		}
-		int sizeDigit = stoi(size);
-		return (sizeDigit > 0 && sizeDigit <= 10);
+
+		return true;
 	}
 
 	bool _isMaxEraseSize(const int lba, const int size) {
