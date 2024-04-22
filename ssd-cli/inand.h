@@ -9,7 +9,4 @@ public:
 	virtual void write(const int lba, const string value) = 0;
 	virtual int getLBASize() const = 0;
 	virtual int getMaxLBA() const = 0;
-
-
-protected:
 };

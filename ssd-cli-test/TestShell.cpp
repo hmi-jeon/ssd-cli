@@ -37,7 +37,6 @@ public:
 
 protected:
 	Logger& logger = Logger::getInstance();
-	bool isValid = false;
 	vector<string> args;
 	vector<ICommand*> commands_;
 
@@ -68,8 +67,7 @@ protected:
 			}
 		}
 
-		isValid = icom->execute(args);
-		if (isValid == false)
+		if (icom->execute(args) == false)
 			logger.print("INVALID COMMAND");
 	}
 

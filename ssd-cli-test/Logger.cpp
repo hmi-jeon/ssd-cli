@@ -61,6 +61,7 @@ bool Logger::openLogFile(fstream& log_fs, const std::string& filename) {
 	if (!log_fs.is_open()) {
 		return false;
 	}
+	return true;
 }
 
 void Logger::checkLogFileSize(int logSize) {
