@@ -20,7 +20,7 @@ private:
 	virtual bool checkValidArguments(vector<string> args) override {
 		if (args.size() != 3) return false;
 
-		if (!isNumber(args[1]) || !isNumber(args[2])) {
+		if (!_isNumber(args[1]) || !_isNumber(args[2])) {
 			return false;
 		}
 

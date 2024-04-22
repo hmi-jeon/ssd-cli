@@ -20,12 +20,6 @@ public:
 
 protected:
 	bool _isValidLba(const string lba) {
-		for (const char& c : lba) {
-			if (!std::isdigit(c)) {
-				logger.print("LBA input is not digit.");
-				return false;
-			}
-		}
 		int lbaDigit = stoi(lba);
 		if (lbaDigit >= 0 && lbaDigit < MAX_LBA)
 			return true;
@@ -50,9 +44,12 @@ protected:
 		return true;
 	}
 
-	bool isNumber(const string& str) {
+	bool _isNumber(const string& str) {
 		for (const char& c : str) {
-			if (std::isdigit(c) == 0) return false;
+			if (!std::isdigit(c)) {
+				logger.print("LBA input is not digit.");
+				return false;
+			}
 		}
 		return true;
 	}
