@@ -50,6 +50,13 @@ protected:
 		return true;
 	}
 
+	bool isNumber(const string& str) {
+		for (const char& c : str) {
+			if (std::isdigit(c) == 0) return false;
+		}
+		return true;
+	}
+
 	string name;
 	string description;
 	Logger& logger = Logger::getInstance();
