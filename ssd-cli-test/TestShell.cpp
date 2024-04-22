@@ -44,9 +44,38 @@ public:
 		return argList;
 	}
 
+	void selectExecuteMode(int argc, char *argv[]) {
+		switch (argc)
+		{
+		case 1:
+			userInputMode();
+			break;
+
+		case 2:
+			if(argv[1] == RUN_LIST) RunnerMode();
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	void userInputMode() {
+		const int BUF_SIZE = 100;
+		char userInput[BUF_SIZE];
+
+		while (1) {
+			cout << "> ";
+			cin.getline(userInput, BUF_SIZE);
+			if (userInput[0] == '\0') continue;
+			executeCommand(userInput);
+		}
+	}
+
 	void executeCommand(const string userInput) {
 		args = parsingInput(userInput);
 		string command = args[0];
+		
 		ICommand* icom{};
 		if (command == "WRITE") icom = new Write(args);
 		else if (command == "READ") icom = new Read(args);
@@ -66,23 +95,21 @@ public:
 
 	vector<string> getFlieData(string fileName) {
 		string filename(fileName);
-		vector<string> lines;
+		vector<string> fileData;
 		string line;
-
 		ifstream input_file(filename);
 
-		if (!input_file.is_open()) return lines;
+		if (!input_file.is_open()) return fileData;
 
 		while (getline(input_file, line)) {
-			lines.push_back(line);
+			fileData.push_back(line);
 		}
 
 		input_file.close();
-
-		return lines;
+		return fileData;
 	}
 
-	void Runner() {
+	void RunnerMode() {
 		vector<string> TestFileList = getFlieData(RUN_LIST);
 
 		logger.setLoggerMode(RUNNER_MODE);
