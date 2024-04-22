@@ -101,26 +101,40 @@ bool Logger::renameFile(string oldName, string neName)
 void Logger::compressLogFile()
 {
 	string strDirName = "";
+
+	vector<string> logFiles;
+
+	findLogFiles(logFiles);
+
+	if(isOverLogFileThreshold(logFiles))
+		renameFileExtension(logFiles);
+}
+
+bool Logger::isOverLogFileThreshold(vector<string>& logFiles)
+{
+	return logFiles.size() > LOG_FILE_THRESHOLD;
+}
+
+void Logger::renameFileExtension(vector<string>& logFiles)
+{
+	for (int i = 0; i < logFiles.size() - LOG_FILE_THRESHOLD; i++)
+	{
+		string oldFilename = logFiles[i];
+		size_t pos = logFiles[i].find(".log");
+		renameFile(oldFilename, logFiles[i].replace(pos, 4, ".zip"));
+	}
+}
+
+void Logger::findLogFiles(vector<string>& logFiles)
+{
 	string logPattern = "until*.log";
-
-	WIN32_FIND_DATAA data;
 	HANDLE hFind;
-	vector<string> vecFiles;
-
+	WIN32_FIND_DATAA data;
 	if ((hFind = FindFirstFileA(logPattern.c_str(), &data)) != INVALID_HANDLE_VALUE)
 	{
 		do {
-			vecFiles.emplace_back(string(data.cFileName));
+			logFiles.emplace_back(string(data.cFileName));
 		} while (FindNextFileA(hFind, &data) != 0);
 		FindClose(hFind);
-	}
-
-	if (vecFiles.size() <= LOG_FILE_THRESHOLD) return;
-
-	for (int i = 0; i < vecFiles.size() - LOG_FILE_THRESHOLD; i++)
-	{
-		string oldFilename = vecFiles[i];
-		size_t pos = vecFiles[i].find(".log");
-		renameFile(oldFilename, vecFiles[i].replace(pos, 4, ".zip"));
 	}
 }
