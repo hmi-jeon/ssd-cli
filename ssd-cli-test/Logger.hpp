@@ -47,16 +47,19 @@ private:
 	static constexpr char LATEST_LOG_FILE_NAME[11] = "latest.log";
 	static constexpr int LIMIT_LOG_SIZE = 1024 * 10; // 10KB
 	static constexpr int LOG_FILE_THRESHOLD = 3;
-	static constexpr int FORMAT_LENGTH = 40;
+	static constexpr int FORMAT_LENGTH = 30;
 
 	string makeDateString(DateType dateType);
 	bool makeLog(string& logBuffer, string functionName, string logMsg);
 	string padString(const string& input);
 	void saveLog(string logBuffer);
-	bool openLogFile(fstream& log_fs, const std::string& filename);
+	bool openLogFile(fstream& log_fs, const string& filename);
 	void checkLogFileSize(int logSize);
-	int checkFileSize(const std::string& filename);
+	int checkFileSize(const string& filename);
 	bool saveUntilLog();
 	bool renameFile(string oldName, string neName);
 	void compressLogFile();
+	bool isOverLogFileThreshold(vector<string>& logFiles);
+	void renameFileExtension(vector<string>& logFiles);
+	void findLogFiles(vector<string>& logFiles);
 };
