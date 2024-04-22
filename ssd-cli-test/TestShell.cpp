@@ -122,20 +122,25 @@ protected:
 
 		logger.setLoggerMode(RUNNER_MODE);
 		logger.print("[Runner Mode Start]");
+		executeTestSenario(TestFileList);
+		logger.print("[Runner Mode End]");
+	}
 
+	void executeTestSenario(vector<string> TestFileList) {
 		int TestResult = TEST_FAIL;
+		string command;
 
 		for (const string TestScenario : TestFileList) {
 			cout << TestScenario + "\t---\tRun...";
-			TestResult = system(TestScenario.c_str());
+			command = TestScenario + " " + "RUN";
+			TestResult = system(command.c_str());
 			if (TestResult != TEST_PASS) {
 				cout << "Fail!" << endl;
 				break;
 			}
-
 			cout << "Pass" << endl;
 		}
-
-		logger.print("[Runner Mode End]");
 	}
+
+	
 };
