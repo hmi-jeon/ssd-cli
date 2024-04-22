@@ -18,13 +18,20 @@ public:
 
 		string appName = args[0];
 		appName = appName + ".exe";
+
+		logger.print("excute TestApp Scenario:"+ appName);
+
 		char fileName[100];
 		strcpy(fileName, appName.c_str());
 
-		if (access(fileName, 0) == -1)
+		if (access(fileName, 0) == -1) {
+			logger.print("File Access Fail!");
 			return false;
-		if (system(fileName))
+		}
+		if (system(fileName)) {
+			logger.print("Test APP Fail!!");
 			return false;
+		}
 
 		return true;
 	}
