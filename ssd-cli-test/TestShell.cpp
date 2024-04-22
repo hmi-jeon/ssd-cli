@@ -74,18 +74,18 @@ protected:
 		args = parsingInput(userInput);
 		string command = args[0];
 		ICommand* icom{};
-		if (command == "WRITE") icom = new Write(args);
-		else if (command == "READ") icom = new Read(args);
-		else if (command == "EXIT") icom = new Exit(args);
-		else if (command == "HELP") icom = new Help(args);
-		else if (command == "FULLREAD")	icom = new FullRead(args);
-		else if (command == "FULLWRITE") icom = new FullWrite(args);
-		else if (command == "FLUSH") icom = new Flush(args);
-		else if (command == "ERASE") icom = new Erase(args);
-		else if (command == "ERASE_RANGE") icom = new EraseRange(args);
-		else icom = new TestApp(args);
+		if (command == "WRITE") icom = new Write();
+		else if (command == "READ") icom = new Read();
+		else if (command == "EXIT") icom = new Exit();
+		else if (command == "HELP") icom = new Help();
+		else if (command == "FULLREAD")	icom = new FullRead();
+		else if (command == "FULLWRITE") icom = new FullWrite();
+		else if (command == "FLUSH") icom = new Flush();
+		else if (command == "ERASE") icom = new Erase();
+		else if (command == "ERASE_RANGE") icom = new EraseRange();
+		else icom = new TestApp();
 
-		isValid = icom->execute();
+		isValid = icom->execute(args);
 		if (isValid == false)
 			logger.print("INVALID COMMAND");
 	}

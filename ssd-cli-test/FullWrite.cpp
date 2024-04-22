@@ -5,13 +5,12 @@
 
 class FullWrite : public ICommand {
 public:
-	FullWrite(vector<string> args) {
+	FullWrite() {
 		this->name = "FULLWRITE";
-		this->args = args;
 	};
 
-	virtual bool execute() override {
-		if (!checkValidArguments())
+	virtual bool execute(vector<string> args) override {
+		if (!checkValidArguments(args))
 			return false;
 
 		for (int lba = 0; lba < MAX_LBA; lba++) {
@@ -20,14 +19,14 @@ public:
 			callArgs.push_back(to_string(lba));
 			callArgs.push_back(args[1]);
 
-			ICommand* com = new Write(callArgs);
-			com->execute();
+			ICommand* com = new Write();
+			com->execute(args);
 		}
 
 		return true;
 	}
 private:
-	virtual bool checkValidArguments() override {
+	virtual bool checkValidArguments(vector<string> args) override {
 		if (args.size() != 2) return false;
 
 		return _isValidValue(args[1]);

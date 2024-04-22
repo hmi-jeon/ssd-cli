@@ -4,19 +4,18 @@
 
 class Exit : public ICommand {
 public:
-	Exit(vector<string> args) {
+	Exit() {
 		this->name = "EXIT";
-		this->args = args;
 	};
 
-	virtual bool execute() override {
-		if (!checkValidArguments())
+	virtual bool execute(vector<string> args) override {
+		if (!checkValidArguments(args))
 			return false;
 		exit(0);
 	}
 
 private:
-	virtual bool checkValidArguments() override {
+	virtual bool checkValidArguments(vector<string> args) override {
 		return (args.size() == 1);
 	}
 };
