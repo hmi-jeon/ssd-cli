@@ -29,6 +29,16 @@ public:
 			_writeBufferToNand(nand);
 		}
 	}
+protected:
+	void _writeBufferToNand(INAND* nand) {
+		for (int idx = 0; idx < MAX_LBA; idx++) {
+			if (writeBuffer_->dirty[idx] == 1) {
+				nand->write(idx, writeBuffer_->data[idx]);
+			}
+			writeBuffer_->dirty[idx] = 0;
+		}
+		writeBuffer_->cnt = 0;
+	}
 
 private:
 	bool _checkBufferFull() {
@@ -39,16 +49,6 @@ private:
 		writeBuffer_->data[lba] = data;
 		writeBuffer_->dirty[lba] = 1;
 		writeBuffer_->cnt++;
-	}
-
-	void _writeBufferToNand(INAND* nand) {
-		for (int idx = 0; idx < MAX_LBA; idx++) {
-			if (writeBuffer_->dirty[idx] == 1) {
-				nand->write(idx, writeBuffer_->data[idx]);
-			}
-			writeBuffer_->dirty[idx] = 0;
-		}
-		writeBuffer_->cnt = 0;
 	}
 
 	static constexpr int cmdSize = 3;

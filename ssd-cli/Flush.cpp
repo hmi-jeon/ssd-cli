@@ -1,7 +1,7 @@
 #pragma once
-#include "ICommand.h"
+#include "Write.cpp"
 
-class Flush : public ICommand {
+class Flush : public Write {
 public:
 	virtual string getCommandCode() const override {
 		return COMMAND_CODE;
@@ -13,13 +13,7 @@ public:
 			return;
 		}
 
-		for (int idx = 0; idx < MAX_LBA; idx++) {
-			if (writeBuffer_->dirty[idx] == 1) {
-				nand->write(idx, writeBuffer_->data[idx]);
-			}
-			writeBuffer_->dirty[idx] = 0;
-		}
-		writeBuffer_->cnt = 0;
+		_writeBufferToNand(nand);
 	}
 
 private:
