@@ -119,14 +119,13 @@ protected:
 
 	void runnerMode(const string filename) {
 		vector<string> TestFileList = getFlieData(filename);
-
-		logger.setLoggerMode(RUNNER_MODE);
-		logger.print("[Runner Mode Start]");
 		executeTestScenario(TestFileList);
-		logger.print("[Runner Mode End]");
 	}
 
 	void executeTestScenario(vector<string> TestFileList) {
+		logger.setLoggerMode(RUNNER_MODE);
+		logger.print("[Runner Mode Start]");
+		
 		int TestResult = TEST_FAIL;
 		string command;
 
@@ -140,6 +139,8 @@ protected:
 			}
 			cout << "Pass" << endl;
 		}
+
+		logger.print("[Runner Mode End]");
 	}
 
 	
