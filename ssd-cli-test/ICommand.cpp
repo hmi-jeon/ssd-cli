@@ -23,7 +23,7 @@ protected:
 			}
 		}
 		int lbaDigit = stoi(lba);
-		if (lbaDigit >= 0 && lbaDigit < 100)
+		if (lbaDigit >= 0 && lbaDigit < MAX_LBA)
 			return true;
 		else {
 			logger.print("LBA is Out of range.");
