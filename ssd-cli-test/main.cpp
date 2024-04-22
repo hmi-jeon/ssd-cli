@@ -1,8 +1,4 @@
-#include <string>
-#include <iostream>
 #include "TestShell.cpp"
-
-using namespace std;
 
 int main(int argc, char* argv[]) {
 
