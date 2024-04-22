@@ -11,12 +11,12 @@ using namespace std;
 const string APP_NAME = "ssd.exe";
 const string RESULT_FILE = "result.txt";
 
-void write(int lba, string data) {
+void write(const int lba, const string data) {
 	string command = APP_NAME + " " + "W" + " " + to_string(lba) + " " + data;
 	system(command.c_str());
 }
 
-void read(int lba) {
+void read(const int lba) {
 	string command = APP_NAME + " " + "R" + " " + to_string(lba);
 	system(command.c_str());
 }
@@ -30,7 +30,7 @@ string getResultFile() {
 }
 
 int main(int argc, char* argv[]) {
-	string testData = "0x12345678";
+	const string testData = "0x12345678";
 
 	//fullwrite
 	for (int lba = 0; lba < MAX_SIZE; lba++)
