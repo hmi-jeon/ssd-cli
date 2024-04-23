@@ -33,6 +33,7 @@ string getResultFile() {
 int main(int argc, char* argv[]) {
 	const string testData = "0x12345678";
 	Logger& logger = Logger::getInstance();
+	if (argc > 1) logger.setLoggerMode(RUNNER_MODE);
 	logger.print("[START] FULL_WRITE_READ_COMPARE");
 
 	//fullwrite
