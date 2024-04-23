@@ -31,7 +31,7 @@ protected:
 
 	bool _isValidValue(const string value) {
 		if ((value.size() != 10) || (value.substr(0, 2) != "0x")) {
-			logger.print("Address is incorrect format!");
+			logger.print("Data is incorrect format!");
 			return false;
 		}
 
