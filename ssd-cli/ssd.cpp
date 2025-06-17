@@ -118,20 +118,21 @@ private:
 		}
 	}
 
-	void _readDataFromBufferFile() {
-		char* temp = (char*)malloc(BUFFER_SIZE + 1);
-		fs_.read(temp, BUFFER_SIZE);
-		temp[BUFFER_SIZE] = '\0';
-		string fileData(temp);
-		buffer_.cnt = stoi(fileData.substr(0, 1));
-		int idx = 1;
-		for (int cnt = 0; cnt < MAX_LBA; ++cnt, ++idx) {
-			buffer_.dirty[cnt] = stoi(fileData.substr(idx, 1));
-		}
-		for (int cnt = 0; cnt < MAX_LBA; ++cnt, idx += LBA_SIZE) {
-			buffer_.data[cnt] = fileData.substr(idx, LBA_SIZE);
-		}
-	}
+        void _readDataFromBufferFile() {
+                char* temp = (char*)malloc(BUFFER_SIZE + 1);
+                fs_.read(temp, BUFFER_SIZE);
+                temp[BUFFER_SIZE] = '\0';
+                string fileData(temp);
+                buffer_.cnt = stoi(fileData.substr(0, 1));
+                int idx = 1;
+                for (int cnt = 0; cnt < MAX_LBA; ++cnt, ++idx) {
+                        buffer_.dirty[cnt] = stoi(fileData.substr(idx, 1));
+                }
+                for (int cnt = 0; cnt < MAX_LBA; ++cnt, idx += LBA_SIZE) {
+                        buffer_.data[cnt] = fileData.substr(idx, LBA_SIZE);
+                }
+                free(temp);
+        }
 
 	INAND* nand_;
 	WriteBuffer buffer_;
